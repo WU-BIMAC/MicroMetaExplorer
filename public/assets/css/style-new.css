@@ -1,0 +1,309 @@
+#microscopy-app-container {
+  /**
+   * Menu
+   */
+  /**
+   * Multi-select Input
+   */
+  /**
+   * Close Button
+   */
+  /**
+   * Token
+   */
+  /**
+   * Loader + CloseButton container
+   */
+  /**
+   * Input Groups
+   */
+}
+#microscopy-app-container .react-resizable {
+  position: relative;
+}
+#microscopy-app-container .react-resizable-handle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  box-sizing: border-box;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2IDYiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiNmZmZmZmYwMCIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI2cHgiIGhlaWdodD0iNnB4Ij48ZyBvcGFjaXR5PSIwLjMwMiI+PHBhdGggZD0iTSA2IDYgTCAwIDYgTCAwIDQuMiBMIDQgNC4yIEwgNC4yIDQuMiBMIDQuMiAwIEwgNiAwIEwgNiA2IEwgNiA2IFoiIGZpbGw9IiMwMDAwMDAiLz48L2c+PC9zdmc+");
+  background-position: bottom right;
+  padding: 0 3px 3px 0;
+}
+#microscopy-app-container .react-resizable-handle-sw {
+  bottom: 0;
+  left: 0;
+  cursor: sw-resize;
+  transform: rotate(90deg);
+}
+#microscopy-app-container .react-resizable-handle-se {
+  bottom: 0;
+  right: 0;
+  cursor: se-resize;
+}
+#microscopy-app-container .react-resizable-handle-nw {
+  top: 0;
+  left: 0;
+  cursor: nw-resize;
+  transform: rotate(180deg);
+}
+#microscopy-app-container .react-resizable-handle-ne {
+  top: 0;
+  right: 0;
+  cursor: ne-resize;
+  transform: rotate(270deg);
+}
+#microscopy-app-container .react-resizable-handle-w,
+#microscopy-app-container .react-resizable-handle-e {
+  top: 50%;
+  margin-top: -10px;
+  cursor: ew-resize;
+}
+#microscopy-app-container .react-resizable-handle-w {
+  left: 0;
+  transform: rotate(135deg);
+}
+#microscopy-app-container .react-resizable-handle-e {
+  right: 0;
+  transform: rotate(315deg);
+}
+#microscopy-app-container .react-resizable-handle-n,
+#microscopy-app-container .react-resizable-handle-s {
+  left: 50%;
+  margin-left: -10px;
+  cursor: ns-resize;
+}
+#microscopy-app-container .react-resizable-handle-n {
+  top: 0;
+  transform: rotate(225deg);
+}
+#microscopy-app-container .react-resizable-handle-s {
+  bottom: 0;
+  transform: rotate(45deg);
+}
+#microscopy-app-container .react-tabs {
+  -webkit-tap-highlight-color: transparent;
+}
+#microscopy-app-container .react-tabs__tab-list {
+  border-bottom: 1px solid #aaa;
+  margin: 0 0 10px;
+  padding: 0;
+}
+#microscopy-app-container .react-tabs__tab {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-bottom: none;
+  bottom: -1px;
+  position: relative;
+  list-style: none;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+#microscopy-app-container .react-tabs__tab--selected {
+  background: #fff;
+  border-color: #aaa;
+  color: black;
+  border-radius: 5px 5px 0 0;
+}
+#microscopy-app-container .react-tabs__tab--disabled {
+  color: GrayText;
+  cursor: default;
+}
+#microscopy-app-container .react-tabs__tab:focus {
+  box-shadow: 0 0 5px hsl(208, 99%, 50%);
+  border-color: hsl(208, 99%, 50%);
+  outline: none;
+}
+#microscopy-app-container .react-tabs__tab:focus:after {
+  content: "";
+  position: absolute;
+  height: 5px;
+  left: -4px;
+  right: -4px;
+  bottom: -5px;
+  background: #fff;
+}
+#microscopy-app-container .react-tabs__tab-panel {
+  display: none;
+}
+#microscopy-app-container .react-tabs__tab-panel--selected {
+  display: block;
+}
+#microscopy-app-container .rbt .rbt-input-main::-ms-clear {
+  display: none;
+}
+#microscopy-app-container .rbt-menu {
+  margin-bottom: 2px;
+}
+#microscopy-app-container .rbt-menu > .dropdown-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#microscopy-app-container .rbt-menu > .dropdown-item:focus {
+  outline: none;
+}
+#microscopy-app-container .rbt-menu-pagination-option {
+  text-align: center;
+}
+#microscopy-app-container .rbt-input-multi {
+  cursor: text;
+  overflow: hidden;
+  position: relative;
+}
+#microscopy-app-container .rbt-input-multi.focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  color: #495057;
+  outline: 0;
+}
+#microscopy-app-container .rbt-input-multi.form-control {
+  height: auto;
+}
+#microscopy-app-container .rbt-input-multi.disabled {
+  background-color: #e9ecef;
+  opacity: 1;
+}
+#microscopy-app-container .rbt-input-multi.is-invalid.focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+#microscopy-app-container .rbt-input-multi.is-valid.focus {
+  border-color: #28a745;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+#microscopy-app-container .rbt-input-multi input::-moz-placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+#microscopy-app-container .rbt-input-multi input:-ms-input-placeholder {
+  color: #6c757d;
+}
+#microscopy-app-container .rbt-input-multi input::-webkit-input-placeholder {
+  color: #6c757d;
+}
+#microscopy-app-container .rbt-input-multi .rbt-input-wrapper {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: -4px;
+  margin-top: -1px;
+  overflow: hidden;
+}
+#microscopy-app-container .rbt-input-multi .rbt-input-main {
+  margin: 1px 0 4px;
+}
+#microscopy-app-container .rbt-close {
+  z-index: 1;
+}
+#microscopy-app-container .rbt-close-lg {
+  font-size: 1.5rem;
+}
+#microscopy-app-container .rbt-token {
+  background-color: #e7f4ff;
+  border: 0;
+  border-radius: 0.25rem;
+  color: #007bff;
+  display: inline-flex;
+  line-height: 1rem;
+  margin: 1px 3px 2px 0;
+}
+#microscopy-app-container .rbt-token .rbt-token-label {
+  padding: 0.25rem 0.5rem;
+}
+#microscopy-app-container .rbt-token .rbt-token-label:not(:last-child) {
+  padding-right: 0.25rem;
+}
+#microscopy-app-container .rbt-token-disabled {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #495057;
+  pointer-events: none;
+}
+#microscopy-app-container .rbt-token-removeable {
+  cursor: pointer;
+}
+#microscopy-app-container .rbt-token-active {
+  background-color: #007bff;
+  color: #fff;
+  outline: none;
+  text-decoration: none;
+}
+#microscopy-app-container .rbt-token .rbt-token-remove-button {
+  background-image: none;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  box-shadow: none;
+  color: inherit;
+  display: flex;
+  justify-content: center;
+  font-size: inherit;
+  font-weight: normal;
+  opacity: 1;
+  outline: none;
+  padding: 0.25rem 0.5rem;
+  padding-left: 0;
+  text-shadow: none;
+}
+#microscopy-app-container .rbt-token .rbt-token-remove-button .rbt-close-content {
+  display: block;
+}
+#microscopy-app-container .rbt-aux {
+  align-items: center;
+  display: flex;
+  bottom: 0;
+  justify-content: center;
+  pointer-events: none;
+  /* Don't block clicks on the input */
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2rem;
+}
+#microscopy-app-container .rbt-aux-lg {
+  width: 3rem;
+}
+#microscopy-app-container .rbt-aux .rbt-close {
+  margin-top: -0.25rem;
+  pointer-events: auto;
+  /* Override pointer-events: none; above */
+}
+#microscopy-app-container .has-aux .form-control {
+  padding-right: 2rem;
+}
+#microscopy-app-container .has-aux .form-control.is-valid, #microscopy-app-container .has-aux .form-control.is-invalid {
+  background-position: right 2rem center;
+  padding-right: 4rem;
+}
+#microscopy-app-container .rbt-highlight-text {
+  background-color: inherit;
+  color: inherit;
+  font-weight: bold;
+  padding: 0;
+}
+#microscopy-app-container .input-group > .rbt {
+  flex: 1;
+}
+#microscopy-app-container .input-group > .rbt .rbt-input-hint, #microscopy-app-container .input-group > .rbt .rbt-aux {
+  z-index: 5;
+}
+#microscopy-app-container .input-group > .rbt:not(:first-child) .form-control {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+#microscopy-app-container .input-group > .rbt:not(:last-child) .form-control {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+#microscopy-app-container .react-resizable-handle {
+  right: -7px !important;
+  bottom: -7px !important;
+}
+
+#microscopy-app-container button.common-btn {
+  text-align: center;
+  padding: 5px 8px;
+  font-weight: 500;
+  border-radius: 3px;
+  border: 1px solid transparent;
+}
