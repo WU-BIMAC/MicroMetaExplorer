@@ -614,6 +614,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 					imagesPath={imagesPathSVG}
 					isDebug={this.props.isDebug}
 					onClickCompare={this.onClickCompare}
+					isCompareEnabled={selectedMicroscopes.length > 0}
 				/>
 			</MicroMetaExplorerContainer>
 		);

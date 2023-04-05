@@ -100,7 +100,10 @@ export default class Footer extends React.PureComponent {
 		index++;
 
 		index = 0;
+
 		if (isDefined(this.props.onClickCompare)) {
+			console.log("isCompareEnabled");
+			console.log(this.props.isCompareEnabled);
 			let homeButtText = "Compare";
 			buttonsRight[index] = (
 				<PopoverTooltip
@@ -115,6 +118,7 @@ export default class Footer extends React.PureComponent {
 							style={styleButton}
 							size="lg"
 							variant="outline-primary"
+							disabled={!this.props.isCompareEnabled}
 						>
 							{homeButtText}
 						</Button>

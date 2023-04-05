@@ -6,7 +6,6 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { AsyncTypeahead, TypeaheadInputMulti } from "react-bootstrap-typeahead";
 
-import MultiTabFormWithHeaderV3 from "./multiTabFormWithHeaderV3";
 import DropdownMenu from "./dropdownMenu";
 import PopoverTooltip from "./popoverTooltip";
 import ModalWindow from "./modalWindow";
