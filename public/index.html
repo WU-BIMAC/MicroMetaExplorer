@@ -9,7 +9,7 @@
 			crossorigin
 			src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"
 		></script>
-		<script src="./../dist/MicroMetaAppViewerReact.dev.js"></script>
+		<script src="./../dist/MicroMetaExplorer.dev.js"></script>
 		<link rel="stylesheet" type="text/css" href="./assets/css/style-new.css" />
 		<link
 			crossorigin
@@ -58,7 +58,7 @@
 		<script>
 			(function () {
 				// Parent app could be required to handle detecting window resize
-				var MicroscopyMetadataToolAppExplorer = window.MicroMetaAppExplorer.default;
+				var MicroscopyMetadataExplorer = window.MicroMetaExplorer.default;
 
 				//var debouncedRender = _.debounce(render, 500);
 
@@ -4867,7 +4867,7 @@
 					microscopes[micTest2.Name + "_" + micTest2.ID] = micTest2;
 					microscopes[micTest3.Name + "_" + micTest3.ID] = micTest3;
 					ReactDOM.render(
-						React.createElement(MicroscopyMetadataToolAppExplorer, {
+						React.createElement(MicroscopyMetadataExplorer, {
 							height: dims.height,
 							width: dims.width,
 							key: "my-app",
