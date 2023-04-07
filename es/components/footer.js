@@ -114,8 +114,6 @@ var Footer = /*#__PURE__*/function (_React$PureComponent) {
       index++;
       index = 0;
       if ((0, _genericUtilities.isDefined)(this.props.onClickCompare)) {
-        console.log("isCompareEnabled");
-        console.log(this.props.isCompareEnabled);
         var _homeButtText = "Compare";
         buttonsRight[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
           key: "TooltipButtonRight-1",
@@ -132,6 +130,26 @@ var Footer = /*#__PURE__*/function (_React$PureComponent) {
             variant: "outline-primary",
             disabled: !this.props.isCompareEnabled
           }, _homeButtText)
+        });
+      }
+      index++;
+      if ((0, _genericUtilities.isDefined)(this.props.onClickOpen)) {
+        var _homeButtText2 = "Open in MMA";
+        buttonsRight[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
+          key: "TooltipButtonRight-2",
+          position: "top",
+          title: _constants.home_tooltip.title,
+          content: _constants.home_tooltip.content,
+          element: /*#__PURE__*/_react.default.createElement(_Button.default, {
+            key: "ButtonRight-1",
+            onClick: function onClick() {
+              return _this.props.onClickOpen();
+            },
+            style: styleButton,
+            size: "lg",
+            variant: "outline-primary",
+            disabled: !this.props.isOpenEnabled
+          }, _homeButtText2)
         });
       }
       index++;

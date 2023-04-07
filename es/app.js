@@ -94,6 +94,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
     _this.onHideToolbar = _this.onHideToolbar.bind(_assertThisInitialized(_this));
     _this.onClickHome = _this.onClickHome.bind(_assertThisInitialized(_this));
     _this.onClickCompare = _this.onClickCompare.bind(_assertThisInitialized(_this));
+    _this.onClickOpen = _this.onClickOpen.bind(_assertThisInitialized(_this));
     _this.setDataLoaded = _this.setDataLoaded.bind(_assertThisInitialized(_this));
     _this.onSubSearch = _this.onSubSearch.bind(_assertThisInitialized(_this));
     _this.onSuggestForComponents = _this.onSuggestForComponents.bind(_assertThisInitialized(_this));
@@ -194,6 +195,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         selectedMicroscopes: [],
         filteredComponents: []
       });
+      if (!(0, _genericUtilities.isDefined)(this.props.onClickHome)) this.props.onClickHome();
     }
   }, {
     key: "onClickCompare",
@@ -201,6 +203,15 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
       this.setState({
         showComponentsView: true
       });
+    }
+  }, {
+    key: "onClickOpen",
+    value: function onClickOpen() {
+      var microscopes = this.state.selectedMicroscopes;
+      if (microscopes.length > 1) {
+        //TODO NEED SELECTOR
+        window;
+      }
     }
   }, {
     key: "onHideToolbar",
@@ -617,7 +628,8 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
           dimensions: headerFooterDims,
           imagesPath: imagesPathSVG,
           isDebug: this.props.isDebug,
-          onClickHome: this.onClickHome
+          onClickHome: this.onClickHome,
+          onClickOpen: !(0, _genericUtilities.isDefined)(this.props.onClickOpen) ? this.onClickOpen : null
         }));
       }
       return /*#__PURE__*/_react.default.createElement(MicroMetaExplorerContainer, {
@@ -655,8 +667,11 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         dimensions: headerFooterDims,
         imagesPath: imagesPathSVG,
         isDebug: this.props.isDebug,
+        onClickHome: !(0, _genericUtilities.isDefined)(this.props.onClickHome) ? this.onClickHome : null,
         onClickCompare: this.onClickCompare,
-        isCompareEnabled: selectedMicroscopes.length > 0
+        isCompareEnabled: selectedMicroscopes.length > 0,
+        onClickOpen: !(0, _genericUtilities.isDefined)(this.props.onClickOpen) ? this.onClickOpen : null,
+        isOpenEnabled: selectedMicroscopes.length > 0 && selectedMicroscopes.length < 2
       }));
     }
   }], [{
