@@ -114,6 +114,8 @@ var Footer = /*#__PURE__*/function (_React$PureComponent) {
       index++;
       index = 0;
       if ((0, _genericUtilities.isDefined)(this.props.onClickCompare)) {
+        console.log("isCompareEnabled");
+        console.log(this.props.isCompareEnabled);
         var _homeButtText = "Compare";
         buttonsRight[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
           key: "TooltipButtonRight-1",
@@ -127,7 +129,8 @@ var Footer = /*#__PURE__*/function (_React$PureComponent) {
             },
             style: styleButton,
             size: "lg",
-            variant: "outline-primary"
+            variant: "outline-primary",
+            disabled: !this.props.isCompareEnabled
           }, _homeButtText)
         });
       }

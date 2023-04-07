@@ -655,7 +655,8 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         dimensions: headerFooterDims,
         imagesPath: imagesPathSVG,
         isDebug: this.props.isDebug,
-        onClickCompare: this.onClickCompare
+        onClickCompare: this.onClickCompare,
+        isCompareEnabled: selectedMicroscopes.length > 0
       }));
     }
   }], [{
