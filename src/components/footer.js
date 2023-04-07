@@ -100,10 +100,7 @@ export default class Footer extends React.PureComponent {
 		index++;
 
 		index = 0;
-
 		if (isDefined(this.props.onClickCompare)) {
-			console.log("isCompareEnabled");
-			console.log(this.props.isCompareEnabled);
 			let homeButtText = "Compare";
 			buttonsRight[index] = (
 				<PopoverTooltip
@@ -127,6 +124,31 @@ export default class Footer extends React.PureComponent {
 			);
 		}
 		index++;
+		if (isDefined(this.props.onClickOpen)) {
+			let homeButtText = "Open in MMA";
+			buttonsRight[index] = (
+				<PopoverTooltip
+					key={"TooltipButtonRight-2"}
+					position={"top"}
+					title={home_tooltip.title}
+					content={home_tooltip.content}
+					element={
+						<Button
+							key={"ButtonRight-1"}
+							onClick={() => this.props.onClickOpen()}
+							style={styleButton}
+							size="lg"
+							variant="outline-primary"
+							disabled={!this.props.isOpenEnabled}
+						>
+							{homeButtText}
+						</Button>
+					}
+				/>
+			);
+		}
+		index++;
+
 		return (
 			<div style={style}>
 				<div style={styleButtonContainer}>{buttonsLeft}</div>
