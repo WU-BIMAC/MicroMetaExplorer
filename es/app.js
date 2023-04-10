@@ -93,6 +93,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
     _this.onSelectMicroscopes = _this.onSelectMicroscopes.bind(_assertThisInitialized(_this));
     _this.onHideToolbar = _this.onHideToolbar.bind(_assertThisInitialized(_this));
     _this.onClickHome = _this.onClickHome.bind(_assertThisInitialized(_this));
+    _this.onClickParentHome = _this.onClickParentHome.bind(_assertThisInitialized(_this));
     _this.onClickCompare = _this.onClickCompare.bind(_assertThisInitialized(_this));
     _this.onClickOpen = _this.onClickOpen.bind(_assertThisInitialized(_this));
     _this.setDataLoaded = _this.setDataLoaded.bind(_assertThisInitialized(_this));
@@ -195,7 +196,15 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         selectedMicroscopes: [],
         filteredComponents: []
       });
-      if (!(0, _genericUtilities.isDefined)(this.props.onClickHome)) this.props.onClickHome();
+    }
+  }, {
+    key: "onClickParentHome",
+    value: function onClickParentHome() {
+      this.setState({
+        showComponentsView: false,
+        selectedMicroscopes: [],
+        filteredComponents: []
+      }, this.props.onClickParentHome);
     }
   }, {
     key: "onClickCompare",
@@ -629,6 +638,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
           imagesPath: imagesPathSVG,
           isDebug: this.props.isDebug,
           onClickHome: this.onClickHome,
+          onClickParentHome: !(0, _genericUtilities.isDefined)(this.props.onClickHome) ? this.onClickParentHome : null,
           onClickOpen: !(0, _genericUtilities.isDefined)(this.props.onClickOpen) ? this.onClickOpen : null
         }));
       }
@@ -667,7 +677,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         dimensions: headerFooterDims,
         imagesPath: imagesPathSVG,
         isDebug: this.props.isDebug,
-        onClickHome: !(0, _genericUtilities.isDefined)(this.props.onClickHome) ? this.onClickHome : null,
+        onClickParentHome: !(0, _genericUtilities.isDefined)(this.props.onClickHome) ? this.onClickParentHome : null,
         onClickCompare: this.onClickCompare,
         isCompareEnabled: selectedMicroscopes.length > 0,
         onClickOpen: !(0, _genericUtilities.isDefined)(this.props.onClickOpen) ? this.onClickOpen : null,

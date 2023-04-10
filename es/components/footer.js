@@ -80,19 +80,19 @@ var Footer = /*#__PURE__*/function (_React$PureComponent) {
       var buttonsLeft = [];
       var buttonsRight = [];
       var index = 0;
-      if ((0, _genericUtilities.isDefined)(this.props.onClickHome)) {
+      if ((0, _genericUtilities.isDefined)(this.props.onClickParentHome)) {
         var homeImg = url.resolve(this.props.imagesPath, _constants.string_home_img);
         var homeImgPath = homeImg + (homeImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
-        var homeButtText = "Home";
+        var homeButtText = "Parent Home";
         buttonsLeft[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
-          key: "TooltipButtonLeft-0",
+          key: "TooltipButtonLeft-" + index,
           position: "top",
           title: _constants.home_tooltip.title,
           content: _constants.home_tooltip.content,
           element: /*#__PURE__*/_react.default.createElement(_Button.default, {
-            key: "ButtonLeft-0",
+            key: "ButtonLeft-" + index,
             onClick: function onClick() {
-              return _this.props.onClickHome(homeButtText);
+              return _this.props.onClickParentHome();
             },
             style: styleButton,
             size: "lg",
@@ -112,16 +112,48 @@ var Footer = /*#__PURE__*/function (_React$PureComponent) {
         });
       }
       index++;
-      index = 0;
-      if ((0, _genericUtilities.isDefined)(this.props.onClickCompare)) {
-        var _homeButtText = "Compare";
-        buttonsRight[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
-          key: "TooltipButtonRight-1",
+      if ((0, _genericUtilities.isDefined)(this.props.onClickHome)) {
+        var _homeImg = url.resolve(this.props.imagesPath, _constants.string_home_img);
+        var _homeImgPath = _homeImg + (_homeImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
+        var _homeButtText = "Home";
+        buttonsLeft[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
+          key: "TooltipButtonLeft-" + index,
           position: "top",
           title: _constants.home_tooltip.title,
           content: _constants.home_tooltip.content,
           element: /*#__PURE__*/_react.default.createElement(_Button.default, {
-            key: "ButtonRight-1",
+            key: "ButtonLeft-" + index,
+            onClick: function onClick() {
+              return _this.props.onClickHome(_homeButtText);
+            },
+            style: styleButton,
+            size: "lg",
+            variant: "outline-dark"
+          }, /*#__PURE__*/_react.default.createElement("div", {
+            style: {
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+              //gap: "10px",
+            }
+          }, /*#__PURE__*/_react.default.createElement("img", {
+            src: _homeImgPath,
+            alt: _homeImg,
+            style: styleImageIconHome
+          }), _homeButtText))
+        });
+      }
+      index++;
+      index = 0;
+      if ((0, _genericUtilities.isDefined)(this.props.onClickCompare)) {
+        var _homeButtText2 = "Compare";
+        buttonsRight[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
+          key: "TooltipButtonRight-" + index,
+          position: "top",
+          title: _constants.home_tooltip.title,
+          content: _constants.home_tooltip.content,
+          element: /*#__PURE__*/_react.default.createElement(_Button.default, {
+            key: "ButtonRight-" + index,
             onClick: function onClick() {
               return _this.props.onClickCompare();
             },
@@ -129,19 +161,19 @@ var Footer = /*#__PURE__*/function (_React$PureComponent) {
             size: "lg",
             variant: "outline-primary",
             disabled: !this.props.isCompareEnabled
-          }, _homeButtText)
+          }, _homeButtText2)
         });
       }
       index++;
       if ((0, _genericUtilities.isDefined)(this.props.onClickOpen)) {
-        var _homeButtText2 = "Open in MMA";
+        var _homeButtText3 = "Open in MMA";
         buttonsRight[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
-          key: "TooltipButtonRight-2",
+          key: "TooltipButtonRight-" + index,
           position: "top",
           title: _constants.home_tooltip.title,
           content: _constants.home_tooltip.content,
           element: /*#__PURE__*/_react.default.createElement(_Button.default, {
-            key: "ButtonRight-1",
+            key: "ButtonRight-" + index,
             onClick: function onClick() {
               return _this.props.onClickOpen();
             },
@@ -149,7 +181,7 @@ var Footer = /*#__PURE__*/function (_React$PureComponent) {
             size: "lg",
             variant: "outline-primary",
             disabled: !this.props.isOpenEnabled
-          }, _homeButtText2)
+          }, _homeButtText3)
         });
       }
       index++;
