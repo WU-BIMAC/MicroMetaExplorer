@@ -100,6 +100,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 
 		this.onHideToolbar = this.onHideToolbar.bind(this);
 		this.onClickHome = this.onClickHome.bind(this);
+		this.onClickParentHome = this.onClickParentHome.bind(this);
 		this.onClickCompare = this.onClickCompare.bind(this);
 		this.onClickOpen = this.onClickOpen.bind(this);
 
@@ -201,7 +202,17 @@ export default class MicroMetaExplorer extends React.PureComponent {
 			selectedMicroscopes: [],
 			filteredComponents: [],
 		});
-		if (!isDefined(this.props.onClickHome)) this.props.onClickHome();
+	}
+
+	onClickParentHome() {
+		this.setState(
+			{
+				showComponentsView: false,
+				selectedMicroscopes: [],
+				filteredComponents: [],
+			},
+			this.props.onClickParentHome
+		);
 	}
 
 	onClickCompare() {
@@ -579,6 +590,9 @@ export default class MicroMetaExplorer extends React.PureComponent {
 						imagesPath={imagesPathSVG}
 						isDebug={this.props.isDebug}
 						onClickHome={this.onClickHome}
+						onClickParentHome={
+							!isDefined(this.props.onClickHome) ? this.onClickParentHome : null
+						}
 						onClickOpen={
 							!isDefined(this.props.onClickOpen) ? this.onClickOpen : null
 						}
@@ -626,8 +640,8 @@ export default class MicroMetaExplorer extends React.PureComponent {
 					dimensions={headerFooterDims}
 					imagesPath={imagesPathSVG}
 					isDebug={this.props.isDebug}
-					onClickHome={
-						!isDefined(this.props.onClickHome) ? this.onClickHome : null
+					onClickParentHome={
+						!isDefined(this.props.onClickHome) ? this.onClickParentHome : null
 					}
 					onClickCompare={this.onClickCompare}
 					isCompareEnabled={selectedMicroscopes.length > 0}

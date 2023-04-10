@@ -57,6 +57,47 @@ export default class Footer extends React.PureComponent {
 		let buttonsRight = [];
 
 		let index = 0;
+		if (isDefined(this.props.onClickParentHome)) {
+			let homeImg = url.resolve(this.props.imagesPath, string_home_img);
+			let homeImgPath =
+				homeImg +
+				(homeImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
+			let homeButtText = "Parent Home";
+			buttonsLeft[index] = (
+				<PopoverTooltip
+					key={"TooltipButtonLeft-" + index}
+					position={"top"}
+					title={home_tooltip.title}
+					content={home_tooltip.content}
+					element={
+						<Button
+							key={"ButtonLeft-" + index}
+							onClick={() => this.props.onClickParentHome()}
+							style={styleButton}
+							size="lg"
+							variant="outline-dark"
+						>
+							<div
+								style={{
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+									//gap: "10px",
+								}}
+							>
+								<img
+									src={homeImgPath}
+									alt={homeImg}
+									style={styleImageIconHome}
+								/>
+								{homeButtText}
+							</div>
+						</Button>
+					}
+				/>
+			);
+		}
+		index++;
 		if (isDefined(this.props.onClickHome)) {
 			let homeImg = url.resolve(this.props.imagesPath, string_home_img);
 			let homeImgPath =
@@ -65,13 +106,13 @@ export default class Footer extends React.PureComponent {
 			let homeButtText = "Home";
 			buttonsLeft[index] = (
 				<PopoverTooltip
-					key={"TooltipButtonLeft-0"}
+					key={"TooltipButtonLeft-" + index}
 					position={"top"}
 					title={home_tooltip.title}
 					content={home_tooltip.content}
 					element={
 						<Button
-							key={"ButtonLeft-0"}
+							key={"ButtonLeft-" + index}
 							onClick={() => this.props.onClickHome(homeButtText)}
 							style={styleButton}
 							size="lg"
@@ -104,13 +145,13 @@ export default class Footer extends React.PureComponent {
 			let homeButtText = "Compare";
 			buttonsRight[index] = (
 				<PopoverTooltip
-					key={"TooltipButtonRight-1"}
+					key={"TooltipButtonRight-" + index}
 					position={"top"}
 					title={home_tooltip.title}
 					content={home_tooltip.content}
 					element={
 						<Button
-							key={"ButtonRight-1"}
+							key={"ButtonRight-" + index}
 							onClick={() => this.props.onClickCompare()}
 							style={styleButton}
 							size="lg"
@@ -128,13 +169,13 @@ export default class Footer extends React.PureComponent {
 			let homeButtText = "Open in MMA";
 			buttonsRight[index] = (
 				<PopoverTooltip
-					key={"TooltipButtonRight-2"}
+					key={"TooltipButtonRight-" + index}
 					position={"top"}
 					title={home_tooltip.title}
 					content={home_tooltip.content}
 					element={
 						<Button
-							key={"ButtonRight-1"}
+							key={"ButtonRight-" + index}
 							onClick={() => this.props.onClickOpen()}
 							style={styleButton}
 							size="lg"
