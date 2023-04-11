@@ -204,6 +204,9 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "onClickParentHome",
     value: function onClickParentHome() {
+      if (this.props.isDebug) {
+        console.log("onClickParentHome");
+      }
       this.setState({
         showComponentsView: false,
         selectedMicroscopes: [],
@@ -221,10 +224,11 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
     key: "onClickOpen",
     value: function onClickOpen() {
       var microscopes = this.state.selectedMicroscopes;
+      var microscope = null;
       if (microscopes.length > 1) {
-        //TODO NEED SELECTOR
-        window;
+        microscope = microscopes[0];
       }
+      if ((0, _genericUtilities.isDefined)(microscope)) this.props.onClickOpen(microscope);
     }
   }, {
     key: "onHideToolbar",

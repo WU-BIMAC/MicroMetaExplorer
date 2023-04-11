@@ -209,6 +209,9 @@ export default class MicroMetaExplorer extends React.PureComponent {
 	}
 
 	onClickParentHome() {
+		if (this.props.isDebug) {
+			console.log("onClickParentHome");
+		}
 		this.setState(
 			{
 				showComponentsView: false,
@@ -225,10 +228,11 @@ export default class MicroMetaExplorer extends React.PureComponent {
 
 	onClickOpen() {
 		let microscopes = this.state.selectedMicroscopes;
+		let microscope = null;
 		if (microscopes.length > 1) {
-			//TODO NEED SELECTOR
-			window;
+			microscope = microscopes[0];
 		}
+		if (isDefined(microscope)) this.props.onClickOpen(microscope);
 	}
 
 	onHideToolbar() {
