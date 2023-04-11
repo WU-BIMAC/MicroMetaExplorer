@@ -46,7 +46,7 @@ export default class MicroscopesBar extends React.PureComponent {
 		let filteredMicroscopes = [];
 		if (isDefined(props.microscopes)) {
 			Object.keys(props.microscopes).forEach((key) => {
-				let microscope = props.microscopes[key];
+				let microscope = props.microscopes[key].microscope;
 				let stand = microscope.MicroscopeStand;
 				if (filters.length !== 0) {
 					for (let filter of filters) {
@@ -110,7 +110,7 @@ export default class MicroscopesBar extends React.PureComponent {
 
 		if (isDefined(props.microscopes)) {
 			Object.keys(props.microscopes).forEach((key) => {
-				let obj = props.microscopes[key].MicroscopeStand;
+				let obj = props.microscopes[key].microscope.MicroscopeStand;
 				let standType = null;
 				if (obj.Schema_ID.includes("Upright")) {
 					standType = "Upright";

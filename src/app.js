@@ -152,13 +152,17 @@ export default class MicroMetaExplorer extends React.PureComponent {
 	}
 
 	handleCompleteLoadMicroscopes(newMicroscopes, resolve) {
+		console.log("newMicroscopes");
+		console.log(newMicroscopes);
 		let filteredMicroscopes = [];
 		if (isDefined(newMicroscopes)) {
 			Object.keys(newMicroscopes).forEach((key) => {
-				let microscope = newMicroscopes[key];
+				let microscope = newMicroscopes[key].microscope;
 				filteredMicroscopes.push(microscope);
 			});
 		}
+		console.log("filteredMicroscopes");
+		console.log(filteredMicroscopes);
 		this.setState(
 			{
 				microscopes: newMicroscopes,
@@ -591,10 +595,10 @@ export default class MicroMetaExplorer extends React.PureComponent {
 						isDebug={this.props.isDebug}
 						onClickHome={this.onClickHome}
 						onClickParentHome={
-							!isDefined(this.props.onClickHome) ? this.onClickParentHome : null
+							isDefined(this.props.onClickHome) ? this.onClickParentHome : null
 						}
 						onClickOpen={
-							!isDefined(this.props.onClickOpen) ? this.onClickOpen : null
+							isDefined(this.props.onClickOpen) ? this.onClickOpen : null
 						}
 					/>
 				</MicroMetaExplorerContainer>
@@ -641,12 +645,12 @@ export default class MicroMetaExplorer extends React.PureComponent {
 					imagesPath={imagesPathSVG}
 					isDebug={this.props.isDebug}
 					onClickParentHome={
-						!isDefined(this.props.onClickHome) ? this.onClickParentHome : null
+						isDefined(this.props.onClickHome) ? this.onClickParentHome : null
 					}
 					onClickCompare={this.onClickCompare}
 					isCompareEnabled={selectedMicroscopes.length > 0}
 					onClickOpen={
-						!isDefined(this.props.onClickOpen) ? this.onClickOpen : null
+						isDefined(this.props.onClickOpen) ? this.onClickOpen : null
 					}
 					isOpenEnabled={
 						selectedMicroscopes.length > 0 && selectedMicroscopes.length < 2
