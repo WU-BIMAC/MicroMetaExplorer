@@ -4862,10 +4862,14 @@
 						"linkedFields": null
 					};
 					let microscopes={};
-					microscopes[bla.Name + "_" + bla.ID] = bla;
-					microscopes[micTest.Name + "_" + micTest.ID] = micTest;
-					microscopes[micTest2.Name + "_" + micTest2.ID] = micTest2;
-					microscopes[micTest3.Name + "_" + micTest3.ID] = micTest3;
+					microscopes[bla.Name + "_" + bla.ID] = {};
+					microscopes[bla.Name + "_" + bla.ID].microscope= bla
+					microscopes[micTest.Name + "_" + micTest.ID] = {};
+					microscopes[micTest.Name + "_" + micTest.ID].microscope = micTest
+					microscopes[micTest2.Name + "_" + micTest2.ID] = {};
+					microscopes[micTest2.Name + "_" + micTest2.ID].microscope = micTest2
+					microscopes[micTest3.Name + "_" + micTest3.ID] = {};
+					microscopes[micTest3.Name + "_" + micTest3.ID].microscope = micTest3
 					ReactDOM.render(
 						React.createElement(MicroscopyMetadataExplorer, {
 							height: dims.height,
