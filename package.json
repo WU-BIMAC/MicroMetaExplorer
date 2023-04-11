@@ -1,6 +1,6 @@
 {
 	"name": "micro-meta-explorer",
-	"version": "1.7.25-b1",
+	"version": "1.0.0",
 	"main": "./dist/MicroMetaExplorer.min.js",
 	"unpkg": "./dist/MicroMetaExplorer.min.js",
 	"module": "./es/app.js",
