@@ -204,6 +204,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "onClickParentHome",
     value: function onClickParentHome() {
+      var _this4 = this;
       if (this.props.isDebug) {
         console.log("onClickParentHome");
       }
@@ -211,7 +212,9 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         showComponentsView: false,
         selectedMicroscopes: [],
         filteredComponents: []
-      }, this.props.onClickParentHome);
+      }, function () {
+        return _this4.props.onClickParentHome();
+      });
     }
   }, {
     key: "onClickCompare",
@@ -241,21 +244,27 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "onFilterMicroscopes",
     value: function onFilterMicroscopes(filteredMicroscopes) {
+      var _this5 = this;
       this.setState({
         filteredMicroscopes: filteredMicroscopes
-      }, this.onClearSearch);
+      }, function () {
+        return _this5.onClearSearch();
+      });
     }
   }, {
     key: "onFilterComponents",
     value: function onFilterComponents(filteredComponents) {
+      var _this6 = this;
       this.setState({
         filteredComponents: filteredComponents
-      }, this.onClearSearch);
+      }, function () {
+        return _this6.onClearSearch();
+      });
     }
   }, {
     key: "onSubSearch",
     value: function onSubSearch(searchTerms, withApices, object) {
-      var _this4 = this;
+      var _this7 = this;
       var filteredProperties = [];
       if (!(0, _genericUtilities.isDefined)(object)) return filteredProperties;
       Object.keys(object).forEach(function (key) {
@@ -266,7 +275,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
           try {
             for (_iterator.s(); !(_step = _iterator.n()).done;) {
               var _object = _step.value;
-              var subFilteredProperties = _this4.onSubSearch(searchTerms, withApices, _object);
+              var subFilteredProperties = _this7.onSubSearch(searchTerms, withApices, _object);
               var _iterator2 = _createForOfIteratorHelper(subFilteredProperties),
                 _step2;
               try {
@@ -287,7 +296,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
           }
         } else if (value instanceof Object) {
           var _object2 = value;
-          var _subFilteredProperties = _this4.onSubSearch(searchTerms, withApices, _object2);
+          var _subFilteredProperties = _this7.onSubSearch(searchTerms, withApices, _object2);
           var _iterator3 = _createForOfIteratorHelper(_subFilteredProperties),
             _step3;
           try {
@@ -335,11 +344,11 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "onSuggestForMicroscopes",
     value: function onSuggestForMicroscopes(searchTerms, withApices, complete) {
-      var _this5 = this;
+      var _this8 = this;
       var filteredProperties = [];
       var microscopes = this.state.filteredMicroscopes;
       microscopes.forEach(function (microscope) {
-        var subFilteredProperties = _this5.onSubSearch(searchTerms, withApices, microscope);
+        var subFilteredProperties = _this8.onSubSearch(searchTerms, withApices, microscope);
         var _iterator5 = _createForOfIteratorHelper(subFilteredProperties),
           _step5;
         try {
@@ -361,7 +370,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "onSearchMicroscopes",
     value: function onSearchMicroscopes(searchTerms) {
-      var _this6 = this;
+      var _this9 = this;
       var filteredMicroscopes = [];
       var microscopes = this.state.filteredMicroscopes;
       this.onSuggestForMicroscopes(searchTerms, true, function (filteredProperties) {
@@ -387,7 +396,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
             _iterator6.f();
           }
         });
-        _this6.setState({
+        _this9.setState({
           searchedMicroscopes: filteredMicroscopes
         });
       });
@@ -395,7 +404,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "onSuggestForComponents",
     value: function onSuggestForComponents(searchTerms, withApices, complete) {
-      var _this7 = this;
+      var _this10 = this;
       var filteredProperties = [];
       var components = this.state.filteredComponents;
       console.log("components");
@@ -403,7 +412,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
       Object.keys(components).forEach(function (key) {
         var micComponents = components[key];
         micComponents.forEach(function (component) {
-          var subFilteredProperties = _this7.onSubSearch(searchTerms, withApices, component);
+          var subFilteredProperties = _this10.onSubSearch(searchTerms, withApices, component);
           var _iterator7 = _createForOfIteratorHelper(subFilteredProperties),
             _step7;
           try {
@@ -423,7 +432,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "onSearchComponents",
     value: function onSearchComponents(searchTerms) {
-      var _this8 = this;
+      var _this11 = this;
       var filteredComponents = {};
       var components = this.state.filteredComponents;
       this.onSuggestForComponents(searchTerms, true, function (filteredProperties) {
@@ -457,7 +466,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
             }
           });
         });
-        _this8.setState({
+        _this11.setState({
           searchedComponents: filteredComponents
         });
       });

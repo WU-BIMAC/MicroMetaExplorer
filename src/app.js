@@ -218,7 +218,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 				selectedMicroscopes: [],
 				filteredComponents: [],
 			},
-			this.props.onClickParentHome
+			() => this.props.onClickParentHome()
 		);
 	}
 
@@ -241,16 +241,14 @@ export default class MicroMetaExplorer extends React.PureComponent {
 	}
 
 	onFilterMicroscopes(filteredMicroscopes) {
-		this.setState(
-			{ filteredMicroscopes: filteredMicroscopes },
-			this.onClearSearch
+		this.setState({ filteredMicroscopes: filteredMicroscopes }, () =>
+			this.onClearSearch()
 		);
 	}
 
 	onFilterComponents(filteredComponents) {
-		this.setState(
-			{ filteredComponents: filteredComponents },
-			this.onClearSearch
+		this.setState({ filteredComponents: filteredComponents }, () =>
+			this.onClearSearch()
 		);
 	}
 
