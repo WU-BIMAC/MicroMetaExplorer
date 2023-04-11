@@ -229,12 +229,22 @@ export default class MicroMetaExplorer extends React.PureComponent {
 	}
 
 	onClickOpen() {
+		if (this.props.isDebug) {
+			console.log("onClickOpen");
+		}
 		let microscopes = this.state.selectedMicroscopes;
 		let microscope = null;
 		if (microscopes.length > 1) {
 			microscope = microscopes[0];
+			//TODO CREATE A SELECTOR
+		} else if (microscopes.length === 1) {
+			microscope = microscopes[0];
 		}
-		if (isDefined(microscope)) this.props.onClickOpen(microscope);
+		if (isDefined(microscope)) {
+			console.log("open microscope");
+			console.log(microscope);
+			this.props.onClickOpen(microscope);
+		}
 	}
 
 	onHideToolbar() {

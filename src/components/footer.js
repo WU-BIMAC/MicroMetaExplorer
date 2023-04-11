@@ -56,12 +56,13 @@ export default class Footer extends React.PureComponent {
 		let buttonsLeft = [];
 		let buttonsRight = [];
 
+		let homeImg = url.resolve(this.props.imagesPath, string_home_img);
+		let homeImgPath =
+			homeImg +
+			(homeImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
+
 		let index = 0;
 		if (isDefined(this.props.onClickParentHome)) {
-			let homeImg = url.resolve(this.props.imagesPath, string_home_img);
-			let homeImgPath =
-				homeImg +
-				(homeImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
 			let homeButtText = "Parent Home";
 			buttonsLeft[index] = (
 				<PopoverTooltip
@@ -96,13 +97,10 @@ export default class Footer extends React.PureComponent {
 					}
 				/>
 			);
+			index++;
 		}
-		index++;
+
 		if (isDefined(this.props.onClickHome)) {
-			let homeImg = url.resolve(this.props.imagesPath, string_home_img);
-			let homeImgPath =
-				homeImg +
-				(homeImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
 			let homeButtText = "Home";
 			buttonsLeft[index] = (
 				<PopoverTooltip
@@ -137,8 +135,8 @@ export default class Footer extends React.PureComponent {
 					}
 				/>
 			);
+			index++;
 		}
-		index++;
 
 		index = 0;
 		if (isDefined(this.props.onClickCompare)) {
