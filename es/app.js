@@ -226,12 +226,22 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "onClickOpen",
     value: function onClickOpen() {
+      if (this.props.isDebug) {
+        console.log("onClickOpen");
+      }
       var microscopes = this.state.selectedMicroscopes;
       var microscope = null;
       if (microscopes.length > 1) {
         microscope = microscopes[0];
+        //TODO CREATE A SELECTOR
+      } else if (microscopes.length === 1) {
+        microscope = microscopes[0];
       }
-      if ((0, _genericUtilities.isDefined)(microscope)) this.props.onClickOpen(microscope);
+      if ((0, _genericUtilities.isDefined)(microscope)) {
+        console.log("open microscope");
+        console.log(microscope);
+        this.props.onClickOpen(microscope);
+      }
     }
   }, {
     key: "onHideToolbar",

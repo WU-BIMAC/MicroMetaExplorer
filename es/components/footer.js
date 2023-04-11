@@ -79,10 +79,10 @@ var Footer = /*#__PURE__*/function (_React$PureComponent) {
       };
       var buttonsLeft = [];
       var buttonsRight = [];
+      var homeImg = url.resolve(this.props.imagesPath, _constants.string_home_img);
+      var homeImgPath = homeImg + (homeImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
       var index = 0;
       if ((0, _genericUtilities.isDefined)(this.props.onClickParentHome)) {
-        var homeImg = url.resolve(this.props.imagesPath, _constants.string_home_img);
-        var homeImgPath = homeImg + (homeImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
         var homeButtText = "Parent Home";
         buttonsLeft[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
           key: "TooltipButtonLeft-" + index,
@@ -110,11 +110,9 @@ var Footer = /*#__PURE__*/function (_React$PureComponent) {
             style: styleImageIconHome
           }), homeButtText))
         });
+        index++;
       }
-      index++;
       if ((0, _genericUtilities.isDefined)(this.props.onClickHome)) {
-        var _homeImg = url.resolve(this.props.imagesPath, _constants.string_home_img);
-        var _homeImgPath = _homeImg + (_homeImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
         var _homeButtText = "Home";
         buttonsLeft[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
           key: "TooltipButtonLeft-" + index,
@@ -137,13 +135,13 @@ var Footer = /*#__PURE__*/function (_React$PureComponent) {
               //gap: "10px",
             }
           }, /*#__PURE__*/_react.default.createElement("img", {
-            src: _homeImgPath,
-            alt: _homeImg,
+            src: homeImgPath,
+            alt: homeImg,
             style: styleImageIconHome
           }), _homeButtText))
         });
+        index++;
       }
-      index++;
       index = 0;
       if ((0, _genericUtilities.isDefined)(this.props.onClickCompare)) {
         var _homeButtText2 = "Compare";
