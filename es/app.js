@@ -139,13 +139,17 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "handleCompleteLoadMicroscopes",
     value: function handleCompleteLoadMicroscopes(newMicroscopes, resolve) {
+      console.log("newMicroscopes");
+      console.log(newMicroscopes);
       var filteredMicroscopes = [];
       if ((0, _genericUtilities.isDefined)(newMicroscopes)) {
         Object.keys(newMicroscopes).forEach(function (key) {
-          var microscope = newMicroscopes[key];
+          var microscope = newMicroscopes[key].microscope;
           filteredMicroscopes.push(microscope);
         });
       }
+      console.log("filteredMicroscopes");
+      console.log(filteredMicroscopes);
       this.setState({
         microscopes: newMicroscopes,
         filteredMicroscopes: filteredMicroscopes,
@@ -638,8 +642,8 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
           imagesPath: imagesPathSVG,
           isDebug: this.props.isDebug,
           onClickHome: this.onClickHome,
-          onClickParentHome: !(0, _genericUtilities.isDefined)(this.props.onClickHome) ? this.onClickParentHome : null,
-          onClickOpen: !(0, _genericUtilities.isDefined)(this.props.onClickOpen) ? this.onClickOpen : null
+          onClickParentHome: (0, _genericUtilities.isDefined)(this.props.onClickHome) ? this.onClickParentHome : null,
+          onClickOpen: (0, _genericUtilities.isDefined)(this.props.onClickOpen) ? this.onClickOpen : null
         }));
       }
       return /*#__PURE__*/_react.default.createElement(MicroMetaExplorerContainer, {
@@ -677,10 +681,10 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         dimensions: headerFooterDims,
         imagesPath: imagesPathSVG,
         isDebug: this.props.isDebug,
-        onClickParentHome: !(0, _genericUtilities.isDefined)(this.props.onClickHome) ? this.onClickParentHome : null,
+        onClickParentHome: (0, _genericUtilities.isDefined)(this.props.onClickHome) ? this.onClickParentHome : null,
         onClickCompare: this.onClickCompare,
         isCompareEnabled: selectedMicroscopes.length > 0,
-        onClickOpen: !(0, _genericUtilities.isDefined)(this.props.onClickOpen) ? this.onClickOpen : null,
+        onClickOpen: (0, _genericUtilities.isDefined)(this.props.onClickOpen) ? this.onClickOpen : null,
         isOpenEnabled: selectedMicroscopes.length > 0 && selectedMicroscopes.length < 2
       }));
     }

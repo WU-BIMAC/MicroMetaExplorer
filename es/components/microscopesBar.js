@@ -438,7 +438,7 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
       var filteredMicroscopes = [];
       if ((0, _genericUtilities.isDefined)(props.microscopes)) {
         Object.keys(props.microscopes).forEach(function (key) {
-          var microscope = props.microscopes[key];
+          var microscope = props.microscopes[key].microscope;
           var stand = microscope.MicroscopeStand;
           if (filters.length !== 0) {
             var _iterator2 = _createForOfIteratorHelper(filters),
@@ -503,7 +503,7 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
       }
       if ((0, _genericUtilities.isDefined)(props.microscopes)) {
         Object.keys(props.microscopes).forEach(function (key) {
-          var obj = props.microscopes[key].MicroscopeStand;
+          var obj = props.microscopes[key].microscope.MicroscopeStand;
           var standType = null;
           if (obj.Schema_ID.includes("Upright")) {
             standType = "Upright";
