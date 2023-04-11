@@ -213,7 +213,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         selectedMicroscopes: [],
         filteredComponents: []
       }, function () {
-        return _this4.props.onClickParentHome();
+        _this4.props.onClickHome();
       });
     }
   }, {
@@ -248,7 +248,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
       this.setState({
         filteredMicroscopes: filteredMicroscopes
       }, function () {
-        return _this5.onClearSearch();
+        _this5.onClearSearch();
       });
     }
   }, {
@@ -258,7 +258,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
       this.setState({
         filteredComponents: filteredComponents
       }, function () {
-        return _this6.onClearSearch();
+        _this6.onClearSearch();
       });
     }
   }, {
