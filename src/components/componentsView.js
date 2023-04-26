@@ -394,6 +394,8 @@ export default class ComponentsView extends React.PureComponent {
 	createRows(maxDisplay) {
 		let dataRows = [];
 		let partialSchema = this.state.partialSchema;
+		let schema = this.props.schema;
+		let subCategoriesOrder = schema.subCategoriesOrder;
 		//let components = this.state.filteredComponents;
 		// console.log("schema");
 		// console.log(this.props.schema);
@@ -404,7 +406,9 @@ export default class ComponentsView extends React.PureComponent {
 
 		let categoryIndexes = [];
 		let index = 0;
-		Object.keys(partialSchema).forEach((key) => {
+		Object.keys(subCategoriesOrder).forEach((key) => {
+			if (!isDefined(partialSchema[key])) return;
+			//Object.keys(partialSchema).forEach((key) => {
 			let row = { id: index, key: key };
 			dataRows.push(row);
 			let subRows = this.createSubRows(maxDisplay, key, index);

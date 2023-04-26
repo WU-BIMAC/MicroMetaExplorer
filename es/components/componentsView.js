@@ -241,6 +241,8 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       var _this2 = this;
       var dataRows = [];
       var partialSchema = this.state.partialSchema;
+      var schema = this.props.schema;
+      var subCategoriesOrder = schema.subCategoriesOrder;
       //let components = this.state.filteredComponents;
       // console.log("schema");
       // console.log(this.props.schema);
@@ -251,7 +253,9 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
 
       var categoryIndexes = [];
       var index = 0;
-      Object.keys(partialSchema).forEach(function (key) {
+      Object.keys(subCategoriesOrder).forEach(function (key) {
+        if (!(0, _genericUtilities.isDefined)(partialSchema[key])) return;
+        //Object.keys(partialSchema).forEach((key) => {
         var row = {
           id: index,
           key: key
