@@ -208,6 +208,8 @@ export default class MicroscopesView extends React.PureComponent {
 			borderTop: "2px solid",
 			borderLeft: "2px solid",
 			color: "black",
+			overflow: "hidden",
+			scrollbars: "auto",
 		};
 		let styleTable = {
 			height: "100%",

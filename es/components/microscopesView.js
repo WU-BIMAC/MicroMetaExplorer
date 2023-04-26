@@ -276,7 +276,9 @@ var MicroscopesView = /*#__PURE__*/function (_React$PureComponent) {
         borderBottom: "2px solid",
         borderTop: "2px solid",
         borderLeft: "2px solid",
-        color: "black"
+        color: "black",
+        overflow: "hidden",
+        scrollbars: "auto"
       };
       var styleTable = {
         height: "100%",
