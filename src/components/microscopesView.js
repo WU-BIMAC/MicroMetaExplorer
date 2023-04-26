@@ -245,6 +245,8 @@ export default class MicroscopesView extends React.PureComponent {
 			</div>
 		);
 
+		let pageSize = Math.floor(this.props.dimensions.height / 80);
+
 		return (
 			<div style={style}>
 				<ThemeProvider theme={defaultMaterialTheme}>
@@ -275,7 +277,7 @@ export default class MicroscopesView extends React.PureComponent {
 							search: false,
 							selection: true,
 							showSelectAllCheckbox: false,
-							pageSize: 17,
+							pageSize: pageSize,
 							pageSizeOptions: [],
 							selectionProps: this.handleSelectionProps,
 						}}

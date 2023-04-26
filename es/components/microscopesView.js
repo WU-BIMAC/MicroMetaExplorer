@@ -318,6 +318,7 @@ var MicroscopesView = /*#__PURE__*/function (_React$PureComponent) {
       }, /*#__PURE__*/_react.default.createElement("div", {
         key: "TableGroupHeader-FirstColumn"
       }, header));
+      var pageSize = Math.floor(this.props.dimensions.height / 80);
       return /*#__PURE__*/_react.default.createElement("div", {
         style: style
       }, /*#__PURE__*/_react.default.createElement(_material.ThemeProvider, {
@@ -342,7 +343,7 @@ var MicroscopesView = /*#__PURE__*/function (_React$PureComponent) {
           search: false,
           selection: true,
           showSelectAllCheckbox: false,
-          pageSize: 17,
+          pageSize: pageSize,
           pageSizeOptions: [],
           selectionProps: this.handleSelectionProps
         },
