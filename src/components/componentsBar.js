@@ -11,10 +11,13 @@ import PopoverTooltip from "./popoverTooltip";
 
 const url = require("url");
 
-import { string_toolbar, string_object } from "../constants";
+import {
+	string_toolbar,
+	string_object,
+	hardware_explorer_tooltip,
+	menu_order,
+} from "../constants";
 import { isDefined } from "../genericUtilities";
-
-import { hardware_explorer_tooltip, menu_order } from "../constants";
 
 const string_objs = "_objs";
 
