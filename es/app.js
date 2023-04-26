@@ -379,25 +379,22 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
     }
   }, {
     key: "onSearchMicroscopes",
-    value: function onSearchMicroscopes(searchTerms) {
-      var _this9 = this;
+    value: function onSearchMicroscopes(exactSearchTerms, fuzzySearchTerms) {
       var filteredMicroscopes = [];
       var microscopes = this.state.filteredMicroscopes;
-      this.onSuggestForMicroscopes(searchTerms, true, function (filteredProperties) {
+      var fuzzySearchMicroscopes = [];
+      var exactSearchMicroscopes = [];
+      this.onSuggestForMicroscopes(fuzzySearchTerms, true, function (filteredProperties) {
         microscopes.forEach(function (microscope) {
-          var microscopeString = JSON.stringify(microscope);
-          var found = 0;
+          var microscopeString = JSON.stringify(microscope).toLowerCase();
           var _iterator6 = _createForOfIteratorHelper(filteredProperties),
             _step6;
           try {
             for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
               var prop = _step6.value;
-              if (microscopeString.includes(prop)) {
-                found = found + 1;
-                if (found == filteredProperties.length) {
-                  filteredMicroscopes.push(microscope);
-                  break;
-                }
+              var lcProp = prop.toLowerCase();
+              if (microscopeString.includes(lcProp) && !fuzzySearchMicroscopes.includes(microscope)) {
+                fuzzySearchMicroscopes.push(microscope);
               }
             }
           } catch (err) {
@@ -406,15 +403,69 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
             _iterator6.f();
           }
         });
-        _this9.setState({
-          searchedMicroscopes: filteredMicroscopes
+      });
+      exactSearchTerms.forEach(function (searchTerm) {
+        microscopes.forEach(function (microscope) {
+          var microscopeString = JSON.stringify(microscope).toLowerCase();
+          console.log(searchTerm);
+          console.log(microscopeString);
+          if (microscopeString.includes(searchTerm) && !exactSearchMicroscopes.includes(microscope)) {
+            exactSearchMicroscopes.push(microscope);
+          }
         });
       });
+      if (this.props.isDebug) {
+        console.log("fuzzySearchMicroscopes");
+        console.log(fuzzySearchMicroscopes);
+        console.log("exactSearchMicroscopes");
+        console.log(exactSearchMicroscopes);
+      }
+      if (fuzzySearchMicroscopes.length > 0 && exactSearchMicroscopes.length > 0) {
+        var longerMicroscopes = null;
+        var shorterMicroscopes = null;
+        if (fuzzySearchMicroscopes.length > exactSearchMicroscopes.length) {
+          longerMicroscopes = fuzzySearchMicroscopes;
+          shorterMicroscopes = exactSearchMicroscopes;
+        } else {
+          longerMicroscopes = exactSearchMicroscopes;
+          shorterMicroscopes = fuzzySearchMicroscopes;
+        }
+        longerMicroscopes.forEach(function (microscope) {
+          if (shorterMicroscopes.includes(microscope)) filteredMicroscopes.push(microscope);
+        });
+      } else if (fuzzySearchMicroscopes.length > 0) {
+        fuzzySearchMicroscopes.forEach(function (microscope) {
+          filteredMicroscopes.push(microscope);
+        });
+      } else if (exactSearchMicroscopes.length > 0) {
+        exactSearchMicroscopes.forEach(function (microscope) {
+          filteredMicroscopes.push(microscope);
+        });
+      }
+      this.setState({
+        searchedMicroscopes: filteredMicroscopes
+      });
+      // this.onSuggestForMicroscopes(searchTerms, true, (filteredProperties) => {
+      // 	microscopes.forEach((microscope) => {
+      // 		let microscopeString = JSON.stringify(microscope);
+      // 		let found = 0;
+      // 		for (let prop of filteredProperties) {
+      // 			if (microscopeString.includes(prop)) {
+      // 				found = found + 1;
+      // 				if (found == filteredProperties.length) {
+      // 					filteredMicroscopes.push(microscope);
+      // 					break;
+      // 				}
+      // 			}
+      // 		}
+      // 	});
+      // 	this.setState({ searchedMicroscopes: filteredMicroscopes });
+      // });
     }
   }, {
     key: "onSuggestForComponents",
     value: function onSuggestForComponents(searchTerms, withApices, complete) {
-      var _this10 = this;
+      var _this9 = this;
       var filteredProperties = [];
       var components = this.state.filteredComponents;
       console.log("components");
@@ -422,7 +473,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
       Object.keys(components).forEach(function (key) {
         var micComponents = components[key];
         micComponents.forEach(function (component) {
-          var subFilteredProperties = _this10.onSubSearch(searchTerms, withApices, component);
+          var subFilteredProperties = _this9.onSubSearch(searchTerms, withApices, component);
           var _iterator7 = _createForOfIteratorHelper(subFilteredProperties),
             _step7;
           try {
@@ -441,45 +492,99 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
     }
   }, {
     key: "onSearchComponents",
-    value: function onSearchComponents(searchTerms) {
-      var _this11 = this;
-      var filteredComponents = {};
+    value: function onSearchComponents(exactSearchTerms, fuzzySearchTerms) {
+      var filteredComponents = [];
       var components = this.state.filteredComponents;
-      this.onSuggestForComponents(searchTerms, true, function (filteredProperties) {
+      var fuzzySearchComponents = [];
+      var exactSearchComponents = [];
+      this.onSuggestForComponents(fuzzySearchTerms, true, function (filteredProperties) {
         Object.keys(components).forEach(function (key) {
-          var micComponents = components[key];
-          micComponents.forEach(function (micComponent) {
-            var componentString = JSON.stringify(micComponent);
-            var found = 0;
-            var _iterator8 = _createForOfIteratorHelper(filteredProperties),
-              _step8;
-            try {
-              for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
-                var prop = _step8.value;
-                if (componentString.includes(prop)) {
-                  found = found + 1;
-                  if (found == filteredProperties.length) {
-                    var comps = [];
-                    if ((0, _genericUtilities.isDefined)(filteredComponents[key])) {
-                      comps = filteredComponents[key];
-                    }
-                    comps.push(micComponent);
-                    filteredComponents[key] = comps;
-                    break;
-                  }
-                }
+          var component = components[key];
+          var componentString = JSON.stringify(component).toLowerCase();
+          var _iterator8 = _createForOfIteratorHelper(filteredProperties),
+            _step8;
+          try {
+            for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
+              var prop = _step8.value;
+              var lcProp = prop.toLowerCase();
+              if (componentString.includes(lcProp) && !fuzzySearchComponents.includes(component)) {
+                fuzzySearchComponents.push(component);
               }
-            } catch (err) {
-              _iterator8.e(err);
-            } finally {
-              _iterator8.f();
             }
-          });
-        });
-        _this11.setState({
-          searchedComponents: filteredComponents
+          } catch (err) {
+            _iterator8.e(err);
+          } finally {
+            _iterator8.f();
+          }
         });
       });
+      exactSearchTerms.forEach(function (searchTerm) {
+        Object.keys(components).forEach(function (key) {
+          var component = components[key];
+          var componentString = JSON.stringify(component).toLowerCase();
+          if (componentString.includes(searchTerm) && !exactSearchComponents.includes(component)) {
+            exactSearchComponents.push(component);
+          }
+        });
+      });
+      if (this.props.isDebug) {
+        console.log("fuzzySearchComponents");
+        console.log(fuzzySearchComponents);
+        console.log("exactSearchComponents");
+        console.log(exactSearchComponents);
+      }
+      if (fuzzySearchComponents.length > 0 && exactSearchComponents.length > 0) {
+        var longerComponents = null;
+        var shorterComponents = null;
+        if (fuzzySearchComponents.length > exactSearchComponents.length) {
+          longerComponents = fuzzySearchComponents;
+          shorterComponents = exactSearchComponents;
+        } else {
+          longerComponents = exactSearchComponents;
+          shorterComponents = fuzzySearchComponents;
+        }
+        longerComponents.forEach(function (component) {
+          if (shorterComponents.includes(component)) filteredComponents.push(component);
+        });
+      } else if (fuzzySearchComponents.length > 0) {
+        fuzzySearchComponents.forEach(function (component) {
+          filteredComponents.push(component);
+        });
+      } else if (exactSearchComponents.length > 0) {
+        exactSearchComponents.forEach(function (component) {
+          filteredComponents.push(component);
+        });
+      }
+      this.setState({
+        searchedComponents: filteredComponents
+      });
+      // let filteredComponents = {};
+      // let components = this.state.filteredComponents;
+      // this.onSuggestForComponents(searchTerms, true, (filteredProperties) => {
+      // 	Object.keys(components).forEach((key) => {
+      // 		let micComponents = components[key];
+      // 		micComponents.forEach((micComponent) => {
+      // 			let componentString = JSON.stringify(micComponent);
+      // 			let found = 0;
+      // 			for (let prop of filteredProperties) {
+      // 				if (componentString.includes(prop)) {
+      // 					found = found + 1;
+      // 					if (found == filteredProperties.length) {
+      // 						let comps = [];
+      // 						if (isDefined(filteredComponents[key])) {
+      // 							comps = filteredComponents[key];
+      // 						}
+      // 						comps.push(micComponent);
+      // 						filteredComponents[key] = comps;
+      // 						break;
+      // 					}
+      // 				}
+      // 			}
+      // 		});
+      // 	});
+
+      // 	this.setState({ searchedComponents: filteredComponents });
+      // });
     }
   }, {
     key: "onClearSearch",

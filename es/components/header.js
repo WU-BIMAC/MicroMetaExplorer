@@ -102,6 +102,7 @@ var Header = /*#__PURE__*/function (_React$PureComponent) {
     key: "onSearchInput",
     value: function onSearchInput(event) {
       console.log("onSearchInput");
+      console.log(event);
       this.setState({
         isLoading: true
       });
@@ -120,7 +121,7 @@ var Header = /*#__PURE__*/function (_React$PureComponent) {
       searchTerms.push(valueLC);
       console.log("searchTerms");
       console.log(searchTerms);
-      this.props.onSuggest(searchTerms, false, this.onCompleteSuggest);
+      this.props.onSuggest(searchTerms, true, this.onCompleteSuggest);
     }
   }, {
     key: "onSelectInput",
@@ -136,7 +137,8 @@ var Header = /*#__PURE__*/function (_React$PureComponent) {
 
       // let valueLC = value.toLowerCase();
 
-      var searchTerms = [];
+      var exactSearchTerms = [];
+      var fuzzySearchTerms = [];
       // if (valueLC.includes("&")) {
       // 	let searchArray = valueLC.split("&");
       // 	for (let s of searchArray) {
@@ -146,22 +148,28 @@ var Header = /*#__PURE__*/function (_React$PureComponent) {
       // 	searchTerms.push(valueLC);
       // }
 
-      var values = this.state.selections;
-      var _iterator = _createForOfIteratorHelper(values),
+      var selectedValues = this.state.selections;
+      var _iterator = _createForOfIteratorHelper(selectedValues),
         _step;
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var s = _step.value;
-          searchTerms.push(s.toLowerCase());
+          exactSearchTerms.push(s.toLowerCase().trim());
         }
+
+        //this.formRef.current.state.selected;
       } catch (err) {
         _iterator.e(err);
       } finally {
         _iterator.f();
       }
-      console.log("searchTerms");
-      console.log(searchTerms);
-      this.props.onSearch(searchTerms);
+      var values = this.formRef.current.state.text;
+      fuzzySearchTerms.push(values.toLowerCase().trim());
+      console.log("exactSearchTerms");
+      console.log(exactSearchTerms);
+      console.log("fuzzySearchTerms");
+      console.log(fuzzySearchTerms);
+      this.props.onSearch(exactSearchTerms, fuzzySearchTerms);
     }
   }, {
     key: "onClearSearch",

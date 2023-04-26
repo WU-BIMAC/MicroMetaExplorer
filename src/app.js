@@ -339,25 +339,96 @@ export default class MicroMetaExplorer extends React.PureComponent {
 		//return filteredProperties;
 	}
 
-	onSearchMicroscopes(searchTerms) {
+	onSearchMicroscopes(exactSearchTerms, fuzzySearchTerms) {
 		let filteredMicroscopes = [];
 		let microscopes = this.state.filteredMicroscopes;
-		this.onSuggestForMicroscopes(searchTerms, true, (filteredProperties) => {
-			microscopes.forEach((microscope) => {
-				let microscopeString = JSON.stringify(microscope);
-				let found = 0;
-				for (let prop of filteredProperties) {
-					if (microscopeString.includes(prop)) {
-						found = found + 1;
-						if (found == filteredProperties.length) {
-							filteredMicroscopes.push(microscope);
-							break;
+		let fuzzySearchMicroscopes = [];
+		let exactSearchMicroscopes = [];
+
+		this.onSuggestForMicroscopes(
+			fuzzySearchTerms,
+			true,
+			(filteredProperties) => {
+				microscopes.forEach((microscope) => {
+					let microscopeString = JSON.stringify(microscope).toLowerCase();
+					for (let prop of filteredProperties) {
+						let lcProp = prop.toLowerCase();
+						if (
+							microscopeString.includes(lcProp) &&
+							!fuzzySearchMicroscopes.includes(microscope)
+						) {
+							fuzzySearchMicroscopes.push(microscope);
 						}
 					}
+				});
+			}
+		);
+
+		exactSearchTerms.forEach((searchTerm) => {
+			microscopes.forEach((microscope) => {
+				let microscopeString = JSON.stringify(microscope).toLowerCase();
+				console.log(searchTerm);
+				console.log(microscopeString);
+				if (
+					microscopeString.includes(searchTerm) &&
+					!exactSearchMicroscopes.includes(microscope)
+				) {
+					exactSearchMicroscopes.push(microscope);
 				}
 			});
-			this.setState({ searchedMicroscopes: filteredMicroscopes });
 		});
+
+		if (this.props.isDebug) {
+			console.log("fuzzySearchMicroscopes");
+			console.log(fuzzySearchMicroscopes);
+			console.log("exactSearchMicroscopes");
+			console.log(exactSearchMicroscopes);
+		}
+
+		if (
+			fuzzySearchMicroscopes.length > 0 &&
+			exactSearchMicroscopes.length > 0
+		) {
+			let longerMicroscopes = null;
+			let shorterMicroscopes = null;
+			if (fuzzySearchMicroscopes.length > exactSearchMicroscopes.length) {
+				longerMicroscopes = fuzzySearchMicroscopes;
+				shorterMicroscopes = exactSearchMicroscopes;
+			} else {
+				longerMicroscopes = exactSearchMicroscopes;
+				shorterMicroscopes = fuzzySearchMicroscopes;
+			}
+			longerMicroscopes.forEach((microscope) => {
+				if (shorterMicroscopes.includes(microscope))
+					filteredMicroscopes.push(microscope);
+			});
+		} else if (fuzzySearchMicroscopes.length > 0) {
+			fuzzySearchMicroscopes.forEach((microscope) => {
+				filteredMicroscopes.push(microscope);
+			});
+		} else if (exactSearchMicroscopes.length > 0) {
+			exactSearchMicroscopes.forEach((microscope) => {
+				filteredMicroscopes.push(microscope);
+			});
+		}
+
+		this.setState({ searchedMicroscopes: filteredMicroscopes });
+		// this.onSuggestForMicroscopes(searchTerms, true, (filteredProperties) => {
+		// 	microscopes.forEach((microscope) => {
+		// 		let microscopeString = JSON.stringify(microscope);
+		// 		let found = 0;
+		// 		for (let prop of filteredProperties) {
+		// 			if (microscopeString.includes(prop)) {
+		// 				found = found + 1;
+		// 				if (found == filteredProperties.length) {
+		// 					filteredMicroscopes.push(microscope);
+		// 					break;
+		// 				}
+		// 			}
+		// 		}
+		// 	});
+		// 	this.setState({ searchedMicroscopes: filteredMicroscopes });
+		// });
 	}
 
 	onSuggestForComponents(searchTerms, withApices, complete) {
@@ -382,34 +453,104 @@ export default class MicroMetaExplorer extends React.PureComponent {
 		complete(filteredProperties);
 	}
 
-	onSearchComponents(searchTerms) {
-		let filteredComponents = {};
+	onSearchComponents(exactSearchTerms, fuzzySearchTerms) {
+		let filteredComponents = [];
 		let components = this.state.filteredComponents;
-		this.onSuggestForComponents(searchTerms, true, (filteredProperties) => {
-			Object.keys(components).forEach((key) => {
-				let micComponents = components[key];
-				micComponents.forEach((micComponent) => {
-					let componentString = JSON.stringify(micComponent);
-					let found = 0;
+		let fuzzySearchComponents = [];
+		let exactSearchComponents = [];
+
+		this.onSuggestForComponents(
+			fuzzySearchTerms,
+			true,
+			(filteredProperties) => {
+				Object.keys(components).forEach((key) => {
+					let component = components[key];
+					let componentString = JSON.stringify(component).toLowerCase();
 					for (let prop of filteredProperties) {
-						if (componentString.includes(prop)) {
-							found = found + 1;
-							if (found == filteredProperties.length) {
-								let comps = [];
-								if (isDefined(filteredComponents[key])) {
-									comps = filteredComponents[key];
-								}
-								comps.push(micComponent);
-								filteredComponents[key] = comps;
-								break;
-							}
+						let lcProp = prop.toLowerCase();
+						if (
+							componentString.includes(lcProp) &&
+							!fuzzySearchComponents.includes(component)
+						) {
+							fuzzySearchComponents.push(component);
 						}
 					}
 				});
-			});
+			}
+		);
 
-			this.setState({ searchedComponents: filteredComponents });
+		exactSearchTerms.forEach((searchTerm) => {
+			Object.keys(components).forEach((key) => {
+				let component = components[key];
+				let componentString = JSON.stringify(component).toLowerCase();
+				if (
+					componentString.includes(searchTerm) &&
+					!exactSearchComponents.includes(component)
+				) {
+					exactSearchComponents.push(component);
+				}
+			});
 		});
+
+		if (this.props.isDebug) {
+			console.log("fuzzySearchComponents");
+			console.log(fuzzySearchComponents);
+			console.log("exactSearchComponents");
+			console.log(exactSearchComponents);
+		}
+
+		if (fuzzySearchComponents.length > 0 && exactSearchComponents.length > 0) {
+			let longerComponents = null;
+			let shorterComponents = null;
+			if (fuzzySearchComponents.length > exactSearchComponents.length) {
+				longerComponents = fuzzySearchComponents;
+				shorterComponents = exactSearchComponents;
+			} else {
+				longerComponents = exactSearchComponents;
+				shorterComponents = fuzzySearchComponents;
+			}
+			longerComponents.forEach((component) => {
+				if (shorterComponents.includes(component))
+					filteredComponents.push(component);
+			});
+		} else if (fuzzySearchComponents.length > 0) {
+			fuzzySearchComponents.forEach((component) => {
+				filteredComponents.push(component);
+			});
+		} else if (exactSearchComponents.length > 0) {
+			exactSearchComponents.forEach((component) => {
+				filteredComponents.push(component);
+			});
+		}
+
+		this.setState({ searchedComponents: filteredComponents });
+		// let filteredComponents = {};
+		// let components = this.state.filteredComponents;
+		// this.onSuggestForComponents(searchTerms, true, (filteredProperties) => {
+		// 	Object.keys(components).forEach((key) => {
+		// 		let micComponents = components[key];
+		// 		micComponents.forEach((micComponent) => {
+		// 			let componentString = JSON.stringify(micComponent);
+		// 			let found = 0;
+		// 			for (let prop of filteredProperties) {
+		// 				if (componentString.includes(prop)) {
+		// 					found = found + 1;
+		// 					if (found == filteredProperties.length) {
+		// 						let comps = [];
+		// 						if (isDefined(filteredComponents[key])) {
+		// 							comps = filteredComponents[key];
+		// 						}
+		// 						comps.push(micComponent);
+		// 						filteredComponents[key] = comps;
+		// 						break;
+		// 					}
+		// 				}
+		// 			}
+		// 		});
+		// 	});
+
+		// 	this.setState({ searchedComponents: filteredComponents });
+		// });
 	}
 
 	onClearSearch() {

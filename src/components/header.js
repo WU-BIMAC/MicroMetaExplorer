@@ -78,6 +78,7 @@ export default class Header extends React.PureComponent {
 
 	onSearchInput(event) {
 		console.log("onSearchInput");
+		console.log(event);
 		this.setState({ isLoading: true });
 		//let value = event.target.value;
 		let value = event;
@@ -97,7 +98,7 @@ export default class Header extends React.PureComponent {
 		console.log("searchTerms");
 		console.log(searchTerms);
 
-		this.props.onSuggest(searchTerms, false, this.onCompleteSuggest);
+		this.props.onSuggest(searchTerms, true, this.onCompleteSuggest);
 	}
 
 	onSelectInput(item) {
@@ -111,7 +112,8 @@ export default class Header extends React.PureComponent {
 
 		// let valueLC = value.toLowerCase();
 
-		let searchTerms = [];
+		let exactSearchTerms = [];
+		let fuzzySearchTerms = [];
 		// if (valueLC.includes("&")) {
 		// 	let searchArray = valueLC.split("&");
 		// 	for (let s of searchArray) {
@@ -121,15 +123,21 @@ export default class Header extends React.PureComponent {
 		// 	searchTerms.push(valueLC);
 		// }
 
-		let values = this.state.selections;
-		for (let s of values) {
-			searchTerms.push(s.toLowerCase());
+		let selectedValues = this.state.selections;
+		for (let s of selectedValues) {
+			exactSearchTerms.push(s.toLowerCase().trim());
 		}
 
-		console.log("searchTerms");
-		console.log(searchTerms);
+		//this.formRef.current.state.selected;
+		let values = this.formRef.current.state.text;
+		fuzzySearchTerms.push(values.toLowerCase().trim());
 
-		this.props.onSearch(searchTerms);
+		console.log("exactSearchTerms");
+		console.log(exactSearchTerms);
+		console.log("fuzzySearchTerms");
+		console.log(fuzzySearchTerms);
+
+		this.props.onSearch(exactSearchTerms, fuzzySearchTerms);
 	}
 
 	onClearSearch() {
