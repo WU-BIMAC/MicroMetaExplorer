@@ -333,7 +333,9 @@ export default class ComponentsView extends React.PureComponent {
 			position = elementDisplayPosition[key];
 		}
 		position = position + -1;
-		if (position < 0) position = 0;
+		if (position < 0) {
+			position = 0;
+		}
 		elementDisplayPosition[key] = position;
 		this.setState({
 			elementDisplayPosition: Object.assign({}, elementDisplayPosition),
@@ -349,8 +351,9 @@ export default class ComponentsView extends React.PureComponent {
 			position = elementDisplayPosition[key];
 		}
 		position = position + 1;
-		if (position >= components.length - maxDisplay)
-			position = components.length - 1 - maxDisplay;
+		if (position > components.length - maxDisplay) {
+			position = components.length - maxDisplay;
+		}
 		elementDisplayPosition[key] = position;
 		this.setState({
 			elementDisplayPosition: Object.assign({}, elementDisplayPosition),
@@ -479,10 +482,12 @@ export default class ComponentsView extends React.PureComponent {
 			columnSize = headerColumnSize / maxDisplay;
 		}
 
-		console.log("width " + width);
-		console.log("firstColumnSize " + firstColumnSize);
-		console.log("maxDisplay - headerColumnSize - columnSize");
-		console.log(maxDisplay + " - " + headerColumnSize + " - " + columnSize);
+		if (this.props.isDebug) {
+			console.log("width " + width);
+			console.log("firstColumnSize " + firstColumnSize);
+			console.log("maxDisplay - headerColumnSize - columnSize");
+			console.log(maxDisplay + " - " + headerColumnSize + " - " + columnSize);
+		}
 
 		let columns = [];
 		columns.push({
@@ -541,7 +546,20 @@ export default class ComponentsView extends React.PureComponent {
 		let headers = [];
 		let arrowBackwardString = "<";
 		let arrowForwardString = ">";
+
 		Object.keys(titles).forEach((key) => {
+			let currentPos = 0;
+			let backwardDisabled = false;
+			let forwardDisabled = false;
+			if (
+				isDefined(elementDisplayPosition) &&
+				isDefined(elementDisplayPosition[key])
+			) {
+				currentPos = elementDisplayPosition[key];
+			}
+			backwardDisabled = currentPos === 0;
+			let components = filteredComponents[key];
+			forwardDisabled = currentPos >= components.length - maxDisplay;
 			let element = titles[key];
 			let arrowBackward = null;
 			let arrowForward = null;
@@ -555,6 +573,7 @@ export default class ComponentsView extends React.PureComponent {
 						style={styleButton}
 						size="sm"
 						variant="primary"
+						disabled={backwardDisabled}
 					>
 						{arrowBackwardString}
 					</Button>
@@ -568,6 +587,7 @@ export default class ComponentsView extends React.PureComponent {
 						style={styleButton}
 						size="sm"
 						variant="primary"
+						disabled={forwardDisabled}
 					>
 						{arrowForwardString}
 					</Button>

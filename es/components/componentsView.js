@@ -175,7 +175,9 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
         position = elementDisplayPosition[key];
       }
       position = position + -1;
-      if (position < 0) position = 0;
+      if (position < 0) {
+        position = 0;
+      }
       elementDisplayPosition[key] = position;
       this.setState({
         elementDisplayPosition: Object.assign({}, elementDisplayPosition)
@@ -192,7 +194,9 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
         position = elementDisplayPosition[key];
       }
       position = position + 1;
-      if (position >= components.length - maxDisplay) position = components.length - 1 - maxDisplay;
+      if (position > components.length - maxDisplay) {
+        position = components.length - maxDisplay;
+      }
       elementDisplayPosition[key] = position;
       this.setState({
         elementDisplayPosition: Object.assign({}, elementDisplayPosition)
@@ -327,10 +331,12 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       } else {
         columnSize = headerColumnSize / maxDisplay;
       }
-      console.log("width " + width);
-      console.log("firstColumnSize " + firstColumnSize);
-      console.log("maxDisplay - headerColumnSize - columnSize");
-      console.log(maxDisplay + " - " + headerColumnSize + " - " + columnSize);
+      if (this.props.isDebug) {
+        console.log("width " + width);
+        console.log("firstColumnSize " + firstColumnSize);
+        console.log("maxDisplay - headerColumnSize - columnSize");
+        console.log(maxDisplay + " - " + headerColumnSize + " - " + columnSize);
+      }
       var columns = [];
       columns.push({
         title: "Metadata",
@@ -386,6 +392,15 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       var arrowBackwardString = "<";
       var arrowForwardString = ">";
       Object.keys(titles).forEach(function (key) {
+        var currentPos = 0;
+        var backwardDisabled = false;
+        var forwardDisabled = false;
+        if ((0, _genericUtilities.isDefined)(elementDisplayPosition) && (0, _genericUtilities.isDefined)(elementDisplayPosition[key])) {
+          currentPos = elementDisplayPosition[key];
+        }
+        backwardDisabled = currentPos === 0;
+        var components = filteredComponents[key];
+        forwardDisabled = currentPos >= components.length - maxDisplay;
         var element = titles[key];
         var arrowBackward = null;
         var arrowForward = null;
@@ -399,7 +414,8 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
             },
             style: styleButton,
             size: "sm",
-            variant: "primary"
+            variant: "primary",
+            disabled: backwardDisabled
           }, arrowBackwardString);
           headerElement.push(arrowBackward);
           headerElement.push( /*#__PURE__*/_react.default.createElement("div", {
@@ -412,7 +428,8 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
             },
             style: styleButton,
             size: "sm",
-            variant: "primary"
+            variant: "primary",
+            disabled: forwardDisabled
           }, arrowForwardString);
           headerElement.push(arrowForward);
         }
