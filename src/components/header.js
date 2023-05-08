@@ -22,6 +22,9 @@ import {
 	help_tooltip,
 	about_tooltip,
 } from "../constants";
+
+import { isDefined } from "../genericUtilities";
+
 export default class Header extends React.PureComponent {
 	constructor(props) {
 		super(props);
@@ -129,13 +132,42 @@ export default class Header extends React.PureComponent {
 		}
 
 		//this.formRef.current.state.selected;
-		let values = this.formRef.current.state.text;
-		fuzzySearchTerms.push(values.toLowerCase().trim());
+		let origValues = this.formRef.current.state.text;
 
-		console.log("exactSearchTerms");
-		console.log(exactSearchTerms);
-		console.log("fuzzySearchTerms");
-		console.log(fuzzySearchTerms);
+		let regex = new RegExp('".+?"', "g");
+		let leftoverValues = origValues.slice();
+		if (regex.test(origValues)) {
+			regex.lastIndex = 0;
+			let parsedValues = [];
+			let result;
+			while ((result = regex.exec(origValues)) !== null) {
+				parsedValues.push(result[0]);
+			}
+			if (parsedValues.length > 0)
+				for (let s of parsedValues) {
+					fuzzySearchTerms.push(s.replaceAll('"', "").toLowerCase().trim());
+					leftoverValues = leftoverValues.replace(s, "");
+				}
+			leftoverValues = leftoverValues.trim();
+		}
+
+		if (leftoverValues.length > 0) {
+			if (leftoverValues.includes(" ")) {
+				let splitValues = leftoverValues.split(" ");
+				for (let s of splitValues) {
+					fuzzySearchTerms.push(s.toLowerCase().trim());
+				}
+			} else {
+				fuzzySearchTerms.push(leftoverValues.toLowerCase().trim());
+			}
+		}
+
+		if (this.props.isDebug) {
+			console.log("fuzzySearchTerms");
+			console.log(exactSearchTerms);
+			console.log("exactSearchTerms");
+			console.log(exactSearchTerms);
+		}
 
 		this.props.onSearch(exactSearchTerms, fuzzySearchTerms);
 	}

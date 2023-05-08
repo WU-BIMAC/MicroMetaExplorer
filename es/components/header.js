@@ -16,6 +16,7 @@ var _dropdownMenu = _interopRequireDefault(require("./dropdownMenu"));
 var _popoverTooltip = _interopRequireDefault(require("./popoverTooltip"));
 var _modalWindow = _interopRequireDefault(require("./modalWindow"));
 var _constants = require("../constants");
+var _genericUtilities = require("../genericUtilities");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -153,8 +154,8 @@ var Header = /*#__PURE__*/function (_React$PureComponent) {
         _step;
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var s = _step.value;
-          exactSearchTerms.push(s.toLowerCase().trim());
+          var _s2 = _step.value;
+          exactSearchTerms.push(_s2.toLowerCase().trim());
         }
 
         //this.formRef.current.state.selected;
@@ -163,12 +164,58 @@ var Header = /*#__PURE__*/function (_React$PureComponent) {
       } finally {
         _iterator.f();
       }
-      var values = this.formRef.current.state.text;
-      fuzzySearchTerms.push(values.toLowerCase().trim());
-      console.log("exactSearchTerms");
-      console.log(exactSearchTerms);
-      console.log("fuzzySearchTerms");
-      console.log(fuzzySearchTerms);
+      var origValues = this.formRef.current.state.text;
+      var regex = new RegExp('".+?"', "g");
+      var leftoverValues = origValues.slice();
+      if (regex.test(origValues)) {
+        regex.lastIndex = 0;
+        var parsedValues = [];
+        var result;
+        while ((result = regex.exec(origValues)) !== null) {
+          parsedValues.push(result[0]);
+        }
+        if (parsedValues.length > 0) {
+          var _iterator2 = _createForOfIteratorHelper(parsedValues),
+            _step2;
+          try {
+            for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+              var s = _step2.value;
+              fuzzySearchTerms.push(s.replaceAll('"', "").toLowerCase().trim());
+              leftoverValues = leftoverValues.replace(s, "");
+            }
+          } catch (err) {
+            _iterator2.e(err);
+          } finally {
+            _iterator2.f();
+          }
+        }
+        leftoverValues = leftoverValues.trim();
+      }
+      if (leftoverValues.length > 0) {
+        if (leftoverValues.includes(" ")) {
+          var splitValues = leftoverValues.split(" ");
+          var _iterator3 = _createForOfIteratorHelper(splitValues),
+            _step3;
+          try {
+            for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+              var _s = _step3.value;
+              fuzzySearchTerms.push(_s.toLowerCase().trim());
+            }
+          } catch (err) {
+            _iterator3.e(err);
+          } finally {
+            _iterator3.f();
+          }
+        } else {
+          fuzzySearchTerms.push(leftoverValues.toLowerCase().trim());
+        }
+      }
+      if (this.props.isDebug) {
+        console.log("fuzzySearchTerms");
+        console.log(exactSearchTerms);
+        console.log("exactSearchTerms");
+        console.log(exactSearchTerms);
+      }
       this.props.onSearch(exactSearchTerms, fuzzySearchTerms);
     }
   }, {
