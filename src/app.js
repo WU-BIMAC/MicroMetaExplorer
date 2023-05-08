@@ -329,13 +329,20 @@ export default class MicroMetaExplorer extends React.PureComponent {
 				withApices,
 				microscope
 			);
+			if (this.props.isDebug) {
+				console.log(microscope.Name);
+				console.log("subFilteredProperties");
+				console.log(subFilteredProperties);
+			}
 			for (let s of subFilteredProperties) {
 				if (!filteredProperties.includes(s)) filteredProperties.push(s);
 			}
 		});
-		console.log("filteredProperties");
-		console.log(filteredProperties);
-		complete(filteredProperties);
+		if (this.props.isDebug) {
+			console.log("filteredProperties");
+			console.log(filteredProperties);
+			complete(filteredProperties);
+		}
 		//return filteredProperties;
 	}
 
@@ -345,32 +352,76 @@ export default class MicroMetaExplorer extends React.PureComponent {
 		let fuzzySearchMicroscopes = [];
 		let exactSearchMicroscopes = [];
 
-		this.onSuggestForMicroscopes(
-			fuzzySearchTerms,
-			true,
-			(filteredProperties) => {
-				microscopes.forEach((microscope) => {
-					let microscopeString = JSON.stringify(microscope).toLowerCase();
-					for (let prop of filteredProperties) {
-						let lcProp = prop.toLowerCase();
-						if (
-							microscopeString.includes(lcProp) &&
-							!fuzzySearchMicroscopes.includes(microscope)
-						) {
-							fuzzySearchMicroscopes.push(microscope);
-						}
-					}
-				});
-			}
-		);
+		if (this.props.isDebug) {
+			console.log("fuzzySearchTerms");
+			console.log(fuzzySearchTerms);
+			console.log("exactSearchTerms");
+			console.log(exactSearchTerms);
+		}
 
-		exactSearchTerms.forEach((searchTerm) => {
+		let fuzzySearchMicroscopesTmp = [];
+		fuzzySearchTerms.forEach((searchTerm) => {
+			let searchTermMicroscopes = [];
 			microscopes.forEach((microscope) => {
 				let microscopeString = JSON.stringify(microscope).toLowerCase();
-				console.log(searchTerm);
-				console.log(microscopeString);
 				if (
 					microscopeString.includes(searchTerm) &&
+					!searchTermMicroscopes.includes(microscope)
+				) {
+					searchTermMicroscopes.push(microscope);
+				}
+			});
+			fuzzySearchMicroscopesTmp.push(searchTermMicroscopes);
+		});
+		if (this.props.isDebug) {
+			console.log("fuzzySearchMicroscopesTmp");
+			console.log(fuzzySearchMicroscopesTmp);
+		}
+		fuzzySearchMicroscopesTmp.forEach((searchTermMicroscopes) => {
+			searchTermMicroscopes.forEach((microscope) => {
+				let countThisMic = 0;
+				fuzzySearchMicroscopesTmp.forEach((searchTermMicroscopes2) => {
+					if (searchTermMicroscopes2.includes(microscope)) {
+						countThisMic++;
+					}
+				});
+				if (
+					countThisMic === fuzzySearchMicroscopesTmp.length &&
+					!fuzzySearchMicroscopes.includes(microscope)
+				) {
+					fuzzySearchMicroscopes.push(microscope);
+				}
+			});
+		});
+
+		let exactSearchMicroscopesTmp = [];
+		exactSearchTerms.forEach((searchTerm) => {
+			let searchTermMicroscopes = [];
+			microscopes.forEach((microscope) => {
+				let microscopeString = JSON.stringify(microscope).toLowerCase();
+				if (
+					microscopeString.includes(searchTerm) &&
+					!searchTermMicroscopes.includes(microscope)
+				) {
+					searchTermMicroscopes.push(microscope);
+				}
+			});
+			exactSearchMicroscopesTmp.push(searchTermMicroscopes);
+		});
+		if (this.props.isDebug) {
+			console.log("exactSearchMicroscopesTmp");
+			console.log(exactSearchMicroscopesTmp);
+		}
+		exactSearchMicroscopesTmp.forEach((searchTermMicroscopes) => {
+			searchTermMicroscopes.forEach((microscope) => {
+				let countThisMic = 0;
+				exactSearchMicroscopesTmp.forEach((searchTermMicroscopes2) => {
+					if (searchTermMicroscopes2.includes(microscope)) {
+						countThisMic++;
+					}
+				});
+				if (
+					countThisMic === exactSearchMicroscopesTmp.length &&
 					!exactSearchMicroscopes.includes(microscope)
 				) {
 					exactSearchMicroscopes.push(microscope);
@@ -385,10 +436,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 			console.log(exactSearchMicroscopes);
 		}
 
-		if (
-			fuzzySearchMicroscopes.length > 0 &&
-			exactSearchMicroscopes.length > 0
-		) {
+		if (exactSearchTerms.length > 0 && fuzzySearchTerms.length > 0) {
 			let longerMicroscopes = null;
 			let shorterMicroscopes = null;
 			if (fuzzySearchMicroscopes.length > exactSearchMicroscopes.length) {
@@ -402,11 +450,11 @@ export default class MicroMetaExplorer extends React.PureComponent {
 				if (shorterMicroscopes.includes(microscope))
 					filteredMicroscopes.push(microscope);
 			});
-		} else if (fuzzySearchMicroscopes.length > 0) {
+		} else if (fuzzySearchTerms.length > 0) {
 			fuzzySearchMicroscopes.forEach((microscope) => {
 				filteredMicroscopes.push(microscope);
 			});
-		} else if (exactSearchMicroscopes.length > 0) {
+		} else if (exactSearchTerms.length > 0) {
 			exactSearchMicroscopes.forEach((microscope) => {
 				filteredMicroscopes.push(microscope);
 			});
@@ -434,8 +482,6 @@ export default class MicroMetaExplorer extends React.PureComponent {
 	onSuggestForComponents(searchTerms, withApices, complete) {
 		let filteredProperties = [];
 		let components = this.state.filteredComponents;
-		console.log("components");
-		console.log(components);
 		Object.keys(components).forEach((key) => {
 			let micComponents = components[key];
 			micComponents.forEach((component) => {
@@ -459,32 +505,78 @@ export default class MicroMetaExplorer extends React.PureComponent {
 		let fuzzySearchComponents = [];
 		let exactSearchComponents = [];
 
-		this.onSuggestForComponents(
-			fuzzySearchTerms,
-			true,
-			(filteredProperties) => {
-				Object.keys(components).forEach((key) => {
-					let component = components[key];
-					let componentString = JSON.stringify(component).toLowerCase();
-					for (let prop of filteredProperties) {
-						let lcProp = prop.toLowerCase();
-						if (
-							componentString.includes(lcProp) &&
-							!fuzzySearchComponents.includes(component)
-						) {
-							fuzzySearchComponents.push(component);
-						}
-					}
-				});
-			}
-		);
+		if (this.props.isDebug) {
+			console.log("fuzzySearchTerms");
+			console.log(exactSearchTerms);
+			console.log("exactSearchTerms");
+			console.log(exactSearchTerms);
+		}
 
-		exactSearchTerms.forEach((searchTerm) => {
+		let fuzzySearchComponentsTmp = [];
+		fuzzySearchTerms.forEach((searchTerm) => {
+			let searchTermComponents = [];
 			Object.keys(components).forEach((key) => {
 				let component = components[key];
 				let componentString = JSON.stringify(component).toLowerCase();
 				if (
 					componentString.includes(searchTerm) &&
+					!searchTermComponents.includes(component)
+				) {
+					searchTermComponents.push(component);
+				}
+			});
+			fuzzySearchComponentsTmp.push(searchTermComponents);
+		});
+		if (this.props.isDebug) {
+			console.log("fuzzySearchMicroscopesTmp");
+			console.log(fuzzySearchComponentsTmp);
+		}
+		fuzzySearchComponentsTmp.forEach((searchTermComponents) => {
+			searchTermComponents.forEach((component) => {
+				let countThisComp = 0;
+				fuzzySearchComponentsTmp.forEach((searchTermComponents2) => {
+					if (searchTermComponents2.includes(component)) {
+						countThisComp++;
+					}
+				});
+				if (
+					countThisComp === fuzzySearchComponentsTmp.length &&
+					!fuzzySearchComponents.includes(component)
+				) {
+					fuzzySearchComponents.push(component);
+				}
+			});
+		});
+
+		let exactSearchComponentsTmp = [];
+		exactSearchTerms.forEach((searchTerm) => {
+			let searchTermComponents = [];
+			Object.keys(components).forEach((key) => {
+				let component = components[key];
+				let componentString = JSON.stringify(component).toLowerCase();
+				if (
+					componentString.includes(searchTerm) &&
+					!searchTermComponents.includes(component)
+				) {
+					searchTermComponents.push(component);
+				}
+			});
+			exactSearchComponentsTmp.push(searchTermComponents);
+		});
+		if (this.props.isDebug) {
+			console.log("exactSearchComponentsTmp");
+			console.log(exactSearchComponentsTmp);
+		}
+		exactSearchComponentsTmp.forEach((searchTermComponents) => {
+			searchTermComponents.forEach((component) => {
+				let countThisComp = 0;
+				exactSearchComponentsTmp.forEach((searchTermComponents2) => {
+					if (searchTermComponents2.includes(component)) {
+						countThisComp++;
+					}
+				});
+				if (
+					countThisComp === exactSearchComponentsTmp.length &&
 					!exactSearchComponents.includes(component)
 				) {
 					exactSearchComponents.push(component);
@@ -492,14 +584,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 			});
 		});
 
-		if (this.props.isDebug) {
-			console.log("fuzzySearchComponents");
-			console.log(fuzzySearchComponents);
-			console.log("exactSearchComponents");
-			console.log(exactSearchComponents);
-		}
-
-		if (fuzzySearchComponents.length > 0 && exactSearchComponents.length > 0) {
+		if (exactSearchTerms.length > 0 && exactSearchTerms.length > 0) {
 			let longerComponents = null;
 			let shorterComponents = null;
 			if (fuzzySearchComponents.length > exactSearchComponents.length) {
@@ -513,17 +598,19 @@ export default class MicroMetaExplorer extends React.PureComponent {
 				if (shorterComponents.includes(component))
 					filteredComponents.push(component);
 			});
-		} else if (fuzzySearchComponents.length > 0) {
+		} else if (exactSearchTerms.length > 0) {
 			fuzzySearchComponents.forEach((component) => {
 				filteredComponents.push(component);
 			});
-		} else if (exactSearchComponents.length > 0) {
+		} else if (exactSearchTerms.length > 0) {
 			exactSearchComponents.forEach((component) => {
 				filteredComponents.push(component);
 			});
 		}
 
-		this.setState({ searchedComponents: filteredComponents });
+		this.setState({
+			searchedComponents: filteredComponents,
+		});
 		// let filteredComponents = {};
 		// let components = this.state.filteredComponents;
 		// this.onSuggestForComponents(searchTerms, true, (filteredProperties) => {
