@@ -368,6 +368,10 @@ export default class MicroMetaExplorer extends React.PureComponent {
 					microscopeString.includes(searchTerm) &&
 					!searchTermMicroscopes.includes(microscope)
 				) {
+					if (this.props.isDebug) {
+						console.log("fuzzySearchMicroscopes-found");
+						console.log(microscope);
+					}
 					searchTermMicroscopes.push(microscope);
 				}
 			});
@@ -403,6 +407,10 @@ export default class MicroMetaExplorer extends React.PureComponent {
 					microscopeString.includes(searchTerm) &&
 					!searchTermMicroscopes.includes(microscope)
 				) {
+					if (this.props.isDebug) {
+						console.log("exactSearchMicroscopes-found");
+						console.log(microscope);
+					}
 					searchTermMicroscopes.push(microscope);
 				}
 			});

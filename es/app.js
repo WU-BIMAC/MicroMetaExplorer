@@ -387,6 +387,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "onSearchMicroscopes",
     value: function onSearchMicroscopes(exactSearchTerms, fuzzySearchTerms) {
+      var _this9 = this;
       var filteredMicroscopes = [];
       var microscopes = this.state.filteredMicroscopes;
       var fuzzySearchMicroscopes = [];
@@ -403,6 +404,10 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         microscopes.forEach(function (microscope) {
           var microscopeString = JSON.stringify(microscope).toLowerCase();
           if (microscopeString.includes(searchTerm) && !searchTermMicroscopes.includes(microscope)) {
+            if (_this9.props.isDebug) {
+              console.log("fuzzySearchMicroscopes-found");
+              console.log(microscope);
+            }
             searchTermMicroscopes.push(microscope);
           }
         });
@@ -431,6 +436,10 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         microscopes.forEach(function (microscope) {
           var microscopeString = JSON.stringify(microscope).toLowerCase();
           if (microscopeString.includes(searchTerm) && !searchTermMicroscopes.includes(microscope)) {
+            if (_this9.props.isDebug) {
+              console.log("exactSearchMicroscopes-found");
+              console.log(microscope);
+            }
             searchTermMicroscopes.push(microscope);
           }
         });
@@ -504,13 +513,13 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "onSuggestForComponents",
     value: function onSuggestForComponents(searchTerms, withApices, complete) {
-      var _this9 = this;
+      var _this10 = this;
       var filteredProperties = [];
       var components = this.state.filteredComponents;
       Object.keys(components).forEach(function (key) {
         var micComponents = components[key];
         micComponents.forEach(function (component) {
-          var subFilteredProperties = _this9.onSubSearch(searchTerms, withApices, component);
+          var subFilteredProperties = _this10.onSubSearch(searchTerms, withApices, component);
           var _iterator6 = _createForOfIteratorHelper(subFilteredProperties),
             _step6;
           try {

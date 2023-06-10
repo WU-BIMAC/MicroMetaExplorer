@@ -164,7 +164,7 @@ export default class Header extends React.PureComponent {
 
 		if (this.props.isDebug) {
 			console.log("fuzzySearchTerms");
-			console.log(exactSearchTerms);
+			console.log(fuzzySearchTerms);
 			console.log("exactSearchTerms");
 			console.log(exactSearchTerms);
 		}
