@@ -323,7 +323,13 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
           var stringValue = "" + value;
           var stringValueLC = stringValue.toLowerCase();
           var property = key + ":" + stringValue;
-          if (withApices) property = '"' + key + '":"' + stringValue + '"';
+          if (withApices) {
+            if ((0, _genericUtilities.isNumeric)(stringValue)) {
+              property = '"' + key + '":' + stringValue;
+            } else {
+              property = '"' + key + '":"' + stringValue + '"';
+            }
+          }
           var _iterator4 = _createForOfIteratorHelper(searchTerms),
             _step4;
           try {

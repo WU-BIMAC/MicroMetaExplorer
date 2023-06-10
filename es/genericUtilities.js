@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.isDefined = isDefined;
+exports.isNumeric = isNumeric;
 exports.replaceLast = replaceLast;
 exports.validateAcquisitionSettingsFile = validateAcquisitionSettingsFile;
 exports.validateMicroscope = validateMicroscope;
@@ -18,6 +19,14 @@ function isDefined(object) {
   if (object !== null && object !== undefined) return true;
   return false;
 }
+function isNumeric(str) {
+  if (typeof str !== "string") return false; // we only process strings!
+  return !isNaN(str) &&
+  // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+  !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+  ;
+}
+
 function replaceLast(str, pattern, replacement) {
   var match = typeof pattern === "string" ? pattern : (str.match(new RegExp(pattern.source, "g")) || []).slice(-1)[0];
   if (!match) return str;
