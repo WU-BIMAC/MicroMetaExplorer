@@ -435,6 +435,12 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         var searchTermMicroscopes = [];
         microscopes.forEach(function (microscope) {
           var microscopeString = JSON.stringify(microscope).toLowerCase();
+          if (_this9.props.isDebug) {
+            console.log("searchTerm");
+            console.log(searchTerm);
+            console.log("microscopeString");
+            console.log(microscopeString);
+          }
           if (microscopeString.includes(searchTerm) && !searchTermMicroscopes.includes(microscope)) {
             if (_this9.props.isDebug) {
               console.log("exactSearchMicroscopes-found");

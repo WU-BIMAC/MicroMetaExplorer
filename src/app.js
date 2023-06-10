@@ -403,6 +403,12 @@ export default class MicroMetaExplorer extends React.PureComponent {
 			let searchTermMicroscopes = [];
 			microscopes.forEach((microscope) => {
 				let microscopeString = JSON.stringify(microscope).toLowerCase();
+				if (this.props.isDebug) {
+					console.log("searchTerm");
+					console.log(searchTerm);
+					console.log("microscopeString");
+					console.log(microscopeString);
+				}
 				if (
 					microscopeString.includes(searchTerm) &&
 					!searchTermMicroscopes.includes(microscope)
