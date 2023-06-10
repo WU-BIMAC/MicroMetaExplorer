@@ -16,6 +16,7 @@ import { version as appVersion } from "../package.json";
 import { v4 as uuidv4 } from "uuid";
 import {
 	isDefined,
+	isNumeric,
 	verifyAppVersion,
 	verifyModelVersion,
 	validateMicroscope,
@@ -294,7 +295,13 @@ export default class MicroMetaExplorer extends React.PureComponent {
 				let stringValue = "" + value;
 				let stringValueLC = stringValue.toLowerCase();
 				let property = key + ":" + stringValue;
-				if (withApices) property = '"' + key + '":"' + stringValue + '"';
+				if (withApices) {
+					if (isNumeric(stringValue)) {
+						property = '"' + key + '":' + stringValue;
+					} else {
+						property = '"' + key + '":"' + stringValue + '"';
+					}
+				}
 				for (let searchTerm of searchTerms) {
 					if (searchTerm.includes(":")) {
 						let searchSplit = searchTerm.split(":");
