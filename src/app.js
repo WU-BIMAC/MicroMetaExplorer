@@ -353,6 +353,8 @@ export default class MicroMetaExplorer extends React.PureComponent {
 		let exactSearchMicroscopes = [];
 
 		if (this.props.isDebug) {
+			console.log("microscopes");
+			console.log(microscopes);
 			console.log("fuzzySearchTerms");
 			console.log(fuzzySearchTerms);
 			console.log("exactSearchTerms");

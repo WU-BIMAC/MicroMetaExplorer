@@ -393,6 +393,8 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
       var fuzzySearchMicroscopes = [];
       var exactSearchMicroscopes = [];
       if (this.props.isDebug) {
+        console.log("microscopes");
+        console.log(microscopes);
         console.log("fuzzySearchTerms");
         console.log(fuzzySearchTerms);
         console.log("exactSearchTerms");
