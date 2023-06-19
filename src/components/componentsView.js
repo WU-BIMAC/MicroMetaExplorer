@@ -79,9 +79,12 @@ export default class ComponentsView extends React.PureComponent {
 			currentChildrenComponents: {},
 
 			elementDisplayPosition: {},
+			expandedIndexes: [],
 			partialSchema: null,
 		};
 
+		this.onParentChildData = this.onParentChildData.bind(this);
+		this.onTreeExpandChange = this.onTreeExpandChange.bind(this);
 		//this.onSearch = this.onSearch.bind(this);
 		this.createSubRows = this.createSubRows.bind(this);
 		this.createRows = this.createRows.bind(this);
@@ -360,6 +363,36 @@ export default class ComponentsView extends React.PureComponent {
 		});
 	}
 
+	onParentChildData(row, rows) {
+		let expandedIndexes = this.state.expandedIndexes;
+		if (expandedIndexes.includes(row.id)) {
+			row.tableData.isTreeExpanded = true;
+		}
+		return rows.find((a) => a.id === row.parentId);
+	}
+
+	onTreeExpandChange(row, isExpanded) {
+		let expandedIndexes = this.state.expandedIndexes.slice();
+		if (this.props.isDebug) {
+			console.log("row");
+			console.log(row);
+			console.log("isExpanded");
+			console.log(isExpanded);
+		}
+		if (isExpanded && !expandedIndexes.includes(row.id)) {
+			expandedIndexes.push(row.id);
+		} else if (!isExpanded && expandedIndexes.includes(row.id)) {
+			expandedIndexes = expandedIndexes.filter((item) => item !== row.id);
+		}
+
+		if (this.props.isDebug) {
+			console.log("onTreeExpandChange-expandedIndexes");
+			console.log(expandedIndexes);
+		}
+
+		this.setState({ expandedIndexes: expandedIndexes });
+	}
+
 	createSubRows(maxDisplay, parentKey, index) {
 		let filteredComponents = this.state.filteredComponents;
 		let partialSchema = this.state.partialSchema;
@@ -380,7 +413,7 @@ export default class ComponentsView extends React.PureComponent {
 				components.forEach((comp) => {
 					let name = comp.Name;
 					let id = comp.ID;
-					let field = "value-" + name.replace(" ", "_") + "_" + id;
+					let field = "value-" + name.replaceAll(" ", "_") + "_" + id;
 					if (counter !== -1 && isDefined(comp[container][counter][property])) {
 						row[field] = comp[container][counter][property];
 					} else if (isDefined(comp[property])) {
@@ -436,7 +469,6 @@ export default class ComponentsView extends React.PureComponent {
 	}
 
 	render() {
-		console.log("ComponentsView-Render");
 		let style = {
 			width: "100%",
 			height: "100%",
@@ -457,21 +489,25 @@ export default class ComponentsView extends React.PureComponent {
 		let elementDisplayPosition = this.state.elementDisplayPosition;
 
 		let titles = {};
+		let maxFoundComponents = 0;
 		Object.keys(filteredComponents).forEach((key) => {
 			let lastIndex = key.lastIndexOf("_");
 			titles[key] = {
 				title: key.slice(0, lastIndex),
 			};
 			let components = filteredComponents[key];
+			if (components.length > maxFoundComponents)
+				maxFoundComponents = components.length;
 			if (components.length > 3) titles[key]["needsArrow"] = true;
 		});
 		let dimensions = this.props.dimensions;
 		let width = dimensions.width;
 		//let paddingLeft = 0;
-		let firstColumnSize = 95 / 5;
-
-		let maxDisplay = 4;
-		let headerColumnSize = 95 - firstColumnSize;
+		let firstColumnSize = 100 / 5;
+		let spacer = 56;
+		let spacerPerc = (spacer * 100) / width;
+		let maxDisplay = maxFoundComponents > 4 ? 4 : maxFoundComponents;
+		let headerColumnSize = 100 - spacerPerc - firstColumnSize;
 		let columnSize = headerColumnSize;
 		if (Object.keys(titles).length > 1) {
 			let compareSize = Object.keys(titles).length;
@@ -482,19 +518,24 @@ export default class ComponentsView extends React.PureComponent {
 			columnSize = headerColumnSize / maxDisplay;
 		}
 
-		if (this.props.isDebug) {
-			console.log("width " + width);
-			console.log("firstColumnSize " + firstColumnSize);
-			console.log("maxDisplay - headerColumnSize - columnSize");
-			console.log(maxDisplay + " - " + headerColumnSize + " - " + columnSize);
-		}
-
 		let columns = [];
 		columns.push({
-			title: "Metadata",
+			title: "Field Name",
 			field: "key",
 			width: firstColumnSize + "%",
+			minWidth: firstColumnSize + "%",
 			maxWidth: firstColumnSize + "%",
+			headerStyle: {
+				width: firstColumnSize + "%",
+				minWidth: firstColumnSize + "%",
+				maxWidth: firstColumnSize + "%",
+			},
+			cellStyle: {
+				width: firstColumnSize + "%",
+
+				minWidth: firstColumnSize + "%",
+				maxWidth: firstColumnSize + "%",
+			},
 		});
 
 		Object.keys(filteredComponents).forEach((key) => {
@@ -506,7 +547,7 @@ export default class ComponentsView extends React.PureComponent {
 			components.forEach((comp) => {
 				let name = comp.Name;
 				let id = comp.ID;
-				let field = "value-" + name.replace(" ", "_") + "_" + id;
+				let field = "value-" + name.replaceAll(" ", "_") + "_" + id;
 				let isHidden = false;
 				if (index < beginPosition || index >= beginPosition + maxDisplay) {
 					console.log(name + " - " + index + " should be hidden ");
@@ -518,6 +559,14 @@ export default class ComponentsView extends React.PureComponent {
 					hidden: isHidden,
 					width: columnSize + "%",
 					minWidth: columnSize + "%",
+					headerStyle: {
+						width: columnSize + "%",
+						minWidth: columnSize + "%",
+					},
+					cellStyle: {
+						width: columnSize + "%",
+						minWidth: columnSize + "%",
+					},
 				});
 				index++;
 			});
@@ -605,7 +654,7 @@ export default class ComponentsView extends React.PureComponent {
 			<div key={"TableGroupHeader"} style={styleHeader}>
 				<div
 					key={"TableGroupHeader-FirstColumn"}
-					style={{ width: firstColumnSize }}
+					style={{ paddingLeft: spacer + "px", width: firstColumnSize + "%" }}
 				>
 					Microscope
 				</div>
@@ -638,16 +687,16 @@ export default class ComponentsView extends React.PureComponent {
 							search: false,
 							paging: false,
 							rowStyle: (rowData) => ({
-								overflowWrap: "break-word",
+								overflowWrap: "anywhere",
 								backgroundColor: categoryIndexes.includes(rowData.tableData.id)
 									? this.props.styleBackground
 									: "#FFF",
 							}),
-							tableLayout: "fixed",
+
+							tableLayout: "auto",
 						}}
-						parentChildData={(row, rows) =>
-							rows.find((a) => a.id === row.parentId)
-						}
+						parentChildData={this.onParentChildData}
+						onTreeExpandChange={this.onTreeExpandChange}
 						components={{
 							Toolbar: (props) => (
 								<div key={"ToolbarContainer"}>

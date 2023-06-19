@@ -156,9 +156,11 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       filteredComponents: [],
       currentChildrenComponents: {},
       elementDisplayPosition: {},
+      expandedIndexes: [],
       partialSchema: null
     };
-
+    _this.onParentChildData = _this.onParentChildData.bind(_assertThisInitialized(_this));
+    _this.onTreeExpandChange = _this.onTreeExpandChange.bind(_assertThisInitialized(_this));
     //this.onSearch = this.onSearch.bind(this);
     _this.createSubRows = _this.createSubRows.bind(_assertThisInitialized(_this));
     _this.createRows = _this.createRows.bind(_assertThisInitialized(_this));
@@ -203,6 +205,42 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       });
     }
   }, {
+    key: "onParentChildData",
+    value: function onParentChildData(row, rows) {
+      var expandedIndexes = this.state.expandedIndexes;
+      if (expandedIndexes.includes(row.id)) {
+        row.tableData.isTreeExpanded = true;
+      }
+      return rows.find(function (a) {
+        return a.id === row.parentId;
+      });
+    }
+  }, {
+    key: "onTreeExpandChange",
+    value: function onTreeExpandChange(row, isExpanded) {
+      var expandedIndexes = this.state.expandedIndexes.slice();
+      if (this.props.isDebug) {
+        console.log("row");
+        console.log(row);
+        console.log("isExpanded");
+        console.log(isExpanded);
+      }
+      if (isExpanded && !expandedIndexes.includes(row.id)) {
+        expandedIndexes.push(row.id);
+      } else if (!isExpanded && expandedIndexes.includes(row.id)) {
+        expandedIndexes = expandedIndexes.filter(function (item) {
+          return item !== row.id;
+        });
+      }
+      if (this.props.isDebug) {
+        console.log("onTreeExpandChange-expandedIndexes");
+        console.log(expandedIndexes);
+      }
+      this.setState({
+        expandedIndexes: expandedIndexes
+      });
+    }
+  }, {
     key: "createSubRows",
     value: function createSubRows(maxDisplay, parentKey, index) {
       var filteredComponents = this.state.filteredComponents;
@@ -226,7 +264,7 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
           components.forEach(function (comp) {
             var name = comp.Name;
             var id = comp.ID;
-            var field = "value-" + name.replace(" ", "_") + "_" + id;
+            var field = "value-" + name.replaceAll(" ", "_") + "_" + id;
             if (counter !== -1 && (0, _genericUtilities.isDefined)(comp[container][counter][property])) {
               row[field] = comp[container][counter][property];
             } else if ((0, _genericUtilities.isDefined)(comp[property])) {
@@ -288,7 +326,6 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
     key: "render",
     value: function render() {
       var _this3 = this;
-      console.log("ComponentsView-Render");
       var style = {
         width: "100%",
         height: "100%",
@@ -308,20 +345,24 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       var filteredComponents = this.state.filteredComponents;
       var elementDisplayPosition = this.state.elementDisplayPosition;
       var titles = {};
+      var maxFoundComponents = 0;
       Object.keys(filteredComponents).forEach(function (key) {
         var lastIndex = key.lastIndexOf("_");
         titles[key] = {
           title: key.slice(0, lastIndex)
         };
         var components = filteredComponents[key];
+        if (components.length > maxFoundComponents) maxFoundComponents = components.length;
         if (components.length > 3) titles[key]["needsArrow"] = true;
       });
       var dimensions = this.props.dimensions;
       var width = dimensions.width;
       //let paddingLeft = 0;
-      var firstColumnSize = 95 / 5;
-      var maxDisplay = 4;
-      var headerColumnSize = 95 - firstColumnSize;
+      var firstColumnSize = 100 / 5;
+      var spacer = 56;
+      var spacerPerc = spacer * 100 / width;
+      var maxDisplay = maxFoundComponents > 4 ? 4 : maxFoundComponents;
+      var headerColumnSize = 100 - spacerPerc - firstColumnSize;
       var columnSize = headerColumnSize;
       if (Object.keys(titles).length > 1) {
         var compareSize = Object.keys(titles).length;
@@ -331,18 +372,23 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       } else {
         columnSize = headerColumnSize / maxDisplay;
       }
-      if (this.props.isDebug) {
-        console.log("width " + width);
-        console.log("firstColumnSize " + firstColumnSize);
-        console.log("maxDisplay - headerColumnSize - columnSize");
-        console.log(maxDisplay + " - " + headerColumnSize + " - " + columnSize);
-      }
       var columns = [];
       columns.push({
-        title: "Metadata",
+        title: "Field Name",
         field: "key",
         width: firstColumnSize + "%",
-        maxWidth: firstColumnSize + "%"
+        minWidth: firstColumnSize + "%",
+        maxWidth: firstColumnSize + "%",
+        headerStyle: {
+          width: firstColumnSize + "%",
+          minWidth: firstColumnSize + "%",
+          maxWidth: firstColumnSize + "%"
+        },
+        cellStyle: {
+          width: firstColumnSize + "%",
+          minWidth: firstColumnSize + "%",
+          maxWidth: firstColumnSize + "%"
+        }
       });
       Object.keys(filteredComponents).forEach(function (key) {
         var beginPosition = 0;
@@ -352,7 +398,7 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
         components.forEach(function (comp) {
           var name = comp.Name;
           var id = comp.ID;
-          var field = "value-" + name.replace(" ", "_") + "_" + id;
+          var field = "value-" + name.replaceAll(" ", "_") + "_" + id;
           var isHidden = false;
           if (index < beginPosition || index >= beginPosition + maxDisplay) {
             console.log(name + " - " + index + " should be hidden ");
@@ -363,7 +409,15 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
             field: field,
             hidden: isHidden,
             width: columnSize + "%",
-            minWidth: columnSize + "%"
+            minWidth: columnSize + "%",
+            headerStyle: {
+              width: columnSize + "%",
+              minWidth: columnSize + "%"
+            },
+            cellStyle: {
+              width: columnSize + "%",
+              minWidth: columnSize + "%"
+            }
           });
           index++;
         });
@@ -444,7 +498,8 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       }, /*#__PURE__*/_react.default.createElement("div", {
         key: "TableGroupHeader-FirstColumn",
         style: {
-          width: firstColumnSize
+          paddingLeft: spacer + "px",
+          width: firstColumnSize + "%"
         }
       }, "Microscope"), headers);
       var dataRows = [];
@@ -472,17 +527,14 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
           paging: false,
           rowStyle: function rowStyle(rowData) {
             return {
-              overflowWrap: "break-word",
+              overflowWrap: "anywhere",
               backgroundColor: categoryIndexes.includes(rowData.tableData.id) ? _this3.props.styleBackground : "#FFF"
             };
           },
-          tableLayout: "fixed"
+          tableLayout: "auto"
         },
-        parentChildData: function parentChildData(row, rows) {
-          return rows.find(function (a) {
-            return a.id === row.parentId;
-          });
-        },
+        parentChildData: this.onParentChildData,
+        onTreeExpandChange: this.onTreeExpandChange,
         components: {
           Toolbar: function Toolbar(props) {
             return /*#__PURE__*/_react.default.createElement("div", {
