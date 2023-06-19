@@ -154,18 +154,18 @@ var MicroscopesView = /*#__PURE__*/function (_React$PureComponent) {
       filter: "",
       originalMicroscopes: [],
       filteredMicroscopes: [],
-      checked: []
+      selected: []
     };
 
     //this.onSearch = this.onSearch.bind(this);
     _this.createRows = _this.createRows.bind(_assertThisInitialized(_this));
     _this.handleSelectionProps = _this.handleSelectionProps.bind(_assertThisInitialized(_this));
-    _this.onSelection = _this.onSelection.bind(_assertThisInitialized(_this));
+    _this.onSelectionChange = _this.onSelectionChange.bind(_assertThisInitialized(_this));
     _this.table = null;
     return _this;
   }
   _createClass(MicroscopesView, [{
-    key: "onSelection",
+    key: "onSelectionChange",
     value:
     // onSearch(term) {
     // 	if (!isDefined(term) || term.length === 0)
@@ -183,28 +183,52 @@ var MicroscopesView = /*#__PURE__*/function (_React$PureComponent) {
     // 	console.log(term);
     // }
 
-    function onSelection(rows) {
-      var checked = this.state.checked;
-      checked.splice(0, checked.length - 1);
+    function onSelectionChange(rows) {
+      var _this2 = this;
+      var selected = [];
+      if (this.props.isDebug) {
+        console.log("onSelectionChange - rows");
+        console.log(rows);
+      }
       rows.forEach(function (row) {
-        checked.push(row);
+        if (selected.length > _constants.number_max_compare) {
+          window.alert("You can select a maximum of " + _constants.number_max_compare + " microscope for comparison");
+        } else {
+          selected.push(row.microscope);
+        }
       });
       this.setState({
-        checked: checked
+        selected: selected
+      }, function () {
+        _this2.props.onSelectMicroscopes(selected);
       });
-      var selectedMicroscopes = [];
-      checked.forEach(function (entry) {
-        if (selectedMicroscopes.length < _constants.number_max_compare) selectedMicroscopes.push(entry.microscope);
-      });
-      this.props.onSelectMicroscopes(selectedMicroscopes);
+    }
+  }, {
+    key: "handleSelectionProps",
+    value: function handleSelectionProps(rowData) {
+      var isChecked = rowData.tableData.isChecked;
+      if (this.props.isDebug) {
+        console.log("handleSelectionProps");
+        console.log(rowData);
+      }
+      //selected.forEach((row) => {
+      //	if (row.tableData.id === rowData.tableData.id) {
+      //		isChecked = true;
+      //	}
+      //});
+      return {
+        checked: rowData.tableData.isChecked
+      };
     }
   }, {
     key: "createRows",
     value: function createRows() {
       var dataRows = [];
       var microscopes = this.state.filteredMicroscopes;
+      var selected = this.state.selected;
       for (var i = 0; i < microscopes.length; i++) {
         var mic = microscopes[i];
+        var isChecked = selected.includes(mic);
         var stand = mic.MicroscopeStand;
         var standType = null;
         if (stand.Schema_ID.includes("Upright")) {
@@ -218,7 +242,10 @@ var MicroscopesView = /*#__PURE__*/function (_React$PureComponent) {
           manufacturer: stand.Manufacturer,
           model: stand.Model,
           standType: standType,
-          microscope: mic
+          microscope: mic,
+          tableData: {
+            checked: isChecked
+          }
         };
         // let detail = (
         // 	<div>
@@ -237,32 +264,8 @@ var MicroscopesView = /*#__PURE__*/function (_React$PureComponent) {
       return dataRows;
     }
   }, {
-    key: "handleSelectionProps",
-    value: function handleSelectionProps(rowData) {
-      var selection = this.state.checked;
-      var isChecked = false;
-      selection.forEach(function (row) {
-        if (row.tableData.id === rowData.tableData.id) {
-          isChecked = true;
-        }
-      });
-      return {
-        checked: isChecked
-      };
-      // return {
-      // 	disabled:
-      // 		isDefined(selection) &&
-      // 		selection.length >= maxSelection &&
-      // 		!rowData.tableData.checked
-      // 			? true
-      // 			: false,
-      // 	//checked: isChecked,
-      // };
-    }
-  }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
       var style = {
         width: "100%",
         height: "100%",
@@ -309,11 +312,11 @@ var MicroscopesView = /*#__PURE__*/function (_React$PureComponent) {
         title: "Stand Type",
         field: "standType"
       }];
-      var selection = this.state.checked;
+      var selected = this.state.selected;
       var dataRows = this.createRows();
       var defaultMaterialTheme = (0, _material.createTheme)();
       var header = "";
-      if (selection.length > _constants.number_max_compare) header = "Warning: only the first " + _constants.number_max_compare + " selection are going to be compared";
+      if (selected.length > _constants.number_max_compare) header = "Warning: only the first " + _constants.number_max_compare + " selection are going to be compared";
       var customHeader = /*#__PURE__*/_react.default.createElement("div", {
         key: "TableGroupHeader",
         style: styleHeader
@@ -337,7 +340,7 @@ var MicroscopesView = /*#__PURE__*/function (_React$PureComponent) {
           render: function render(rowData) {
             return /*#__PURE__*/_react.default.createElement("div", {
               style: styleDetail
-            }, /*#__PURE__*/_react.default.createElement("p", null, "ID: ", rowData.microscope.ID), /*#__PURE__*/_react.default.createElement("p", null, "Type: ", rowData.microscope.Type), /*#__PURE__*/_react.default.createElement("p", null, "Description: ", rowData.microscope.Description), /*#__PURE__*/_react.default.createElement("p", null, "Origin: ", rowData.microscope.Origin), /*#__PURE__*/_react.default.createElement("p", null, "Catalog Number: ", rowData.microscope.CatalogNumber));
+            }, /*#__PURE__*/_react.default.createElement("h5", null, "Microscope Details:"), /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement("li", null, "ID: ", rowData.microscope.ID), /*#__PURE__*/_react.default.createElement("li", null, "Description: ", rowData.microscope.Description)), /*#__PURE__*/_react.default.createElement("h5", null, "Microscope Stand Details:"), /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement("li", null, "Type: ", rowData.microscope.MicroscopeStand.Type), /*#__PURE__*/_react.default.createElement("li", null, "Origin: ", rowData.microscope.MicroscopeStand.Origin), /*#__PURE__*/_react.default.createElement("li", null, "Catalog Number:", " ", rowData.microscope.MicroscopeStand.CatalogNumber)));
           }
         }],
         title: "Microscopes",
@@ -346,12 +349,11 @@ var MicroscopesView = /*#__PURE__*/function (_React$PureComponent) {
           selection: true,
           showSelectAllCheckbox: false,
           pageSize: pageSize,
-          pageSizeOptions: [],
-          selectionProps: this.handleSelectionProps
+          pageSizeOptions: []
+          //selectionProps: this.handleSelectionProps,
         },
-        onSelectionChange: function onSelectionChange(rows) {
-          return _this2.onSelection(rows);
-        },
+
+        onSelectionChange: this.onSelectionChange,
         components: {
           Toolbar: function Toolbar(props) {
             return /*#__PURE__*/_react.default.createElement("div", {

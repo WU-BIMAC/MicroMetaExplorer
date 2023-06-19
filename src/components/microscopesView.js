@@ -75,13 +75,14 @@ export default class MicroscopesView extends React.PureComponent {
 			filter: "",
 			originalMicroscopes: [],
 			filteredMicroscopes: [],
-			checked: [],
+			selected: [],
 		};
 
 		//this.onSearch = this.onSearch.bind(this);
 		this.createRows = this.createRows.bind(this);
+
 		this.handleSelectionProps = this.handleSelectionProps.bind(this);
-		this.onSelection = this.onSelection.bind(this);
+		this.onSelectionChange = this.onSelectionChange.bind(this);
 
 		this.table = null;
 	}
@@ -119,27 +120,51 @@ export default class MicroscopesView extends React.PureComponent {
 	// 	console.log(term);
 	// }
 
-	onSelection(rows) {
-		let checked = this.state.checked;
-		checked.splice(0, checked.length - 1);
-		rows.forEach((row) => {
-			checked.push(row);
-		});
-		this.setState({ checked: checked });
+	onSelectionChange(rows) {
+		let selected = [];
+		if (this.props.isDebug) {
+			console.log("onSelectionChange - rows");
+			console.log(rows);
+		}
 
-		let selectedMicroscopes = [];
-		checked.forEach((entry) => {
-			if (selectedMicroscopes.length < number_max_compare)
-				selectedMicroscopes.push(entry.microscope);
+		rows.forEach((row) => {
+			if (selected.length > number_max_compare) {
+				window.alert(
+					"You can select a maximum of " +
+						number_max_compare +
+						" microscope for comparison"
+				);
+			} else {
+				selected.push(row.microscope);
+			}
 		});
-		this.props.onSelectMicroscopes(selectedMicroscopes);
+
+		this.setState({ selected: selected }, () => {
+			this.props.onSelectMicroscopes(selected);
+		});
+	}
+
+	handleSelectionProps(rowData) {
+		let isChecked = rowData.tableData.isChecked;
+		if (this.props.isDebug) {
+			console.log("handleSelectionProps");
+			console.log(rowData);
+		}
+		//selected.forEach((row) => {
+		//	if (row.tableData.id === rowData.tableData.id) {
+		//		isChecked = true;
+		//	}
+		//});
+		return { checked: rowData.tableData.isChecked };
 	}
 
 	createRows() {
 		let dataRows = [];
 		let microscopes = this.state.filteredMicroscopes;
+		let selected = this.state.selected;
 		for (let i = 0; i < microscopes.length; i++) {
 			let mic = microscopes[i];
+			let isChecked = selected.includes(mic);
 			let stand = mic.MicroscopeStand;
 			let standType = null;
 			if (stand.Schema_ID.includes("Upright")) {
@@ -154,6 +179,7 @@ export default class MicroscopesView extends React.PureComponent {
 				model: stand.Model,
 				standType: standType,
 				microscope: mic,
+				tableData: { checked: isChecked },
 			};
 			// let detail = (
 			// 	<div>
@@ -170,27 +196,6 @@ export default class MicroscopesView extends React.PureComponent {
 		}
 		//console.log(data);
 		return dataRows;
-	}
-
-	handleSelectionProps(rowData) {
-		let selection = this.state.checked;
-		let isChecked = false;
-
-		selection.forEach((row) => {
-			if (row.tableData.id === rowData.tableData.id) {
-				isChecked = true;
-			}
-		});
-		return { checked: isChecked };
-		// return {
-		// 	disabled:
-		// 		isDefined(selection) &&
-		// 		selection.length >= maxSelection &&
-		// 		!rowData.tableData.checked
-		// 			? true
-		// 			: false,
-		// 	//checked: isChecked,
-		// };
 	}
 
 	render() {
@@ -231,12 +236,12 @@ export default class MicroscopesView extends React.PureComponent {
 			{ title: "Model", field: "model" },
 			{ title: "Stand Type", field: "standType" },
 		];
-		let selection = this.state.checked;
+		let selected = this.state.selected;
 		let dataRows = this.createRows();
 		const defaultMaterialTheme = createTheme();
 
 		let header = "";
-		if (selection.length > number_max_compare)
+		if (selected.length > number_max_compare)
 			header =
 				"Warning: only the first " +
 				number_max_compare +
@@ -264,11 +269,22 @@ export default class MicroscopesView extends React.PureComponent {
 								render: (rowData) => {
 									return (
 										<div style={styleDetail}>
-											<p>ID: {rowData.microscope.ID}</p>
-											<p>Type: {rowData.microscope.Type}</p>
-											<p>Description: {rowData.microscope.Description}</p>
-											<p>Origin: {rowData.microscope.Origin}</p>
-											<p>Catalog Number: {rowData.microscope.CatalogNumber}</p>
+											<h5>Microscope Details:</h5>
+											<ul>
+												<li>ID: {rowData.microscope.ID}</li>
+												<li>Description: {rowData.microscope.Description}</li>
+											</ul>
+											<h5>Microscope Stand Details:</h5>
+											<ul>
+												<li>Type: {rowData.microscope.MicroscopeStand.Type}</li>
+												<li>
+													Origin: {rowData.microscope.MicroscopeStand.Origin}
+												</li>
+												<li>
+													Catalog Number:{" "}
+													{rowData.microscope.MicroscopeStand.CatalogNumber}
+												</li>
+											</ul>
 										</div>
 									);
 								},
@@ -281,9 +297,9 @@ export default class MicroscopesView extends React.PureComponent {
 							showSelectAllCheckbox: false,
 							pageSize: pageSize,
 							pageSizeOptions: [],
-							selectionProps: this.handleSelectionProps,
+							//selectionProps: this.handleSelectionProps,
 						}}
-						onSelectionChange={(rows) => this.onSelection(rows)}
+						onSelectionChange={this.onSelectionChange}
 						components={{
 							Toolbar: (props) => (
 								<div key={"ToolbarContainer"}>
