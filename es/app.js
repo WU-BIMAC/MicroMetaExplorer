@@ -139,8 +139,10 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "handleCompleteLoadMicroscopes",
     value: function handleCompleteLoadMicroscopes(newMicroscopes, resolve) {
-      console.log("newMicroscopes");
-      console.log(newMicroscopes);
+      if (this.props.isDebug) {
+        console.log("newMicroscopes");
+        console.log(newMicroscopes);
+      }
       var filteredMicroscopes = [];
       if ((0, _genericUtilities.isDefined)(newMicroscopes)) {
         Object.keys(newMicroscopes).forEach(function (key) {
@@ -148,8 +150,10 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
           filteredMicroscopes.push(microscope);
         });
       }
-      console.log("filteredMicroscopes");
-      console.log(filteredMicroscopes);
+      if (this.props.isDebug) {
+        console.log("filteredMicroscopes");
+        console.log(filteredMicroscopes);
+      }
       this.setState({
         microscopes: newMicroscopes,
         filteredMicroscopes: filteredMicroscopes,
@@ -195,10 +199,21 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
   }, {
     key: "onClickHome",
     value: function onClickHome() {
+      var microscopes = this.state.microscopes;
+      var filteredMicroscopes = [];
+      if ((0, _genericUtilities.isDefined)(microscopes)) {
+        Object.keys(microscopes).forEach(function (key) {
+          var microscope = microscopes[key].microscope;
+          filteredMicroscopes.push(microscope);
+        });
+      }
       this.setState({
         showComponentsView: false,
         selectedMicroscopes: [],
-        filteredComponents: []
+        filteredMicroscopes: filteredMicroscopes,
+        filteredComponents: [],
+        searchedMicroscopes: filteredMicroscopes,
+        searchedComponents: []
       });
     }
   }, {
@@ -208,10 +223,21 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
       if (this.props.isDebug) {
         console.log("onClickParentHome");
       }
+      var microscopes = this.state.microscopes;
+      var filteredMicroscopes = [];
+      if ((0, _genericUtilities.isDefined)(microscopes)) {
+        Object.keys(microscopes).forEach(function (key) {
+          var microscope = microscopes[key].microscope;
+          filteredMicroscopes.push(microscope);
+        });
+      }
       this.setState({
         showComponentsView: false,
         selectedMicroscopes: [],
-        filteredComponents: []
+        filteredMicroscopes: filteredMicroscopes,
+        filteredComponents: [],
+        searchedMicroscopes: filteredMicroscopes,
+        searchedComponents: []
       }, function () {
         _this4.props.onClickHome();
       });
@@ -851,7 +877,8 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
           schema: compSchema,
           components: this.state.searchedComponents,
           elementByType: elementByType,
-          styleBackground: this.props.styleBackground
+          styleBackground: this.props.styleBackground,
+          isDebug: this.props.isDebug
         })), /*#__PURE__*/_react.default.createElement(_footer.default, {
           overlaysContainer: this.overlaysContainerRef.current,
           dimensions: headerFooterDims,
@@ -891,7 +918,8 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
       }), /*#__PURE__*/_react.default.createElement(_microscopesView.default, {
         dimensions: canvasDims,
         microscopes: this.state.searchedMicroscopes,
-        onSelectMicroscopes: this.onSelectMicroscopes
+        onSelectMicroscopes: this.onSelectMicroscopes,
+        isDebug: this.props.isDebug
       })), /*#__PURE__*/_react.default.createElement(_footer.default, {
         overlaysContainer: this.overlaysContainerRef.current,
         dimensions: headerFooterDims,
@@ -914,7 +942,8 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
           filteredMicroscopes.push(microscope);
         });
         return {
-          filteredMicroscopes: filteredMicroscopes
+          filteredMicroscopes: filteredMicroscopes,
+          searchedMicroscopes: filteredMicroscopes
         };
       }
       return null;

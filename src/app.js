@@ -124,7 +124,10 @@ export default class MicroMetaExplorer extends React.PureComponent {
 					let microscope = props.microscopes[key];
 					filteredMicroscopes.push(microscope);
 				});
-				return { filteredMicroscopes: filteredMicroscopes };
+				return {
+					filteredMicroscopes: filteredMicroscopes,
+					searchedMicroscopes: filteredMicroscopes,
+				};
 			}
 		return null;
 	}
@@ -153,8 +156,10 @@ export default class MicroMetaExplorer extends React.PureComponent {
 	}
 
 	handleCompleteLoadMicroscopes(newMicroscopes, resolve) {
-		console.log("newMicroscopes");
-		console.log(newMicroscopes);
+		if (this.props.isDebug) {
+			console.log("newMicroscopes");
+			console.log(newMicroscopes);
+		}
 		let filteredMicroscopes = [];
 		if (isDefined(newMicroscopes)) {
 			Object.keys(newMicroscopes).forEach((key) => {
@@ -162,8 +167,10 @@ export default class MicroMetaExplorer extends React.PureComponent {
 				filteredMicroscopes.push(microscope);
 			});
 		}
-		console.log("filteredMicroscopes");
-		console.log(filteredMicroscopes);
+		if (this.props.isDebug) {
+			console.log("filteredMicroscopes");
+			console.log(filteredMicroscopes);
+		}
 		this.setState(
 			{
 				microscopes: newMicroscopes,
@@ -202,10 +209,21 @@ export default class MicroMetaExplorer extends React.PureComponent {
 	}
 
 	onClickHome() {
+		let microscopes = this.state.microscopes;
+		let filteredMicroscopes = [];
+		if (isDefined(microscopes)) {
+			Object.keys(microscopes).forEach((key) => {
+				let microscope = microscopes[key].microscope;
+				filteredMicroscopes.push(microscope);
+			});
+		}
 		this.setState({
 			showComponentsView: false,
 			selectedMicroscopes: [],
+			filteredMicroscopes: filteredMicroscopes,
 			filteredComponents: [],
+			searchedMicroscopes: filteredMicroscopes,
+			searchedComponents: [],
 		});
 	}
 
@@ -213,11 +231,22 @@ export default class MicroMetaExplorer extends React.PureComponent {
 		if (this.props.isDebug) {
 			console.log("onClickParentHome");
 		}
+		let microscopes = this.state.microscopes;
+		let filteredMicroscopes = [];
+		if (isDefined(microscopes)) {
+			Object.keys(microscopes).forEach((key) => {
+				let microscope = microscopes[key].microscope;
+				filteredMicroscopes.push(microscope);
+			});
+		}
 		this.setState(
 			{
 				showComponentsView: false,
 				selectedMicroscopes: [],
+				filteredMicroscopes: filteredMicroscopes,
 				filteredComponents: [],
+				searchedMicroscopes: filteredMicroscopes,
+				searchedComponents: [],
 			},
 			() => {
 				this.props.onClickHome();
@@ -851,6 +880,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 							components={this.state.searchedComponents}
 							elementByType={elementByType}
 							styleBackground={this.props.styleBackground}
+							isDebug={this.props.isDebug}
 						/>
 					</div>
 					<Footer
@@ -902,6 +932,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 						dimensions={canvasDims}
 						microscopes={this.state.searchedMicroscopes}
 						onSelectMicroscopes={this.onSelectMicroscopes}
+						isDebug={this.props.isDebug}
 					/>
 				</div>
 				<Footer
