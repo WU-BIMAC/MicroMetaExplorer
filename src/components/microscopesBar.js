@@ -161,14 +161,16 @@ export default class MicroscopesBar extends React.PureComponent {
 		let selectedModels = this.state.selectedModels;
 		let selectedTypes = this.state.selectedTypes;
 
-		console.log("selectedStandTypes");
-		console.log(selectedStandTypes);
-		console.log("selectedManufacturers");
-		console.log(selectedManufacturers);
-		console.log("selectedModels");
-		console.log(selectedModels);
-		console.log("selectedTypes");
-		console.log(selectedTypes);
+		if (this.props.isDebug) {
+			console.log("selectedStandTypes");
+			console.log(selectedStandTypes);
+			console.log("selectedManufacturers");
+			console.log(selectedManufacturers);
+			console.log("selectedModels");
+			console.log(selectedModels);
+			console.log("selectedTypes");
+			console.log(selectedTypes);
+		}
 
 		let maxIndex = Object.keys(selectedStandTypes).length;
 		if (Object.keys(selectedManufacturers).length > maxIndex)
@@ -191,12 +193,14 @@ export default class MicroscopesBar extends React.PureComponent {
 			else filter.push(null);
 			filters.push(filter);
 		}
-		console.log("filters");
-		console.log(filters);
+		if (this.props.isDebug) {
+			console.log("filters");
+			console.log(filters);
+		}
 
 		if (isDefined(this.props.microscopes)) {
 			Object.keys(this.props.microscopes).forEach((key) => {
-				let microscope = this.props.microscopes[key];
+				let microscope = this.props.microscopes[key].microscope;
 				let stand = microscope.MicroscopeStand;
 				if (filters.length !== 0) {
 					for (let filter of filters) {
@@ -217,8 +221,10 @@ export default class MicroscopesBar extends React.PureComponent {
 			});
 		}
 
-		console.log("filtered microscopes");
-		console.log(filteredMicroscopes);
+		if (this.props.isDebug) {
+			console.log("filtered microscopes");
+			console.log(filteredMicroscopes);
+		}
 
 		this.setState({ filters: filters });
 
@@ -226,8 +232,10 @@ export default class MicroscopesBar extends React.PureComponent {
 	}
 
 	onSelectFilterItem(index, item) {
-		console.log("selected filter");
-		console.log(index + " > " + item);
+		if (this.props.isDebug) {
+			console.log("selected filter");
+			console.log(index + " > " + item);
+		}
 		let items;
 		switch (index) {
 			case 1:

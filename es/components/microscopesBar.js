@@ -71,14 +71,16 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
       var selectedManufacturers = this.state.selectedManufacturers;
       var selectedModels = this.state.selectedModels;
       var selectedTypes = this.state.selectedTypes;
-      console.log("selectedStandTypes");
-      console.log(selectedStandTypes);
-      console.log("selectedManufacturers");
-      console.log(selectedManufacturers);
-      console.log("selectedModels");
-      console.log(selectedModels);
-      console.log("selectedTypes");
-      console.log(selectedTypes);
+      if (this.props.isDebug) {
+        console.log("selectedStandTypes");
+        console.log(selectedStandTypes);
+        console.log("selectedManufacturers");
+        console.log(selectedManufacturers);
+        console.log("selectedModels");
+        console.log(selectedModels);
+        console.log("selectedTypes");
+        console.log(selectedTypes);
+      }
       var maxIndex = Object.keys(selectedStandTypes).length;
       if (Object.keys(selectedManufacturers).length > maxIndex) maxIndex = Object.keys(selectedManufacturers).length;
       if (Object.keys(selectedModels).length > maxIndex) maxIndex = Object.keys(selectedModels).length;
@@ -92,11 +94,13 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
         if ((0, _genericUtilities.isDefined)(selectedTypes[i])) filter.push(selectedTypes[i]);else filter.push(null);
         filters.push(filter);
       }
-      console.log("filters");
-      console.log(filters);
+      if (this.props.isDebug) {
+        console.log("filters");
+        console.log(filters);
+      }
       if ((0, _genericUtilities.isDefined)(this.props.microscopes)) {
         Object.keys(this.props.microscopes).forEach(function (key) {
-          var microscope = _this2.props.microscopes[key];
+          var microscope = _this2.props.microscopes[key].microscope;
           var stand = microscope.MicroscopeStand;
           if (filters.length !== 0) {
             var _iterator = _createForOfIteratorHelper(filters),
@@ -119,8 +123,10 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
           }
         });
       }
-      console.log("filtered microscopes");
-      console.log(filteredMicroscopes);
+      if (this.props.isDebug) {
+        console.log("filtered microscopes");
+        console.log(filteredMicroscopes);
+      }
       this.setState({
         filters: filters
       });
@@ -130,8 +136,10 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
     key: "onSelectFilterItem",
     value: function onSelectFilterItem(index, item) {
       var _this3 = this;
-      console.log("selected filter");
-      console.log(index + " > " + item);
+      if (this.props.isDebug) {
+        console.log("selected filter");
+        console.log(index + " > " + item);
+      }
       var items;
       switch (index) {
         case 1:
