@@ -86,10 +86,34 @@ var ComponentsBar = /*#__PURE__*/function (_React$PureComponent) {
       var _this3 = this;
       var selectedItem = this.state.selectedItem;
       var categoryItems = [];
+      var buttonStyle = {
+        background: "none",
+        outline: "none",
+        color: "grey",
+        border: "none"
+      };
+      var buttonCheckedStyle = {
+        background: "none",
+        outline: "none",
+        color: "black",
+        border: "none"
+      };
+      var contentStyle = {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between"
+      };
+      //for (let key of Object.keys(category)) {
       Object.keys(category).forEach(function (key) {
         if (!(0, _genericUtilities.isDefined)(category[key]) || _typeof(category[key]) !== _constants.string_object) return;
+        var checked = (0, _genericUtilities.isDefined)(selectedItem) && selectedItem.includes(key);
+        var style = checked ? buttonCheckedStyle : buttonStyle;
         var subCategory = category[key];
         var value = subCategory.value;
+        var content = /*#__PURE__*/_react.default.createElement("div", {
+          style: contentStyle
+        }, /*#__PURE__*/_react.default.createElement("div", null, key), /*#__PURE__*/_react.default.createElement("div", null, value));
         categoryItems.push( /*#__PURE__*/_react.default.createElement(_ToggleButton.default, {
           id: "toggle-radio" + key,
           key: "toggle-radio" + key,
@@ -98,11 +122,12 @@ var ComponentsBar = /*#__PURE__*/function (_React$PureComponent) {
           //name="radio"
           ,
           value: key,
-          checked: (0, _genericUtilities.isDefined)(selectedItem) && selectedItem.includes(key),
+          checked: checked,
           onChange: function onChange(e) {
             return _this3.onSelectFilterItem(category.name, key);
-          }
-        }, key + " (" + value + ")")
+          },
+          style: style
+        }, content)
         // <PopoverTooltip
         // 	key={`Tooltip-${item}`}
         // 	position={"bottom"}
@@ -114,7 +139,7 @@ var ComponentsBar = /*#__PURE__*/function (_React$PureComponent) {
         // />
         );
       });
-      //
+      //}
 
       return /*#__PURE__*/_react.default.createElement(_ButtonGroup.default, {
         className: "btn-group-toggle",

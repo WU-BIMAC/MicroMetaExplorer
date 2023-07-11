@@ -128,11 +128,40 @@ export default class ComponentsBar extends React.PureComponent {
 	createCategoryItems(category) {
 		let selectedItem = this.state.selectedItem;
 		let categoryItems = [];
+		let buttonStyle = {
+			background: "none",
+			outline: "none",
+			color: "grey",
+			border: "none",
+		};
+
+		let buttonCheckedStyle = {
+			background: "none",
+			outline: "none",
+			color: "black",
+			border: "none",
+		};
+		let contentStyle = {
+			width: "100%",
+			display: "flex",
+			flexDirection: "row",
+			justifyContent: "space-between",
+		};
+		//for (let key of Object.keys(category)) {
 		Object.keys(category).forEach((key) => {
 			if (!isDefined(category[key]) || typeof category[key] !== string_object)
 				return;
+			let checked = isDefined(selectedItem) && selectedItem.includes(key);
+			let style = checked ? buttonCheckedStyle : buttonStyle;
 			let subCategory = category[key];
 			let value = subCategory.value;
+
+			let content = (
+				<div style={contentStyle}>
+					<div>{key}</div>
+					<div>{value}</div>
+				</div>
+			);
 			categoryItems.push(
 				<ToggleButton
 					id={"toggle-radio" + key}
@@ -141,10 +170,11 @@ export default class ComponentsBar extends React.PureComponent {
 					variant="primary"
 					//name="radio"
 					value={key}
-					checked={isDefined(selectedItem) && selectedItem.includes(key)}
+					checked={checked}
 					onChange={(e) => this.onSelectFilterItem(category.name, key)}
+					style={style}
 				>
-					{key + " (" + value + ")"}
+					{content}
 				</ToggleButton>
 				// <PopoverTooltip
 				// 	key={`Tooltip-${item}`}
@@ -157,7 +187,7 @@ export default class ComponentsBar extends React.PureComponent {
 				// />
 			);
 		});
-		//
+		//}
 
 		return (
 			<ToggleButtonGroup
