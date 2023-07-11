@@ -286,6 +286,25 @@ export const menu_order = [
 export const string_bandpass_warning =
 	"PLEASE NOTE: If the number of WavelengthRange modules or sub-components (e.g., LEDModule) is changed, all values entered but not yet confirmed will be lost.";
 
+export const search_field_tooltip = {
+	title: "Search",
+	content: (
+		<p>
+			Insert the terms you want to search for. It is possible to use auto
+			suggested terms and/or the one free form ones in any combination.
+		</p>
+	),
+};
+export const search_button_tooltip = {
+	title: "Search",
+	content: <p>Click here to launch a search for microscope components.</p>,
+};
+
+export const search_clear_tooltip = {
+	title: "Clear search field",
+	content: <p>Click here to clear the search field and start a new search.</p>,
+};
+
 export const hardware_hardware_step_tooltip = {
 	title: "Microscope file selection options",
 	content: (
