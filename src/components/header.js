@@ -21,6 +21,9 @@ import {
 	string_about_img,
 	help_tooltip,
 	about_tooltip,
+	search_field_tooltip,
+	search_button_tooltip,
+	search_clear_tooltip,
 } from "../constants";
 
 import { isDefined } from "../genericUtilities";
@@ -260,6 +263,100 @@ export default class Header extends React.PureComponent {
 
 		let buttons = [];
 		let index = 0;
+		// let formControl = (
+		// 	<Form.Control
+		// 		key={"FormControl-" + index}
+		// 		placeholder="Search"
+		// 		aria-label="Search"
+		// 		aria-describedby="basic-addon2"
+		// 		style={styleButton}
+		// 		ref={this.formRef}
+		// 		onChange={this.onSearchInput}
+		// 	/>
+		// );
+		// let search = null;
+		// if (this.state.showSuggestions) {
+		// 	let suggestions = this.state.suggestions;
+		// 	let options = [];
+		// 	if (this.state.suggestions.length == 0) options.push("No suggestions");
+		// 	for (let i = 0; i < 10; i++) {
+		// 		options.push(suggestions[i]);
+		// 	}
+		// 	let optionsList = <ul className="options"></ul>;
+		// 	search = (
+		// 		<div key={"SuggestionDiv-" + index}>
+		// 			{formControl}
+		// 			{optionsList}
+		// 		</div>
+		// 	);
+		// } else {
+		// 	search = formControl;
+		// }
+		let selected = this.state.selections;
+		buttons[index] = (
+			<PopoverTooltip
+				key={"TooltipButton-" + index}
+				position={search_field_tooltip.position}
+				title={search_field_tooltip.title}
+				content={search_field_tooltip.content}
+				element={
+					<AsyncTypeahead
+						key={"AsyncTypeahead-" + index}
+						filterBy={() => true}
+						id="basic-typeahead-multiple"
+						isLoading={this.state.isLoading}
+						minLength={3}
+						onSearch={this.onSearchInput}
+						options={this.state.suggestions}
+						placeholder="Search..."
+						ref={this.formRef}
+						onChange={this.onSearchChange}
+						selected={selected}
+						multiple
+						style={styleSearch}
+					/>
+				}
+			/>
+		);
+		index++;
+		buttons[index] = (
+			<PopoverTooltip
+				key={"TooltipButton-" + index}
+				position={search_button_tooltip.position}
+				title={search_button_tooltip.title}
+				content={search_button_tooltip.content}
+				element={
+					<Button
+						key={"Button-" + index}
+						onClick={this.onClickSearch}
+						style={styleButtonHelp}
+						size="lg"
+					>
+						S
+					</Button>
+				}
+			/>
+		);
+		index++;
+		buttons[index] = (
+			<PopoverTooltip
+				key={"TooltipButton-" + index}
+				position={search_clear_tooltip.position}
+				title={search_clear_tooltip.title}
+				content={search_clear_tooltip.content}
+				element={
+					<Button
+						key={"Button-" + index}
+						onClick={this.onClearSearch}
+						style={styleButtonHelp}
+						size="lg"
+					>
+						C
+					</Button>
+				}
+			/>
+		);
+		index++;
 		buttons[index] = (
 			<PopoverTooltip
 				key={"TooltipButton-" + index}
@@ -296,76 +393,6 @@ export default class Header extends React.PureComponent {
 					</Button>
 				}
 			/>
-		);
-		index++;
-		// let formControl = (
-		// 	<Form.Control
-		// 		key={"FormControl-" + index}
-		// 		placeholder="Search"
-		// 		aria-label="Search"
-		// 		aria-describedby="basic-addon2"
-		// 		style={styleButton}
-		// 		ref={this.formRef}
-		// 		onChange={this.onSearchInput}
-		// 	/>
-		// );
-		// let search = null;
-		// if (this.state.showSuggestions) {
-		// 	let suggestions = this.state.suggestions;
-		// 	let options = [];
-		// 	if (this.state.suggestions.length == 0) options.push("No suggestions");
-		// 	for (let i = 0; i < 10; i++) {
-		// 		options.push(suggestions[i]);
-		// 	}
-		// 	let optionsList = <ul className="options"></ul>;
-		// 	search = (
-		// 		<div key={"SuggestionDiv-" + index}>
-		// 			{formControl}
-		// 			{optionsList}
-		// 		</div>
-		// 	);
-		// } else {
-		// 	search = formControl;
-		// }
-		let selected = this.state.selections;
-		buttons[index] = (
-			<AsyncTypeahead
-				key={"AsyncTypeahead-" + index}
-				filterBy={() => true}
-				id="basic-typeahead-multiple"
-				isLoading={this.state.isLoading}
-				minLength={3}
-				onSearch={this.onSearchInput}
-				options={this.state.suggestions}
-				placeholder="Search..."
-				ref={this.formRef}
-				onChange={this.onSearchChange}
-				selected={selected}
-				multiple
-				style={styleSearch}
-			/>
-		);
-		index++;
-		buttons[index] = (
-			<Button
-				key={"Button-" + index}
-				onClick={this.onClickSearch}
-				style={styleButtonHelp}
-				size="lg"
-			>
-				S
-			</Button>
-		);
-		index++;
-		buttons[index] = (
-			<Button
-				key={"Button-" + index}
-				onClick={this.onClearSearch}
-				style={styleButtonHelp}
-				size="lg"
-			>
-				C
-			</Button>
 		);
 		index++;
 		if (this.state.viewAbout) {
@@ -443,12 +470,12 @@ export default class Header extends React.PureComponent {
 								</div>
 								<div style={container1}>
 									<p>
-										Micro Meta App is an open, easy-to-use, and powerful
-										software platform that provides an intuitive visual guide to
-										capturing and managing Microscopy Metadata on the basis of
-										the{" "}
+										Micro-Meta Explorer is an open-source, community-defined,
+										and easy-to-use software platform that provides an intuitive
+										visual guide for exploring and comparing the hardware
+										configuration of available microscopes based on the
 										<a href="https://github.com/WU-BIMAC/NBOMicroscopyMetadataSpecs/tree/master/Model/stable%20version/v02-01">
-											4DN-BINA extension
+											4DN-BINA-QUAREP extension
 										</a>{" "}
 										of the{" "}
 										<a href="https://docs.openmicroscopy.org/ome-model/6.1.1/developers/model-overview.html">

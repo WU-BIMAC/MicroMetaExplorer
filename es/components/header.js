@@ -297,6 +297,86 @@ var Header = /*#__PURE__*/function (_React$PureComponent) {
       var aboutPath = aboutImg + (aboutImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
       var buttons = [];
       var index = 0;
+      // let formControl = (
+      // 	<Form.Control
+      // 		key={"FormControl-" + index}
+      // 		placeholder="Search"
+      // 		aria-label="Search"
+      // 		aria-describedby="basic-addon2"
+      // 		style={styleButton}
+      // 		ref={this.formRef}
+      // 		onChange={this.onSearchInput}
+      // 	/>
+      // );
+      // let search = null;
+      // if (this.state.showSuggestions) {
+      // 	let suggestions = this.state.suggestions;
+      // 	let options = [];
+      // 	if (this.state.suggestions.length == 0) options.push("No suggestions");
+      // 	for (let i = 0; i < 10; i++) {
+      // 		options.push(suggestions[i]);
+      // 	}
+      // 	let optionsList = <ul className="options"></ul>;
+      // 	search = (
+      // 		<div key={"SuggestionDiv-" + index}>
+      // 			{formControl}
+      // 			{optionsList}
+      // 		</div>
+      // 	);
+      // } else {
+      // 	search = formControl;
+      // }
+      var selected = this.state.selections;
+      buttons[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
+        key: "TooltipButton-" + index,
+        position: _constants.search_field_tooltip.position,
+        title: _constants.search_field_tooltip.title,
+        content: _constants.search_field_tooltip.content,
+        element: /*#__PURE__*/_react.default.createElement(_reactBootstrapTypeahead.AsyncTypeahead, {
+          key: "AsyncTypeahead-" + index,
+          filterBy: function filterBy() {
+            return true;
+          },
+          id: "basic-typeahead-multiple",
+          isLoading: this.state.isLoading,
+          minLength: 3,
+          onSearch: this.onSearchInput,
+          options: this.state.suggestions,
+          placeholder: "Search...",
+          ref: this.formRef,
+          onChange: this.onSearchChange,
+          selected: selected,
+          multiple: true,
+          style: styleSearch
+        })
+      });
+      index++;
+      buttons[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
+        key: "TooltipButton-" + index,
+        position: _constants.search_button_tooltip.position,
+        title: _constants.search_button_tooltip.title,
+        content: _constants.search_button_tooltip.content,
+        element: /*#__PURE__*/_react.default.createElement(_Button.default, {
+          key: "Button-" + index,
+          onClick: this.onClickSearch,
+          style: styleButtonHelp,
+          size: "lg"
+        }, "S")
+      });
+      index++;
+      buttons[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
+        key: "TooltipButton-" + index,
+        position: _constants.search_clear_tooltip.position,
+        title: _constants.search_clear_tooltip.title,
+        content: _constants.search_clear_tooltip.content,
+        element: /*#__PURE__*/_react.default.createElement(_Button.default, {
+          key: "Button-" + index,
+          onClick: this.onClearSearch,
+          style: styleButtonHelp,
+          size: "lg"
+        }, "C")
+      });
+      index++;
       buttons[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
         key: "TooltipButton-" + index,
         position: _constants.help_tooltip.position,
@@ -330,68 +410,6 @@ var Header = /*#__PURE__*/function (_React$PureComponent) {
           style: styleImage
         }))
       });
-      index++;
-      // let formControl = (
-      // 	<Form.Control
-      // 		key={"FormControl-" + index}
-      // 		placeholder="Search"
-      // 		aria-label="Search"
-      // 		aria-describedby="basic-addon2"
-      // 		style={styleButton}
-      // 		ref={this.formRef}
-      // 		onChange={this.onSearchInput}
-      // 	/>
-      // );
-      // let search = null;
-      // if (this.state.showSuggestions) {
-      // 	let suggestions = this.state.suggestions;
-      // 	let options = [];
-      // 	if (this.state.suggestions.length == 0) options.push("No suggestions");
-      // 	for (let i = 0; i < 10; i++) {
-      // 		options.push(suggestions[i]);
-      // 	}
-      // 	let optionsList = <ul className="options"></ul>;
-      // 	search = (
-      // 		<div key={"SuggestionDiv-" + index}>
-      // 			{formControl}
-      // 			{optionsList}
-      // 		</div>
-      // 	);
-      // } else {
-      // 	search = formControl;
-      // }
-      var selected = this.state.selections;
-      buttons[index] = /*#__PURE__*/_react.default.createElement(_reactBootstrapTypeahead.AsyncTypeahead, {
-        key: "AsyncTypeahead-" + index,
-        filterBy: function filterBy() {
-          return true;
-        },
-        id: "basic-typeahead-multiple",
-        isLoading: this.state.isLoading,
-        minLength: 3,
-        onSearch: this.onSearchInput,
-        options: this.state.suggestions,
-        placeholder: "Search...",
-        ref: this.formRef,
-        onChange: this.onSearchChange,
-        selected: selected,
-        multiple: true,
-        style: styleSearch
-      });
-      index++;
-      buttons[index] = /*#__PURE__*/_react.default.createElement(_Button.default, {
-        key: "Button-" + index,
-        onClick: this.onClickSearch,
-        style: styleButtonHelp,
-        size: "lg"
-      }, "S");
-      index++;
-      buttons[index] = /*#__PURE__*/_react.default.createElement(_Button.default, {
-        key: "Button-" + index,
-        onClick: this.onClearSearch,
-        style: styleButtonHelp,
-        size: "lg"
-      }, "C");
       index++;
       if (this.state.viewAbout) {
         var wrapperContainer = {
@@ -475,9 +493,9 @@ var Header = /*#__PURE__*/function (_React$PureComponent) {
           style: _styleImage
         }))), /*#__PURE__*/_react.default.createElement("div", {
           style: container1
-        }, /*#__PURE__*/_react.default.createElement("p", null, "Micro Meta App is an open, easy-to-use, and powerful software platform that provides an intuitive visual guide to capturing and managing Microscopy Metadata on the basis of the", " ", /*#__PURE__*/_react.default.createElement("a", {
+        }, /*#__PURE__*/_react.default.createElement("p", null, "Micro-Meta Explorer is an open-source, community-defined, and easy-to-use software platform that provides an intuitive visual guide for exploring and comparing the hardware configuration of available microscopes based on the", /*#__PURE__*/_react.default.createElement("a", {
           href: "https://github.com/WU-BIMAC/NBOMicroscopyMetadataSpecs/tree/master/Model/stable%20version/v02-01"
-        }, "4DN-BINA extension"), " ", "of the", " ", /*#__PURE__*/_react.default.createElement("a", {
+        }, "4DN-BINA-QUAREP extension"), " ", "of the", " ", /*#__PURE__*/_react.default.createElement("a", {
           href: "https://docs.openmicroscopy.org/ome-model/6.1.1/developers/model-overview.html"
         }, "OME data model"), " ", ".", /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), "App version: ", this.props.appVersion, /*#__PURE__*/_react.default.createElement("br", null), "Model version: ", this.props.modelVersion, /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), "(c) Copyright 2018-2023 University of Massachusetts Chan Medical School. All Rights Reserved.", /*#__PURE__*/_react.default.createElement("br", null), "The software is distributed under the terms of the", " ", /*#__PURE__*/_react.default.createElement("a", {
           href: "https://www.gnu.org/licenses/gpl-3.0.html"
