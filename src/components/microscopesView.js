@@ -174,10 +174,10 @@ export default class MicroscopesView extends React.PureComponent {
 			}
 			let row = {
 				name: mic.Name,
-				tier: mic.Tier,
 				manufacturer: stand.Manufacturer,
 				model: stand.Model,
 				standType: standType,
+				type: mic.MicroscopeStand.Type,
 				microscope: mic,
 				tableData: { checked: isChecked },
 			};
@@ -231,10 +231,10 @@ export default class MicroscopesView extends React.PureComponent {
 		};
 		let columns = [
 			{ title: "Name", field: "name" },
-			{ title: "Tier", field: "tier" },
 			{ title: "Manufacturer", field: "manufacturer" },
 			{ title: "Model", field: "model" },
-			{ title: "Stand Type", field: "standType" },
+			{ title: "Configuration", field: "standType" },
+			{ title: "Type", field: "type" },
 		];
 		let selected = this.state.selected;
 		let dataRows = this.createRows();
@@ -267,16 +267,79 @@ export default class MicroscopesView extends React.PureComponent {
 							{
 								tooltip: "Show Details",
 								render: (rowData) => {
+									let numberLightSources = 0;
+									let numberObjectives = 0;
+									let numberFilters = 0;
+									let numberDichroics = 0;
+									let numberLens = 0;
+									let numberMirroringDevices = 0;
+									let numberPointDetectors = 0;
+									let numberCameras = 0;
+									for (let comp of rowData.microscope.components) {
+										if (!isDefined(comp.Category)) continue;
+										if (comp.Category.includes("LightSource"))
+											numberLightSources++;
+										if (comp.Schema_ID.includes("Objective"))
+											numberObjectives++;
+										if (comp.Category.includes("Filter")) numberFilters++;
+										if (comp.Schema_ID.includes("Dichroic")) numberDichroics++;
+										if (comp.Category.includes("Lens")) numberLens++;
+										if (
+											comp.Schema_ID.includes("Mirror") ||
+											comp.Schema_ID.includes("BeamSplitter")
+										)
+											numberMirroringDevices++;
+										if (comp.Category.includes("PointDetector"))
+											numberPointDetectors++;
+										if (comp.Category.includes("Camera")) numberCameras++;
+									}
+									let list = [];
+									if (numberLightSources > 0)
+										list.push(
+											<li key={"Item-LSources"}>
+												Light sources: {numberLightSources}
+											</li>
+										);
+									if (numberObjectives > 0)
+										list.push(
+											<li key={"Item-Obj"}>Objectives: {numberObjectives}</li>
+										);
+									if (numberFilters > 0)
+										list.push(
+											<li key={"Item-Fil"}>Filters: {numberFilters}</li>
+										);
+									if (numberDichroics > 0)
+										list.push(
+											<li key={"Item-Dic"}>Dichroics: {numberDichroics}</li>
+										);
+									if (numberLens > 0)
+										list.push(<li key={"Item-Len"}>Lenses: {numberLens}</li>);
+									if (numberMirroringDevices > 0)
+										list.push(
+											<li key={"Item-MDev"}>
+												Mirroring Devices: {numberMirroringDevices}
+											</li>
+										);
+									if (numberPointDetectors > 0)
+										list.push(
+											<li key={"Item-PDet"}>
+												Point Detectors: {numberPointDetectors}
+											</li>
+										);
+									if (numberCameras > 0)
+										list.push(
+											<li key={"Item-Cam"}>Cameras: {numberCameras}</li>
+										);
 									return (
 										<div style={styleDetail}>
 											<h5>Microscope Details:</h5>
 											<ul>
 												<li>ID: {rowData.microscope.ID}</li>
 												<li>Description: {rowData.microscope.Description}</li>
+												<li>Tier: {rowData.microscope.Tier}</li>
 											</ul>
 											<h5>Microscope Stand Details:</h5>
 											<ul>
-												<li>Type: {rowData.microscope.MicroscopeStand.Type}</li>
 												<li>
 													Origin: {rowData.microscope.MicroscopeStand.Origin}
 												</li>
@@ -285,6 +348,8 @@ export default class MicroscopesView extends React.PureComponent {
 													{rowData.microscope.MicroscopeStand.CatalogNumber}
 												</li>
 											</ul>
+											<h5>Components:</h5>
+											<ul>{list}</ul>
 										</div>
 									);
 								},
