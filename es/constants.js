@@ -224,17 +224,20 @@ var string_bandpass_warning = "PLEASE NOTE: If the number of WavelengthRange mod
 exports.string_bandpass_warning = string_bandpass_warning;
 var search_field_tooltip = {
   title: "Search",
-  content: /*#__PURE__*/_react.default.createElement("p", null, "Insert the terms you want to search for. It is possible to use auto suggested terms and/or the one free form ones in any combination.")
+  content: /*#__PURE__*/_react.default.createElement("p", null, "Insert the terms you want to search for. It is possible to use auto suggested terms and/or the one free form ones in any combination."),
+  position: "bottom"
 };
 exports.search_field_tooltip = search_field_tooltip;
 var search_button_tooltip = {
   title: "Search",
-  content: /*#__PURE__*/_react.default.createElement("p", null, "Click here to launch a search for microscope components.")
+  content: /*#__PURE__*/_react.default.createElement("p", null, "Click here to launch a search for microscope components."),
+  position: "bottom"
 };
 exports.search_button_tooltip = search_button_tooltip;
 var search_clear_tooltip = {
   title: "Clear search field",
-  content: /*#__PURE__*/_react.default.createElement("p", null, "Click here to clear the search field and start a new search.")
+  content: /*#__PURE__*/_react.default.createElement("p", null, "Click here to clear the search field and start a new search."),
+  position: "bottom"
 };
 exports.search_clear_tooltip = search_clear_tooltip;
 var hardware_hardware_step_tooltip = {

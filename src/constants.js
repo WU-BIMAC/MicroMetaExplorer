@@ -294,15 +294,18 @@ export const search_field_tooltip = {
 			suggested terms and/or the one free form ones in any combination.
 		</p>
 	),
+	position: "bottom",
 };
 export const search_button_tooltip = {
 	title: "Search",
 	content: <p>Click here to launch a search for microscope components.</p>,
+	position: "bottom",
 };
 
 export const search_clear_tooltip = {
 	title: "Clear search field",
 	content: <p>Click here to clear the search field and start a new search.</p>,
+	position: "bottom",
 };
 
 export const hardware_hardware_step_tooltip = {
