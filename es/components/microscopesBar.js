@@ -216,8 +216,33 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
           items = this.state.standTypes;
           selectedItems = this.state.selectedStandTypes;
       }
-      Object.keys(items).forEach(function (key) {
+      var buttonStyle = {
+        background: "none",
+        outline: "none",
+        color: "grey",
+        border: "none"
+      };
+      var buttonCheckedStyle = {
+        background: "none",
+        outline: "none",
+        color: "black",
+        border: "none"
+      };
+      var contentStyle = {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between"
+      };
+      var _loop = function _loop() {
+        var key = _Object$keys[_i];
+        //Object.keys(items).forEach((key) => {
         var value = items[key];
+        var checked = selectedItems.includes(key);
+        var style = checked ? buttonCheckedStyle : buttonStyle;
+        var content = /*#__PURE__*/_react.default.createElement("div", {
+          style: contentStyle
+        }, /*#__PURE__*/_react.default.createElement("div", null, key), /*#__PURE__*/_react.default.createElement("div", null, value));
         categoryItems.push( /*#__PURE__*/_react.default.createElement(_ToggleButton.default, {
           id: "toggle-radio" + key,
           key: "toggle-radio" + key,
@@ -226,11 +251,12 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
           //name="radio"
           ,
           value: key,
-          checked: selectedItems.includes(key),
+          checked: checked,
           onChange: function onChange(e) {
             return _this4.onSelectFilterItem(index, key);
-          }
-        }, key + " (" + value + ")")
+          },
+          style: style
+        }, content)
         // <PopoverTooltip
         // 	key={`Tooltip-${item}`}
         // 	position={"bottom"}
@@ -241,9 +267,11 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
         // 	}
         // />
         );
-      });
-      //
-
+        //});
+      };
+      for (var _i = 0, _Object$keys = Object.keys(items); _i < _Object$keys.length; _i++) {
+        _loop();
+      }
       return /*#__PURE__*/_react.default.createElement(_ButtonGroup.default, {
         className: "btn-group-toggle",
         style: {
@@ -367,17 +395,17 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
         var index = categories.indexOf(category);
         var simpleKey;
         switch (index) {
+          case 0:
+            simpleKey = "Manufacturer";
+            break;
           case 1:
-            simpleKey = "Manufacturer:";
+            simpleKey = "Model";
             break;
           case 2:
-            simpleKey = "Model:";
-            break;
-          case 3:
-            simpleKey = "Type:";
+            simpleKey = "Stand Type";
             break;
           default:
-            simpleKey = "Stand Type:";
+            simpleKey = "Type";
         }
         toolbar.push( /*#__PURE__*/_react.default.createElement(_reactCollapsible.default, {
           key: "Collapsible-".concat(index),
@@ -448,6 +476,33 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
         Object.keys(props.microscopes).forEach(function (key) {
           var microscope = props.microscopes[key].microscope;
           var stand = microscope.MicroscopeStand;
+          var standType = null;
+          if (stand.Schema_ID.includes("Upright")) {
+            standType = "Upright";
+          } else if (stand.Schema_ID.includes("Inverted")) {
+            standType = "Inverted";
+          }
+          var manu = stand.Manufacturer;
+          var model = stand.Model;
+          var type = stand.Type;
+          // let testSelection = [];
+          // testSelection.push(standType);
+          // testSelection.push(obj.Manufacturer);
+          // testSelection.push(obj.Model);
+          // testSelection.push(obj.Type);
+
+          if (!Object.keys(standTypes).includes(standType)) {
+            standTypes[standType] = 0;
+          }
+          if (!Object.keys(manufacturers).includes(manu)) {
+            manufacturers[manu] = 0;
+          }
+          if (!Object.keys(models).includes(model)) {
+            models[model] = 0;
+          }
+          if (!Object.keys(types).includes(type)) {
+            types[type] = 0;
+          }
           if (filters.length !== 0) {
             var _iterator2 = _createForOfIteratorHelper(filters),
               _step2;
@@ -506,38 +561,6 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
             types[type] = types[type] + 1;
           } else {
             types[type] = 1;
-          }
-        });
-      }
-      if ((0, _genericUtilities.isDefined)(props.microscopes)) {
-        Object.keys(props.microscopes).forEach(function (key) {
-          var obj = props.microscopes[key].microscope.MicroscopeStand;
-          var standType = null;
-          if (obj.Schema_ID.includes("Upright")) {
-            standType = "Upright";
-          } else if (obj.Schema_ID.includes("Inverted")) {
-            standType = "Inverted";
-          }
-          var manu = obj.Manufacturer;
-          var model = obj.Model;
-          var type = obj.Type;
-          // let testSelection = [];
-          // testSelection.push(standType);
-          // testSelection.push(obj.Manufacturer);
-          // testSelection.push(obj.Model);
-          // testSelection.push(obj.Type);
-
-          if (!Object.keys(standTypes).includes(standType)) {
-            standTypes[standType] = 0;
-          }
-          if (!Object.keys(manufacturers).includes(manu)) {
-            manufacturers[manu] = 0;
-          }
-          if (!Object.keys(models).includes(model)) {
-            models[model] = 0;
-          }
-          if (!Object.keys(types).includes(type)) {
-            types[type] = 0;
           }
         });
       }

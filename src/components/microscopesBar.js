@@ -48,6 +48,33 @@ export default class MicroscopesBar extends React.PureComponent {
 			Object.keys(props.microscopes).forEach((key) => {
 				let microscope = props.microscopes[key].microscope;
 				let stand = microscope.MicroscopeStand;
+				let standType = null;
+				if (stand.Schema_ID.includes("Upright")) {
+					standType = "Upright";
+				} else if (stand.Schema_ID.includes("Inverted")) {
+					standType = "Inverted";
+				}
+				let manu = stand.Manufacturer;
+				let model = stand.Model;
+				let type = stand.Type;
+				// let testSelection = [];
+				// testSelection.push(standType);
+				// testSelection.push(obj.Manufacturer);
+				// testSelection.push(obj.Model);
+				// testSelection.push(obj.Type);
+
+				if (!Object.keys(standTypes).includes(standType)) {
+					standTypes[standType] = 0;
+				}
+				if (!Object.keys(manufacturers).includes(manu)) {
+					manufacturers[manu] = 0;
+				}
+				if (!Object.keys(models).includes(model)) {
+					models[model] = 0;
+				}
+				if (!Object.keys(types).includes(type)) {
+					types[type] = 0;
+				}
 				if (filters.length !== 0) {
 					for (let filter of filters) {
 						if (
@@ -104,39 +131,6 @@ export default class MicroscopesBar extends React.PureComponent {
 					types[type] = types[type] + 1;
 				} else {
 					types[type] = 1;
-				}
-			});
-		}
-
-		if (isDefined(props.microscopes)) {
-			Object.keys(props.microscopes).forEach((key) => {
-				let obj = props.microscopes[key].microscope.MicroscopeStand;
-				let standType = null;
-				if (obj.Schema_ID.includes("Upright")) {
-					standType = "Upright";
-				} else if (obj.Schema_ID.includes("Inverted")) {
-					standType = "Inverted";
-				}
-				let manu = obj.Manufacturer;
-				let model = obj.Model;
-				let type = obj.Type;
-				// let testSelection = [];
-				// testSelection.push(standType);
-				// testSelection.push(obj.Manufacturer);
-				// testSelection.push(obj.Model);
-				// testSelection.push(obj.Type);
-
-				if (!Object.keys(standTypes).includes(standType)) {
-					standTypes[standType] = 0;
-				}
-				if (!Object.keys(manufacturers).includes(manu)) {
-					manufacturers[manu] = 0;
-				}
-				if (!Object.keys(models).includes(model)) {
-					models[model] = 0;
-				}
-				if (!Object.keys(types).includes(type)) {
-					types[type] = 0;
 				}
 			});
 		}
@@ -303,8 +297,39 @@ export default class MicroscopesBar extends React.PureComponent {
 				selectedItems = this.state.selectedStandTypes;
 		}
 
-		Object.keys(items).forEach((key) => {
+		let buttonStyle = {
+			background: "none",
+			outline: "none",
+			color: "grey",
+			border: "none",
+		};
+
+		let buttonCheckedStyle = {
+			background: "none",
+			outline: "none",
+			color: "black",
+			border: "none",
+		};
+		let contentStyle = {
+			width: "100%",
+			display: "flex",
+			flexDirection: "row",
+			justifyContent: "space-between",
+		};
+
+		for (let key of Object.keys(items)) {
+			//Object.keys(items).forEach((key) => {
 			let value = items[key];
+
+			let checked = selectedItems.includes(key);
+			let style = checked ? buttonCheckedStyle : buttonStyle;
+
+			let content = (
+				<div style={contentStyle}>
+					<div>{key}</div>
+					<div>{value}</div>
+				</div>
+			);
 			categoryItems.push(
 				<ToggleButton
 					id={"toggle-radio" + key}
@@ -313,10 +338,11 @@ export default class MicroscopesBar extends React.PureComponent {
 					variant="primary"
 					//name="radio"
 					value={key}
-					checked={selectedItems.includes(key)}
+					checked={checked}
 					onChange={(e) => this.onSelectFilterItem(index, key)}
+					style={style}
 				>
-					{key + " (" + value + ")"}
+					{content}
 				</ToggleButton>
 				// <PopoverTooltip
 				// 	key={`Tooltip-${item}`}
@@ -328,8 +354,8 @@ export default class MicroscopesBar extends React.PureComponent {
 				// 	}
 				// />
 			);
-		});
-		//
+			//});
+		}
 
 		return (
 			<ToggleButtonGroup
@@ -472,17 +498,17 @@ export default class MicroscopesBar extends React.PureComponent {
 			let index = categories.indexOf(category);
 			let simpleKey;
 			switch (index) {
+				case 0:
+					simpleKey = "Manufacturer";
+					break;
 				case 1:
-					simpleKey = "Manufacturer:";
+					simpleKey = "Model";
 					break;
 				case 2:
-					simpleKey = "Model:";
-					break;
-				case 3:
-					simpleKey = "Type:";
+					simpleKey = "Stand Type";
 					break;
 				default:
-					simpleKey = "Stand Type:";
+					simpleKey = "Type";
 			}
 			toolbar.push(
 				<Collapsible
