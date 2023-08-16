@@ -205,6 +205,7 @@ export default class Header extends React.PureComponent {
 		};
 		let styleImageContainer = {
 			width: "430px",
+			minWidth: "430px",
 			height: "60px",
 			marginLeft: "20px",
 		};

@@ -255,6 +255,7 @@ var Header = /*#__PURE__*/function (_React$PureComponent) {
 
       var styleImageContainer = {
         width: "430px",
+        minWidth: "430px",
         height: "60px",
         marginLeft: "20px"
       };
