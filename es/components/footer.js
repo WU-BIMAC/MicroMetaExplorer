@@ -168,8 +168,8 @@ var Footer = /*#__PURE__*/function (_React$PureComponent) {
         buttonsRight[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
           key: "TooltipButtonRight-" + index,
           position: "top",
-          title: _constants.home_tooltip.title,
-          content: _constants.home_tooltip.content,
+          title: _constants.open_mma_tooltip.title,
+          content: _constants.open_mma_tooltip.content,
           element: /*#__PURE__*/_react.default.createElement(_Button.default, {
             key: "ButtonRight-" + index,
             onClick: function onClick() {

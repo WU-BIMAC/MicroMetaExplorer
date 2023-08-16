@@ -8,7 +8,7 @@ import PopoverTooltip from "./popoverTooltip";
 
 const url = require("url");
 
-import { home_tooltip, string_home_img } from "../constants";
+import { home_tooltip, open_mma_tooltip, string_home_img } from "../constants";
 import { isDefined } from "../genericUtilities";
 
 export default class Footer extends React.PureComponent {
@@ -169,8 +169,8 @@ export default class Footer extends React.PureComponent {
 				<PopoverTooltip
 					key={"TooltipButtonRight-" + index}
 					position={"top"}
-					title={home_tooltip.title}
-					content={home_tooltip.content}
+					title={open_mma_tooltip.title}
+					content={open_mma_tooltip.content}
 					element={
 						<Button
 							key={"ButtonRight-" + index}
