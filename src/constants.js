@@ -286,6 +286,12 @@ export const menu_order = [
 export const string_bandpass_warning =
 	"PLEASE NOTE: If the number of WavelengthRange modules or sub-components (e.g., LEDModule) is changed, all values entered but not yet confirmed will be lost.";
 
+export const open_mma_tooltip = {
+	title: "Opne in MMA",
+	content: <p>Click here to open the selected Microscope in Micro-Meta App.</p>,
+	position: "top",
+};
+
 export const search_field_tooltip = {
 	title: "Search",
 	content: (
