@@ -167,25 +167,25 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
           });
           break;
         case 3:
-          items = this.state.selectedTypes;
+          items = this.state.selectedStandTypes;
           if (items.includes(item)) {
             var _index3 = items.indexOf(item);
             items.splice(_index3, 1);
           } else items.push(item);
           this.setState({
-            selectedTypes: items
+            selectedStandTypes: items
           }, function () {
             _this3.filterMicroscopes();
           });
           break;
         default:
-          items = this.state.selectedStandTypes;
+          items = this.state.selectedTypes;
           if (items.includes(item)) {
             var _index4 = items.indexOf(item);
             items.splice(_index4, 1);
           } else items.push(item);
           this.setState({
-            selectedStandTypes: items
+            selectedTypes: items
           }, function () {
             _this3.filterMicroscopes();
           });
@@ -220,7 +220,10 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
         background: "none",
         outline: "none",
         color: "grey",
-        border: "none"
+        border: "none",
+        textAlign: "left",
+        textWrap: "wrap",
+        overflowWrap: "break-word"
       };
       var buttonCheckedStyle = {
         background: "none",
@@ -395,13 +398,13 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
         var index = categories.indexOf(category);
         var simpleKey;
         switch (index) {
-          case 0:
+          case 1:
             simpleKey = "Manufacturer";
             break;
-          case 1:
+          case 2:
             simpleKey = "Model";
             break;
-          case 2:
+          case 3:
             simpleKey = "Stand Type";
             break;
           default:

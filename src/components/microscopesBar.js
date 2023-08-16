@@ -253,22 +253,22 @@ export default class MicroscopesBar extends React.PureComponent {
 				});
 				break;
 			case 3:
-				items = this.state.selectedTypes;
-				if (items.includes(item)) {
-					let index = items.indexOf(item);
-					items.splice(index, 1);
-				} else items.push(item);
-				this.setState({ selectedTypes: items }, () => {
-					this.filterMicroscopes();
-				});
-				break;
-			default:
 				items = this.state.selectedStandTypes;
 				if (items.includes(item)) {
 					let index = items.indexOf(item);
 					items.splice(index, 1);
 				} else items.push(item);
 				this.setState({ selectedStandTypes: items }, () => {
+					this.filterMicroscopes();
+				});
+				break;
+			default:
+				items = this.state.selectedTypes;
+				if (items.includes(item)) {
+					let index = items.indexOf(item);
+					items.splice(index, 1);
+				} else items.push(item);
+				this.setState({ selectedTypes: items }, () => {
 					this.filterMicroscopes();
 				});
 		}
@@ -302,6 +302,9 @@ export default class MicroscopesBar extends React.PureComponent {
 			outline: "none",
 			color: "grey",
 			border: "none",
+			textAlign: "left",
+			textWrap: "wrap",
+			overflowWrap: "break-word",
 		};
 
 		let buttonCheckedStyle = {
@@ -498,13 +501,13 @@ export default class MicroscopesBar extends React.PureComponent {
 			let index = categories.indexOf(category);
 			let simpleKey;
 			switch (index) {
-				case 0:
+				case 1:
 					simpleKey = "Manufacturer";
 					break;
-				case 1:
+				case 2:
 					simpleKey = "Model";
 					break;
-				case 2:
+				case 3:
 					simpleKey = "Stand Type";
 					break;
 				default:
