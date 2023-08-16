@@ -636,7 +636,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 			});
 		});
 
-		if (exactSearchTerms.length > 0 && exactSearchTerms.length > 0) {
+		if (exactSearchTerms.length > 0 && fuzzySearchTerms.length > 0) {
 			let longerComponents = null;
 			let shorterComponents = null;
 			if (fuzzySearchComponents.length > exactSearchComponents.length) {
@@ -650,7 +650,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 				if (shorterComponents.includes(component))
 					filteredComponents.push(component);
 			});
-		} else if (exactSearchTerms.length > 0) {
+		} else if (fuzzySearchTerms.length > 0) {
 			fuzzySearchComponents.forEach((component) => {
 				filteredComponents.push(component);
 			});
@@ -881,6 +881,9 @@ export default class MicroMetaExplorer extends React.PureComponent {
 							elementByType={elementByType}
 							styleBackground={this.props.styleBackground}
 							isDebug={this.props.isDebug}
+							onClickOpen={
+								isDefined(this.props.onClickOpen) ? this.onClickOpen : null
+							}
 						/>
 					</div>
 					<Footer

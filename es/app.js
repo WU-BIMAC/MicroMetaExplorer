@@ -647,7 +647,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
           }
         });
       });
-      if (exactSearchTerms.length > 0 && exactSearchTerms.length > 0) {
+      if (exactSearchTerms.length > 0 && fuzzySearchTerms.length > 0) {
         var longerComponents = null;
         var shorterComponents = null;
         if (fuzzySearchComponents.length > exactSearchComponents.length) {
@@ -660,7 +660,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         longerComponents.forEach(function (component) {
           if (shorterComponents.includes(component)) filteredComponents.push(component);
         });
-      } else if (exactSearchTerms.length > 0) {
+      } else if (fuzzySearchTerms.length > 0) {
         fuzzySearchComponents.forEach(function (component) {
           filteredComponents.push(component);
         });
@@ -878,7 +878,8 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
           components: this.state.searchedComponents,
           elementByType: elementByType,
           styleBackground: this.props.styleBackground,
-          isDebug: this.props.isDebug
+          isDebug: this.props.isDebug,
+          onClickOpen: (0, _genericUtilities.isDefined)(this.props.onClickOpen) ? this.onClickOpen : null
         })), /*#__PURE__*/_react.default.createElement(_footer.default, {
           overlaysContainer: this.overlaysContainerRef.current,
           dimensions: headerFooterDims,
