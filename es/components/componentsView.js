@@ -242,7 +242,7 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
     }
   }, {
     key: "createSubRows",
-    value: function createSubRows(maxDisplay, parentKey, index) {
+    value: function createSubRows(parentKey, index) {
       var filteredComponents = this.state.filteredComponents;
       var partialSchema = this.state.partialSchema;
       var properties = partialSchema[parentKey].properties;
@@ -279,12 +279,13 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
     }
   }, {
     key: "createRows",
-    value: function createRows(maxDisplay) {
+    value: function createRows() {
       var _this2 = this;
       var dataRows = [];
       var partialSchema = this.state.partialSchema;
       var schema = this.props.schema;
       var subCategoriesOrder = schema.subCategoriesOrder;
+      var currentChildrenComponents = this.state.currentChildrenComponents;
       //let components = this.state.filteredComponents;
       // console.log("schema");
       // console.log(this.props.schema);
@@ -296,19 +297,31 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       var categoryIndexes = [];
       var index = 0;
       Object.keys(subCategoriesOrder).forEach(function (key) {
-        if (!(0, _genericUtilities.isDefined)(partialSchema[key])) return;
-        //Object.keys(partialSchema).forEach((key) => {
-        var row = {
-          id: index,
-          key: key
-        };
-        dataRows.push(row);
-        var subRows = _this2.createSubRows(maxDisplay, key, index);
-        subRows.forEach(function (subRow) {
-          dataRows.push(subRow);
+        var tmpKeys = [];
+        if ((0, _genericUtilities.isDefined)(currentChildrenComponents[key])) {
+          var total = currentChildrenComponents[key];
+          for (var i = 0; i < total; i++) {
+            tmpKeys.push(key + "_" + i);
+          }
+        } else {
+          tmpKeys.push(key);
+        }
+        tmpKeys.forEach(function (element) {
+          var localKey = element;
+          if (!(0, _genericUtilities.isDefined)(partialSchema[localKey])) return;
+          //Object.keys(partialSchema).forEach((key) => {
+          var row = {
+            id: index,
+            key: localKey
+          };
+          dataRows.push(row);
+          var subRows = _this2.createSubRows(localKey, index);
+          subRows.forEach(function (subRow) {
+            dataRows.push(subRow);
+          });
+          categoryIndexes.push(index);
+          index = index + 1 + subRows.length;
         });
-        categoryIndexes.push(index);
-        index = index + 1 + subRows.length;
       });
 
       // console.log("categoryIndexes");
@@ -344,34 +357,17 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       };
       var filteredComponents = this.state.filteredComponents;
       var elementDisplayPosition = this.state.elementDisplayPosition;
-      var titles = {};
-      var maxFoundComponents = 0;
-      Object.keys(filteredComponents).forEach(function (key) {
-        var lastIndex = key.lastIndexOf("_");
-        titles[key] = {
-          title: key.slice(0, lastIndex)
-        };
-        var components = filteredComponents[key];
-        if (components.length > maxFoundComponents) maxFoundComponents = components.length;
-        if (components.length > 3) titles[key]["needsArrow"] = true;
-      });
       var dimensions = this.props.dimensions;
       var width = dimensions.width;
       //let paddingLeft = 0;
       var firstColumnSize = 100 / 5;
       var spacer = 56;
       var spacerPerc = spacer * 100 / width;
-      var maxDisplay = maxFoundComponents > 4 ? 4 : maxFoundComponents;
       var headerColumnSize = 100 - spacerPerc - firstColumnSize;
-      var columnSize = headerColumnSize;
-      if (Object.keys(titles).length > 1) {
-        var compareSize = Object.keys(titles).length;
-        headerColumnSize = headerColumnSize / compareSize;
-        maxDisplay = Math.round(4 / compareSize);
-        columnSize = headerColumnSize / maxDisplay;
-      } else {
-        columnSize = headerColumnSize / maxDisplay;
-      }
+      //let columnSize = headerColumnSize;
+      var compareSize = Object.keys(filteredComponents).length;
+      headerColumnSize = headerColumnSize / compareSize;
+      var maxCompareDisplay = _constants.number_max_compare / compareSize;
       var columns = [];
       columns.push({
         title: "Field Name",
@@ -390,11 +386,20 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
           maxWidth: firstColumnSize + "%"
         }
       });
+      var titles = {};
       Object.keys(filteredComponents).forEach(function (key) {
         var beginPosition = 0;
         if ((0, _genericUtilities.isDefined)(elementDisplayPosition[key])) beginPosition = elementDisplayPosition[key];
         var components = filteredComponents[key];
         var index = 0;
+        var lastIndex = key.lastIndexOf("_");
+        titles[key] = {
+          title: key.slice(0, lastIndex)
+        };
+        var maxDisplay = components.length > _constants.number_max_compare ? _constants.number_max_compare : components.length;
+        maxDisplay = Math.min(maxDisplay, maxCompareDisplay);
+        var columnSize = headerColumnSize / maxDisplay;
+        if (components.length > maxCompareDisplay) titles[key]["needsArrow"] = true;
         components.forEach(function (comp) {
           var name = comp.Name;
           var id = comp.ID;
@@ -442,6 +447,12 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
         marginLeft: "5px",
         marginRight: "5px"
       };
+      var styleOpenMMAButton = {
+        width: "60px",
+        height: "30px",
+        marginLeft: "5px",
+        marginRight: "5px"
+      };
       var headers = [];
       var arrowBackwardString = "<";
       var arrowForwardString = ">";
@@ -454,13 +465,36 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
         }
         backwardDisabled = currentPos === 0;
         var components = filteredComponents[key];
-        forwardDisabled = currentPos >= components.length - maxDisplay;
+        forwardDisabled = currentPos >= components.length - maxCompareDisplay;
         var element = titles[key];
         var arrowBackward = null;
         var arrowForward = null;
-        var headerElement = element.title;
+        var headerElement = [];
+        var headerTitle = "";
+        if ((0, _genericUtilities.isDefined)(_this3.props.onClickOpen)) {
+          headerTitle = /*#__PURE__*/_react.default.createElement("div", {
+            key: "Title-" + key
+          }, element.title, /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
+            key: "ButtonOpenMMA-" + key,
+            position: "top",
+            title: _constants.open_mma_tooltip.title,
+            content: _constants.open_mma_tooltip.content,
+            element: /*#__PURE__*/_react.default.createElement(_Button.default, {
+              key: "ButtonOpenMMA-" + key,
+              onClick: function onClick() {
+                return _this3.props.onClickOpen();
+              },
+              style: styleOpenMMAButton,
+              size: "sm",
+              variant: "primary"
+            }, ">", "MMA")
+          }));
+        } else {
+          headerTitle = /*#__PURE__*/_react.default.createElement("div", {
+            key: "Title-" + key
+          }, element.title);
+        }
         if (element["needsArrow"]) {
-          headerElement = [];
           arrowBackward = /*#__PURE__*/_react.default.createElement(_Button.default, {
             key: "ButtonBackward-" + key,
             onClick: function onClick() {
@@ -472,13 +506,11 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
             disabled: backwardDisabled
           }, arrowBackwardString);
           headerElement.push(arrowBackward);
-          headerElement.push( /*#__PURE__*/_react.default.createElement("div", {
-            key: "Title-" + key
-          }, element.title));
+          headerElement.push(headerTitle);
           arrowForward = /*#__PURE__*/_react.default.createElement(_Button.default, {
             key: "ButtonFoward-" + key,
             onClick: function onClick() {
-              return _this3.onClickForward(key, maxDisplay);
+              return _this3.onClickForward(key, maxCompareDisplay);
             },
             style: styleButton,
             size: "sm",
@@ -486,6 +518,8 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
             disabled: forwardDisabled
           }, arrowForwardString);
           headerElement.push(arrowForward);
+        } else {
+          headerElement.push(headerTitle);
         }
         headers.push( /*#__PURE__*/_react.default.createElement("div", {
           key: "HeaderColumn-" + key,
@@ -505,7 +539,7 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       var dataRows = [];
       var categoryIndexes = [];
       if ((0, _genericUtilities.isDefined)(filteredComponents) && Object.keys(filteredComponents).length > 0) {
-        var data = this.createRows(maxDisplay);
+        var data = this.createRows();
         dataRows = data.rows;
         categoryIndexes = data.categoryIndexes;
       }

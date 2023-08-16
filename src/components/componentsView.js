@@ -61,6 +61,7 @@ const url = require("url");
 
 import {
 	string_toolbar,
+	open_mma_tooltip,
 	string_default,
 	string_object,
 	string_array,
@@ -393,7 +394,7 @@ export default class ComponentsView extends React.PureComponent {
 		this.setState({ expandedIndexes: expandedIndexes });
 	}
 
-	createSubRows(maxDisplay, parentKey, index) {
+	createSubRows(parentKey, index) {
 		let filteredComponents = this.state.filteredComponents;
 		let partialSchema = this.state.partialSchema;
 
@@ -427,11 +428,12 @@ export default class ComponentsView extends React.PureComponent {
 		return rows;
 	}
 
-	createRows(maxDisplay) {
+	createRows() {
 		let dataRows = [];
 		let partialSchema = this.state.partialSchema;
 		let schema = this.props.schema;
 		let subCategoriesOrder = schema.subCategoriesOrder;
+		let currentChildrenComponents = this.state.currentChildrenComponents;
 		//let components = this.state.filteredComponents;
 		// console.log("schema");
 		// console.log(this.props.schema);
@@ -443,16 +445,28 @@ export default class ComponentsView extends React.PureComponent {
 		let categoryIndexes = [];
 		let index = 0;
 		Object.keys(subCategoriesOrder).forEach((key) => {
-			if (!isDefined(partialSchema[key])) return;
-			//Object.keys(partialSchema).forEach((key) => {
-			let row = { id: index, key: key };
-			dataRows.push(row);
-			let subRows = this.createSubRows(maxDisplay, key, index);
-			subRows.forEach((subRow) => {
-				dataRows.push(subRow);
+			let tmpKeys = [];
+			if (isDefined(currentChildrenComponents[key])) {
+				let total = currentChildrenComponents[key];
+				for (let i = 0; i < total; i++) {
+					tmpKeys.push(key + "_" + i);
+				}
+			} else {
+				tmpKeys.push(key);
+			}
+			tmpKeys.forEach((element) => {
+				let localKey = element;
+				if (!isDefined(partialSchema[localKey])) return;
+				//Object.keys(partialSchema).forEach((key) => {
+				let row = { id: index, key: localKey };
+				dataRows.push(row);
+				let subRows = this.createSubRows(localKey, index);
+				subRows.forEach((subRow) => {
+					dataRows.push(subRow);
+				});
+				categoryIndexes.push(index);
+				index = index + 1 + subRows.length;
 			});
-			categoryIndexes.push(index);
-			index = index + 1 + subRows.length;
 		});
 
 		// console.log("categoryIndexes");
@@ -488,35 +502,17 @@ export default class ComponentsView extends React.PureComponent {
 		let filteredComponents = this.state.filteredComponents;
 		let elementDisplayPosition = this.state.elementDisplayPosition;
 
-		let titles = {};
-		let maxFoundComponents = 0;
-		Object.keys(filteredComponents).forEach((key) => {
-			let lastIndex = key.lastIndexOf("_");
-			titles[key] = {
-				title: key.slice(0, lastIndex),
-			};
-			let components = filteredComponents[key];
-			if (components.length > maxFoundComponents)
-				maxFoundComponents = components.length;
-			if (components.length > 3) titles[key]["needsArrow"] = true;
-		});
 		let dimensions = this.props.dimensions;
 		let width = dimensions.width;
 		//let paddingLeft = 0;
 		let firstColumnSize = 100 / 5;
 		let spacer = 56;
 		let spacerPerc = (spacer * 100) / width;
-		let maxDisplay = maxFoundComponents > 4 ? 4 : maxFoundComponents;
 		let headerColumnSize = 100 - spacerPerc - firstColumnSize;
-		let columnSize = headerColumnSize;
-		if (Object.keys(titles).length > 1) {
-			let compareSize = Object.keys(titles).length;
-			headerColumnSize = headerColumnSize / compareSize;
-			maxDisplay = Math.round(4 / compareSize);
-			columnSize = headerColumnSize / maxDisplay;
-		} else {
-			columnSize = headerColumnSize / maxDisplay;
-		}
+		//let columnSize = headerColumnSize;
+		let compareSize = Object.keys(filteredComponents).length;
+		headerColumnSize = headerColumnSize / compareSize;
+		let maxCompareDisplay = number_max_compare / compareSize;
 
 		let columns = [];
 		columns.push({
@@ -538,12 +534,26 @@ export default class ComponentsView extends React.PureComponent {
 			},
 		});
 
+		let titles = {};
 		Object.keys(filteredComponents).forEach((key) => {
 			let beginPosition = 0;
 			if (isDefined(elementDisplayPosition[key]))
 				beginPosition = elementDisplayPosition[key];
 			let components = filteredComponents[key];
 			let index = 0;
+			let lastIndex = key.lastIndexOf("_");
+			titles[key] = {
+				title: key.slice(0, lastIndex),
+			};
+			let maxDisplay =
+				components.length > number_max_compare
+					? number_max_compare
+					: components.length;
+			maxDisplay = Math.min(maxDisplay, maxCompareDisplay);
+			let columnSize = headerColumnSize / maxDisplay;
+			if (components.length > maxCompareDisplay)
+				titles[key]["needsArrow"] = true;
+
 			components.forEach((comp) => {
 				let name = comp.Name;
 				let id = comp.ID;
@@ -592,6 +602,13 @@ export default class ComponentsView extends React.PureComponent {
 			marginLeft: "5px",
 			marginRight: "5px",
 		};
+		let styleOpenMMAButton = {
+			width: "60px",
+			height: "30px",
+			marginLeft: "5px",
+			marginRight: "5px",
+		};
+
 		let headers = [];
 		let arrowBackwardString = "<";
 		let arrowForwardString = ">";
@@ -608,13 +625,40 @@ export default class ComponentsView extends React.PureComponent {
 			}
 			backwardDisabled = currentPos === 0;
 			let components = filteredComponents[key];
-			forwardDisabled = currentPos >= components.length - maxDisplay;
+			forwardDisabled = currentPos >= components.length - maxCompareDisplay;
 			let element = titles[key];
 			let arrowBackward = null;
 			let arrowForward = null;
-			let headerElement = element.title;
+			let headerElement = [];
+			let headerTitle = "";
+			if (isDefined(this.props.onClickOpen)) {
+				headerTitle = (
+					<div key={"Title-" + key}>
+						{element.title}
+						<PopoverTooltip
+							key={"ButtonOpenMMA-" + key}
+							position={"top"}
+							title={open_mma_tooltip.title}
+							content={open_mma_tooltip.content}
+							element={
+								<Button
+									key={"ButtonOpenMMA-" + key}
+									onClick={() => this.props.onClickOpen()}
+									style={styleOpenMMAButton}
+									size="sm"
+									variant="primary"
+								>
+									{">"}MMA
+								</Button>
+							}
+						/>
+					</div>
+				);
+			} else {
+				headerTitle = <div key={"Title-" + key}>{element.title}</div>;
+			}
+
 			if (element["needsArrow"]) {
-				headerElement = [];
 				arrowBackward = (
 					<Button
 						key={"ButtonBackward-" + key}
@@ -628,11 +672,11 @@ export default class ComponentsView extends React.PureComponent {
 					</Button>
 				);
 				headerElement.push(arrowBackward);
-				headerElement.push(<div key={"Title-" + key}>{element.title}</div>);
+				headerElement.push(headerTitle);
 				arrowForward = (
 					<Button
 						key={"ButtonFoward-" + key}
-						onClick={() => this.onClickForward(key, maxDisplay)}
+						onClick={() => this.onClickForward(key, maxCompareDisplay)}
 						style={styleButton}
 						size="sm"
 						variant="primary"
@@ -642,6 +686,8 @@ export default class ComponentsView extends React.PureComponent {
 					</Button>
 				);
 				headerElement.push(arrowForward);
+			} else {
+				headerElement.push(headerTitle);
 			}
 			headers.push(
 				<div key={"HeaderColumn-" + key} style={styleHeaderColumn}>
@@ -668,7 +714,7 @@ export default class ComponentsView extends React.PureComponent {
 			isDefined(filteredComponents) &&
 			Object.keys(filteredComponents).length > 0
 		) {
-			let data = this.createRows(maxDisplay);
+			let data = this.createRows();
 			dataRows = data.rows;
 			categoryIndexes = data.categoryIndexes;
 		}
