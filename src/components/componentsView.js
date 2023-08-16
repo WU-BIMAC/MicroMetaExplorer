@@ -92,6 +92,8 @@ export default class ComponentsView extends React.PureComponent {
 
 		this.onClickBackward = this.onClickBackward.bind(this);
 		this.onClickForward = this.onClickForward.bind(this);
+
+		this.onClickOpen = this.onClickOpen.bind(this);
 	}
 
 	static getDerivedStateFromProps(props, state) {
@@ -362,6 +364,18 @@ export default class ComponentsView extends React.PureComponent {
 		this.setState({
 			elementDisplayPosition: Object.assign({}, elementDisplayPosition),
 		});
+	}
+
+	onClickOpen(key) {
+		if (this.props.isDebug) {
+			console.log("onClickOpen");
+		}
+		let microscope = this.props.microscopes[key].microscope;
+		if (isDefined(microscope)) {
+			console.log("open microscope");
+			console.log(microscope);
+			this.props.onClickOpen(microscope);
+		}
 	}
 
 	onParentChildData(row, rows) {
@@ -643,7 +657,7 @@ export default class ComponentsView extends React.PureComponent {
 							element={
 								<Button
 									key={"ButtonOpenMMA-" + key}
-									onClick={() => this.props.onClickOpen()}
+									onClick={() => this.onClickOpen(key)}
 									style={styleOpenMMAButton}
 									size="sm"
 									variant="primary"

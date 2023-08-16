@@ -877,6 +877,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 						<ComponentsView
 							dimensions={canvasDims}
 							schema={compSchema}
+							microscopes={microscopes}
 							components={this.state.searchedComponents}
 							elementByType={elementByType}
 							styleBackground={this.props.styleBackground}

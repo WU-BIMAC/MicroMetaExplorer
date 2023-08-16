@@ -875,6 +875,7 @@ var MicroMetaExplorer = /*#__PURE__*/function (_React$PureComponent) {
         }), /*#__PURE__*/_react.default.createElement(_componentsView.default, {
           dimensions: canvasDims,
           schema: compSchema,
+          microscopes: microscopes,
           components: this.state.searchedComponents,
           elementByType: elementByType,
           styleBackground: this.props.styleBackground,

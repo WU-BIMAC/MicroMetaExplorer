@@ -166,6 +166,7 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
     _this.createRows = _this.createRows.bind(_assertThisInitialized(_this));
     _this.onClickBackward = _this.onClickBackward.bind(_assertThisInitialized(_this));
     _this.onClickForward = _this.onClickForward.bind(_assertThisInitialized(_this));
+    _this.onClickOpen = _this.onClickOpen.bind(_assertThisInitialized(_this));
     return _this;
   }
   _createClass(ComponentsView, [{
@@ -203,6 +204,19 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       this.setState({
         elementDisplayPosition: Object.assign({}, elementDisplayPosition)
       });
+    }
+  }, {
+    key: "onClickOpen",
+    value: function onClickOpen(key) {
+      if (this.props.isDebug) {
+        console.log("onClickOpen");
+      }
+      var microscope = this.props.microscopes[key].microscope;
+      if ((0, _genericUtilities.isDefined)(microscope)) {
+        console.log("open microscope");
+        console.log(microscope);
+        this.props.onClickOpen(microscope);
+      }
     }
   }, {
     key: "onParentChildData",
@@ -482,7 +496,7 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
             element: /*#__PURE__*/_react.default.createElement(_Button.default, {
               key: "ButtonOpenMMA-" + key,
               onClick: function onClick() {
-                return _this3.props.onClickOpen();
+                return _this3.onClickOpen(key);
               },
               style: styleOpenMMAButton,
               size: "sm",
