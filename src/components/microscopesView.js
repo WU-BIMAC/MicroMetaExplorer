@@ -341,11 +341,11 @@ export default class MicroscopesView extends React.PureComponent {
 											<h5>Microscope Stand Details:</h5>
 											<ul>
 												<li>
-													Origin: {rowData.microscope.MicroscopeStand.Origin}
-												</li>
-												<li>
 													Catalog Number:{" "}
 													{rowData.microscope.MicroscopeStand.CatalogNumber}
+												</li>
+												<li>
+													Origin: {rowData.microscope.MicroscopeStand.Origin}
 												</li>
 											</ul>
 											<h5>Components:</h5>
