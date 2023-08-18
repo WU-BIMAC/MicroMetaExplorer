@@ -147,6 +147,13 @@ export default class ComponentsBar extends React.PureComponent {
 			flexDirection: "row",
 			justifyContent: "space-between",
 		};
+
+		let styleLabel = {
+			textAlign: "left",
+			textWrap: "wrap",
+			overflowWrap: "anywhere",
+		};
+
 		//for (let key of Object.keys(category)) {
 		Object.keys(category).forEach((key) => {
 			if (!isDefined(category[key]) || typeof category[key] !== string_object)
@@ -158,7 +165,7 @@ export default class ComponentsBar extends React.PureComponent {
 
 			let content = (
 				<div style={contentStyle}>
-					<div>{key}</div>
+					<div style={styleLabel}>{key}</div>
 					<div>{value}</div>
 				</div>
 			);

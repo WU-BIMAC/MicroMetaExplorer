@@ -104,6 +104,12 @@ var ComponentsBar = /*#__PURE__*/function (_React$PureComponent) {
         flexDirection: "row",
         justifyContent: "space-between"
       };
+      var styleLabel = {
+        textAlign: "left",
+        textWrap: "wrap",
+        overflowWrap: "anywhere"
+      };
+
       //for (let key of Object.keys(category)) {
       Object.keys(category).forEach(function (key) {
         if (!(0, _genericUtilities.isDefined)(category[key]) || _typeof(category[key]) !== _constants.string_object) return;
@@ -113,7 +119,9 @@ var ComponentsBar = /*#__PURE__*/function (_React$PureComponent) {
         var value = subCategory.value;
         var content = /*#__PURE__*/_react.default.createElement("div", {
           style: contentStyle
-        }, /*#__PURE__*/_react.default.createElement("div", null, key), /*#__PURE__*/_react.default.createElement("div", null, value));
+        }, /*#__PURE__*/_react.default.createElement("div", {
+          style: styleLabel
+        }, key), /*#__PURE__*/_react.default.createElement("div", null, value));
         categoryItems.push( /*#__PURE__*/_react.default.createElement(_ToggleButton.default, {
           id: "toggle-radio" + key,
           key: "toggle-radio" + key,

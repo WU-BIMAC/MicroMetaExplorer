@@ -302,9 +302,6 @@ export default class MicroscopesBar extends React.PureComponent {
 			outline: "none",
 			color: "grey",
 			border: "none",
-			textAlign: "left",
-			textWrap: "wrap",
-			overflowWrap: "break-word",
 		};
 
 		let buttonCheckedStyle = {
@@ -320,6 +317,12 @@ export default class MicroscopesBar extends React.PureComponent {
 			justifyContent: "space-between",
 		};
 
+		let styleLabel = {
+			textAlign: "left",
+			textWrap: "wrap",
+			overflowWrap: "anywhere",
+		};
+
 		for (let key of Object.keys(items)) {
 			//Object.keys(items).forEach((key) => {
 			let value = items[key];
@@ -329,7 +332,7 @@ export default class MicroscopesBar extends React.PureComponent {
 
 			let content = (
 				<div style={contentStyle}>
-					<div>{key}</div>
+					<div style={styleLabel}>{key}</div>
 					<div>{value}</div>
 				</div>
 			);

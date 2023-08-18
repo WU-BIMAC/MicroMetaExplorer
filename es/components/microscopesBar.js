@@ -220,10 +220,7 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
         background: "none",
         outline: "none",
         color: "grey",
-        border: "none",
-        textAlign: "left",
-        textWrap: "wrap",
-        overflowWrap: "break-word"
+        border: "none"
       };
       var buttonCheckedStyle = {
         background: "none",
@@ -237,6 +234,11 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
         flexDirection: "row",
         justifyContent: "space-between"
       };
+      var styleLabel = {
+        textAlign: "left",
+        textWrap: "wrap",
+        overflowWrap: "anywhere"
+      };
       var _loop = function _loop() {
         var key = _Object$keys[_i];
         //Object.keys(items).forEach((key) => {
@@ -245,7 +247,9 @@ var MicroscopesBar = /*#__PURE__*/function (_React$PureComponent) {
         var style = checked ? buttonCheckedStyle : buttonStyle;
         var content = /*#__PURE__*/_react.default.createElement("div", {
           style: contentStyle
-        }, /*#__PURE__*/_react.default.createElement("div", null, key), /*#__PURE__*/_react.default.createElement("div", null, value));
+        }, /*#__PURE__*/_react.default.createElement("div", {
+          style: styleLabel
+        }, key), /*#__PURE__*/_react.default.createElement("div", null, value));
         categoryItems.push( /*#__PURE__*/_react.default.createElement(_ToggleButton.default, {
           id: "toggle-radio" + key,
           key: "toggle-radio" + key,
