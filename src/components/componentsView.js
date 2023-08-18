@@ -138,6 +138,7 @@ export default class ComponentsView extends React.PureComponent {
 				filteredComponents: props.components,
 				currentChildrenComponents: currentChildrenComponents,
 				partialSchema: partialSchema,
+				elementDisplayPosition: {},
 			};
 		}
 		return null;
@@ -415,8 +416,6 @@ export default class ComponentsView extends React.PureComponent {
 		let properties = partialSchema[parentKey].properties;
 		let counter = partialSchema[parentKey].counter;
 		let container = partialSchema[parentKey].container;
-		// console.log("createSubRows-properties");
-		// console.log(properties);
 		let rows = [];
 		let newIndex = index + 1;
 		Object.keys(properties).forEach((property) => {
@@ -429,7 +428,12 @@ export default class ComponentsView extends React.PureComponent {
 					let name = comp.Name;
 					let id = comp.ID;
 					let field = "value-" + name.replaceAll(" ", "_") + "_" + id;
-					if (counter !== -1 && isDefined(comp[container][counter][property])) {
+					if (
+						counter !== -1 &&
+						isDefined(comp[container]) &&
+						isDefined(comp[container][counter]) &&
+						isDefined(comp[container][counter][property])
+					) {
 						row[field] = comp[container][counter][property];
 					} else if (isDefined(comp[property])) {
 						row[field] = comp[property];

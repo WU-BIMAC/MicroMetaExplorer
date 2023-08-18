@@ -262,8 +262,6 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
       var properties = partialSchema[parentKey].properties;
       var counter = partialSchema[parentKey].counter;
       var container = partialSchema[parentKey].container;
-      // console.log("createSubRows-properties");
-      // console.log(properties);
       var rows = [];
       var newIndex = index + 1;
       Object.keys(properties).forEach(function (property) {
@@ -279,7 +277,7 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
             var name = comp.Name;
             var id = comp.ID;
             var field = "value-" + name.replaceAll(" ", "_") + "_" + id;
-            if (counter !== -1 && (0, _genericUtilities.isDefined)(comp[container][counter][property])) {
+            if (counter !== -1 && (0, _genericUtilities.isDefined)(comp[container]) && (0, _genericUtilities.isDefined)(comp[container][counter]) && (0, _genericUtilities.isDefined)(comp[container][counter][property])) {
               row[field] = comp[container][counter][property];
             } else if ((0, _genericUtilities.isDefined)(comp[property])) {
               row[field] = comp[property];
@@ -627,7 +625,8 @@ var ComponentsView = /*#__PURE__*/function (_React$PureComponent) {
           originalComponents: props.components,
           filteredComponents: props.components,
           currentChildrenComponents: currentChildrenComponents,
-          partialSchema: partialSchema
+          partialSchema: partialSchema,
+          elementDisplayPosition: {}
         };
       }
       return null;
