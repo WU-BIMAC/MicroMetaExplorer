@@ -19,7 +19,7 @@ MicroMetaExplorer is a key component of the **Micro-Meta** project, designed to 
 
 ## Contributing
 
-We welcome contributions to the MicroMetaExplorer project! If you'd like to contribute, please follow the [CONTRIBUTING](CONTRIBUTING) guidelines.
+We welcome contributions to the MicroMetaExplorer project! If you'd like to contribute, please follow the [CONTRIBUTING](CONTRIBUTING.md) guidelines.
 
 ## License
 
