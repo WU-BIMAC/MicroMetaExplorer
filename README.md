@@ -19,8 +19,6 @@ MicroMetaExplorer is a key component of the **Micro-Meta** project, designed to 
 3. **Compare Configurations**: Select microscopes of interest to compare their hardware configurations in a tabular format.
 4. **Launch Micro-Meta App**: Launch the Micro-Meta App viewer to visualize and edit the identified Microscope-Hardware file.
 
-<br>
-
 ## Contributing
 
 We welcome contributions to the MicroMetaExplorer project! Please follow the [CONTRIBUTING](CONTRIBUTING.md) guidelines if you'd like to contribute.
