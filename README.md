@@ -19,16 +19,11 @@ MicroMetaExplorer is a key component of the **Micro-Meta** project, designed to 
 
 ## Contributing
 
-We welcome contributions to the MicroMetaExplorer project! If you'd like to contribute, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix.
-3. Commit your changes and push them to your fork.
-4. Submit a pull request with a detailed description of your changes.
+We welcome contributions to the MicroMetaExplorer project! If you'd like to contribute, please follow the [CONTRIBUTING](CONTRIBUTING) guidelines.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for more details.
 
 ## Acknowledgments
 
