@@ -1,11 +1,11 @@
 =========================================================================
 =========================== Micro-Meta App Viewer ==============================
 =========================================================================
-Copyright (C) 2021 University of Massachusetts Medical School 
+Copyright (C) 2025 University of Massachusetts Medical School 
 Alessandro Rigano (Program in Molecular Medicine)
 Caterina Strambio De Castillia (Program in Molecular Medicine)
 
-Created by the Micro-Meta App team: Alex Rigano, Alexander Balashov, Shannon Ehmsen, Serkan Utku Ozturk, Burak Alver, David Grunwald, and Caterina Strambio-De-Castillia.
+Created by the Micro-Meta App team at the Strambio-De-Castillia Lab: Alex Rigano, and Caterina Strambio-De-Castillia.
 
 Micro-Meta App is licensed and distributed under the GPL License version 3.
 =========================================================================
@@ -31,9 +31,9 @@ We would like to thank Kevin Fogarty, Lawrence Lifshitz and Karl Bellve at the B
 
 This project could never have been carried out without the leadership, insightful discussions, support and friendship of all OME consortium members with particular reference to Jason Swedlow, Josh Moore, Chris Allan, Jean Marie Burel, and Will Moore. We are massively indebted to the RIKEN community for their fantastic work to bring open science into biology. We would like to particularly acknowledge Norio Kobayashi and Shuichi Onami for their friendship and support. 
 
-We thank all members of Bioimaging North America (in particular Lisa Cameron, Michelle Itano, and Paula Montero-Llopis), German Bioimaging (in particular Susanne Kunis and Stephanie Wiedkamp Peters), Euro-Bioimaging (in particular Antje Keppler and Federica Paina) and QUAREP-LiMi (in particular all members of the Working Group 7 - Metadata; quarep.edu) for invaluable intellectual input, fruitful discussions and advice. We are also indebted to the following individuals for their continued and steadfast support: Jeremy Luban, Roger Davis, and Thoru Pederson at the University of Massachusetts Medical School; Burak Alver, Joan Ritland, Rob Singer, and Warren Zipfel at the 4D Nucleome Project; Ian Fingerman, John Satterlee, Judy Mietz, Richard Conroy, and Olivier Blondel at the NIH. 
+We thank Judith Lacoste at MIACellavie, Jim Chambers at UMass Amherst, Claire Brown at McGill University and all members of Bioimaging North America (especially, Nikki Bialy, Nathalie Gaudreault, Vanessa Orr), and QUAREP-LiMi (in particular all members of the Working Group 7 - Metadata; quarep.edu) for invaluable intellectual input, fruitful discussions and advice. We are also indebted to the following individuals for their continued and steadfast support: Jeremy Luban, Roger Davis, and Thoru Pederson at the University of Massachusetts Medical School; Sarah Aumkfkolk, Lacra Bintu, Rahi Navelkar, Peter Park, Andrew Schroeder, at the 4D Nucleome Project; Ian Fingerman, John Satterlee, Judy Mietz, Richard Conroy, and Olivier Blondel at the NIH. 
 
-This work was supported by NIH grant #1U01EB021238 and NSF grant 1917206 to D.G., NIH grant # U01CA200059 to C.S.D.C and D.G., NIH grant # 5R01GM126045-04 to R.C. and by grant #2019-198155 (5022) awarded to C.S.D.C. by the Chan Zuckerberg Initiative as part of their Imaging Scientist Program.
+This work was supported by NIH grants #2U01CA200059-06, #1U01CA260699-01 and #1UM1HG011536-01; and by grants #2019-198155 & 2021-244318 (5022) (5022) awarded to C.S.D.C. by the Chan Zuckerberg Initiative as part of their Imaging Scientist Program.
 
 =========================================================================
 ========================== Key people contacts ==========================
