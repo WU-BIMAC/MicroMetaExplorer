@@ -149,9 +149,9 @@ export default class MicroMetaExplorer extends React.PureComponent {
 			setTimeout(() => {
 				this.props.onLoadMicroscopes(
 					this.handleCompleteLoadMicroscopes,
-					resolve
+					resolve,
 				);
-			}, 1000)
+			}, 1000),
 		);
 	}
 
@@ -177,7 +177,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 				filteredMicroscopes: filteredMicroscopes,
 				searchedMicroscopes: filteredMicroscopes,
 			},
-			resolve()
+			resolve(),
 		);
 	}
 
@@ -185,7 +185,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 		return new Promise((resolve, reject) =>
 			setTimeout(() => {
 				this.props.onLoadSchema(this.handleCompleteLoadSchema, resolve);
-			}, 1000)
+			}, 1000),
 		);
 	}
 
@@ -250,7 +250,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 			},
 			() => {
 				this.props.onClickHome();
-			}
+			},
 		);
 	}
 
@@ -304,7 +304,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 					let subFilteredProperties = this.onSubSearch(
 						searchTerms,
 						withApices,
-						object
+						object,
 					);
 					for (let s of subFilteredProperties) {
 						filteredProperties.push(s);
@@ -315,7 +315,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 				let subFilteredProperties = this.onSubSearch(
 					searchTerms,
 					withApices,
-					object
+					object,
 				);
 				for (let s of subFilteredProperties) {
 					filteredProperties.push(s);
@@ -363,7 +363,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 			let subFilteredProperties = this.onSubSearch(
 				searchTerms,
 				withApices,
-				microscope
+				microscope,
 			);
 			if (this.props.isDebug) {
 				console.log(microscope.Name);
@@ -540,7 +540,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 				let subFilteredProperties = this.onSubSearch(
 					searchTerms,
 					withApices,
-					component
+					component,
 				);
 				for (let s of subFilteredProperties) {
 					if (!filteredProperties.includes(s)) filteredProperties.push(s);
@@ -713,7 +713,7 @@ export default class MicroMetaExplorer extends React.PureComponent {
 		width = Math.max(800, width);
 		height = Math.max(600, height);
 
-		let toolbarWidth = 300;
+		let toolbarWidth = 350;
 		if (this.state.isToolbarHidden) {
 			toolbarWidth = 50;
 		}
