@@ -24,6 +24,8 @@ import {
 	search_field_tooltip,
 	search_button_tooltip,
 	search_clear_tooltip,
+	string_search_img,
+	string_search_clear_img,
 } from "../constants";
 
 import { isDefined } from "../genericUtilities";
@@ -40,7 +42,7 @@ export default class Header extends React.PureComponent {
 			isLoading: false,
 			selections: [],
 		};
-
+		this.isHovered = false;
 		this.formRef = React.createRef();
 
 		this.onClickHelp = this.onClickHelp.bind(this);
@@ -59,7 +61,7 @@ export default class Header extends React.PureComponent {
 	onClickHelp() {
 		window.open(
 			"https://micrometaapp-docs.readthedocs.io/en/latest/docs/tutorials/index.html#step-by-step-instructions",
-			"_blank"
+			"_blank",
 		);
 	}
 
@@ -186,6 +188,8 @@ export default class Header extends React.PureComponent {
 	render() {
 		let width = this.props.dimensions.width;
 		let height = this.props.dimensions.height;
+		let isHovered = this.state.isHovered;
+		console.log("isHovered: " + isHovered);
 
 		const style = {
 			backgroundColor: "LightGray",
@@ -220,6 +224,14 @@ export default class Header extends React.PureComponent {
 			height: "50px",
 			margin: "5px",
 		};
+		let styleSearchWrapper = {
+			width: "250px",
+			minWidth: "1000px",
+			height: "50px",
+			margin: "5px",
+			position: "relative", // Context for absolute positioning
+			display: "inline-block",
+		};
 		let styleSearch = {
 			width: "250px",
 			minWidth: "1000px",
@@ -232,6 +244,19 @@ export default class Header extends React.PureComponent {
 			height: "50px",
 			margin: "5px",
 		};
+		let styleButtonClear = {
+			position: "absolute",
+			top: "2px",
+			right: "2px",
+			width: "40px",
+			minWidth: "40px",
+			height: "40px",
+			//margin: "1px",
+			visibility:
+				isHovered && this.formRef.current.inputNode.value
+					? "visible"
+					: "hidden",
+		};
 		const styleValidation = {
 			position: "absolute",
 			verticalAlign: "middle",
@@ -241,7 +266,7 @@ export default class Header extends React.PureComponent {
 
 		let bigLogoImg = url.resolve(
 			this.props.imagesPathPNG,
-			string_logo_img_micro_bk
+			string_logo_img_micro_bk,
 		);
 		let bigLogoPath =
 			bigLogoImg +
@@ -252,6 +277,12 @@ export default class Header extends React.PureComponent {
 		let logoImg = url.resolve(this.props.imagesPathPNG, string_logo_img_no_bk);
 		let helpImg = url.resolve(this.props.imagesPathSVG, string_help_img);
 		let aboutImg = url.resolve(this.props.imagesPathSVG, string_about_img);
+		let searchImg = url.resolve(this.props.imagesPathSVG, string_search_img);
+		let searchClearImg = url.resolve(
+			this.props.imagesPathSVG,
+			string_search_clear_img,
+		);
+
 		let logoPath =
 			logoImg +
 			(logoImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
@@ -261,6 +292,14 @@ export default class Header extends React.PureComponent {
 		let aboutPath =
 			aboutImg +
 			(aboutImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
+		let searchPath =
+			searchImg +
+			(searchImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
+		let searchClearPath =
+			searchClearImg +
+			(searchClearImg.indexOf("githubusercontent.com") > -1
+				? "?sanitize=true"
+				: "");
 
 		let buttons = [];
 		let index = 0;
@@ -301,21 +340,40 @@ export default class Header extends React.PureComponent {
 				title={search_field_tooltip.title}
 				content={search_field_tooltip.content}
 				element={
-					<AsyncTypeahead
-						key={"AsyncTypeahead-" + index}
-						filterBy={() => true}
-						id="basic-typeahead-multiple"
-						isLoading={this.state.isLoading}
-						minLength={3}
-						onSearch={this.onSearchInput}
-						options={this.state.suggestions}
-						placeholder="Search..."
-						ref={this.formRef}
-						onChange={this.onSearchChange}
-						selected={selected}
-						multiple
-						style={styleSearch}
-					/>
+					<div
+						style={styleSearchWrapper}
+						onMouseEnter={() => this.setState({ isHovered: true })}
+						onMouseLeave={() => this.setState({ isHovered: false })}
+					>
+						<AsyncTypeahead
+							key={"AsyncTypeahead-" + index}
+							filterBy={() => true}
+							id="basic-typeahead-multiple"
+							isLoading={this.state.isLoading}
+							minLength={3}
+							onSearch={this.onSearchInput}
+							options={this.state.suggestions}
+							placeholder="Search..."
+							ref={this.formRef}
+							onChange={this.onSearchChange}
+							selected={selected}
+							multiple
+							style={styleSearch}
+						/>
+						<Button
+							key={"Button-" + index}
+							onClick={this.onClearSearch}
+							style={styleButtonClear}
+							size="lg"
+							variant="outline-secondary"
+						>
+							<img
+								src={searchClearPath}
+								alt={searchClearImg}
+								style={styleImage}
+							/>
+						</Button>
+					</div>
 				}
 			/>
 		);
@@ -332,31 +390,36 @@ export default class Header extends React.PureComponent {
 						onClick={this.onClickSearch}
 						style={styleButtonHelp}
 						size="lg"
+						variant="outline-secondary"
 					>
-						S
+						<img src={searchPath} alt={searchImg} style={styleImage} />
 					</Button>
 				}
 			/>
 		);
-		index++;
-		buttons[index] = (
-			<PopoverTooltip
-				key={"TooltipButton-" + index}
-				position={search_clear_tooltip.position}
-				title={search_clear_tooltip.title}
-				content={search_clear_tooltip.content}
-				element={
-					<Button
-						key={"Button-" + index}
-						onClick={this.onClearSearch}
-						style={styleButtonHelp}
-						size="lg"
-					>
-						C
-					</Button>
-				}
-			/>
-		);
+		//index++;
+		//buttons[index] = (
+		//	<PopoverTooltip
+		//		key={"TooltipButton-" + index}
+		//		position={search_clear_tooltip.position}
+		//		title={search_clear_tooltip.title}
+		//		content={search_clear_tooltip.content}
+		//		element={
+		//			<Button
+		//				key={"Button-" + index}
+		//				onClick={this.onClearSearch}
+		//				style={styleButtonClear}
+		//				size="lg"
+		//			>
+		//				<img
+		//					src={searchClearPath}
+		//					alt={searchClearImg}
+		//					style={styleImage}
+		//				/>
+		//			</Button>
+		//		}
+		//	/>
+		//);
 		index++;
 		buttons[index] = (
 			<PopoverTooltip
@@ -474,7 +537,7 @@ export default class Header extends React.PureComponent {
 										Micro-Meta Explorer is an open-source, community-defined,
 										and easy-to-use software platform that provides an intuitive
 										visual guide for exploring and comparing the hardware
-										configuration of available microscopes based on the
+										configuration of available microscopes based on the{" "}
 										<a href="https://github.com/WU-BIMAC/NBOMicroscopyMetadataSpecs/tree/master/Model/stable%20version/v02-01">
 											4DN-BINA-QUAREP extension
 										</a>{" "}
