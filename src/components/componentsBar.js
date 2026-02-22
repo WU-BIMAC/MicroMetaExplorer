@@ -152,6 +152,8 @@ export default class ComponentsBar extends React.PureComponent {
 			textAlign: "left",
 			textWrap: "wrap",
 			overflowWrap: "anywhere",
+			whiteSpace: "break-spaces",
+			wordBreak: "break-word",
 		};
 
 		//for (let key of Object.keys(category)) {
