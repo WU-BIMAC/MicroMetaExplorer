@@ -213,7 +213,7 @@ export default class MicroscopesView extends React.PureComponent {
 			borderTop: "2px solid",
 			borderLeft: "2px solid",
 			color: "black",
-			overflow: "hidden",
+			overflow: "auto",
 			scrollbars: "auto",
 		};
 		let styleTable = {
@@ -252,7 +252,8 @@ export default class MicroscopesView extends React.PureComponent {
 			</div>
 		);
 
-		let pageSize = Math.floor(this.props.dimensions.height / 80);
+		//let pageSize = Math.floor(this.props.dimensions.height / 80);
+		let pageSize = 10;
 
 		return (
 			<div style={style}>
@@ -277,12 +278,21 @@ export default class MicroscopesView extends React.PureComponent {
 									let numberCameras = 0;
 									for (let comp of rowData.microscope.components) {
 										if (!isDefined(comp.Category)) continue;
-										if (comp.Category.includes("LightSource"))
+										if (comp.Category.match(/LightSource$/))
 											numberLightSources++;
-										if (comp.Schema_ID.includes("Objective"))
+										//if (comp.Category.includes("LightSource")) numberLightSources++;
+										if (comp.Schema_ID.match(/Objective.json$/))
 											numberObjectives++;
-										if (comp.Category.includes("Filter")) numberFilters++;
-										if (comp.Schema_ID.includes("Dichroic")) numberDichroics++;
+										//if (comp.Schema_ID.includes("Objective")) numberObjectives++;
+										if (
+											comp.Category.includes("Filter") ||
+											(comp.Schema_ID.match(/Filter.json$/) &&
+												comp.Category.includes("FluorescenceLightPath"))
+										)
+											numberFilters++;
+										if (comp.Schema_ID.match(/Dichroic.json$/))
+											numberDichroics++;
+										//if (comp.Schema_ID.includes("Dichroic")) numberDichroics++;
 										if (comp.Category.includes("Lens")) numberLens++;
 										if (
 											comp.Schema_ID.includes("Mirror") ||
