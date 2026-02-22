@@ -808,7 +808,6 @@ class MicroMetaExplorer extends _react.default.PureComponent {
     })), /*#__PURE__*/_react.default.createElement(_footer.default, {
       overlaysContainer: this.overlaysContainerRef.current,
       dimensions: headerFooterDims,
-      imagesPathPNG: imagesPathPNG,
       imagesPath: imagesPathSVG,
       isDebug: this.props.isDebug,
       onClickParentHome: (0, _genericUtilities.isDefined)(this.props.onClickHome) ? this.onClickParentHome : null,

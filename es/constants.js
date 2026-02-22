@@ -520,7 +520,7 @@ const home_tooltip = {
 exports.home_tooltip = home_tooltip;
 const compare_tooltip = {
   title: "Compare Selected Microscopes",
-  content: /*#__PURE__*/_react.default.createElement("p", null, "Compare up to 4 different Instruments."),
+  content: /*#__PURE__*/_react.default.createElement("p", null, "Compare the hardware components of the selected microscopes. Please note the maximum number of microscopes that can be compared side by side is three."),
   position: "top"
 };
 exports.compare_tooltip = compare_tooltip;
