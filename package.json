@@ -32,7 +32,7 @@
 		"jquery": "^3.6.0",
 		"jsonschema": "^1.4.0",
 		"lodash": "^4.17.21",
-		"material-table": "^2.0.3",
+		"material-table": "^2.0.6",
 		"react-app-polyfill": "^3.0.0",
 		"react-archer": "3.3.0",
 		"react-bootstrap": "1.4.0",
