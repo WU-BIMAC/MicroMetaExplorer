@@ -20,15 +20,15 @@ export default class MicroscopesBar extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			standTypes: {},
+			configs: {},
 			manufacturers: {},
 			models: {},
 			types: {},
-			selectedStandTypes: [],
+			selectedConfigs: [],
 			selectedManufacturers: [],
 			selectedModels: [],
 			selectedTypes: [],
-			filters: [],
+			filteredMicroscopes: [],
 		};
 
 		this.cachedToolbar = null;
@@ -38,21 +38,33 @@ export default class MicroscopesBar extends React.PureComponent {
 	}
 
 	static getDerivedStateFromProps(props, state) {
-		let standTypes = {};
+		let configs = {};
 		let manufacturers = {};
 		let models = {};
 		let types = {};
-		let filters = state.filters;
-		let filteredMicroscopes = [];
+		let filteredMicroscopes = state.filteredMicroscopes;
+		let selectedConfigs = state.selectedConfigs;
+		let selectedManufacturers = state.selectedManufacturers;
+		let selectedModels = state.selectedModels;
+		let selectedTypes = state.selectedTypes;
+
+		let isFiltered =
+			(isDefined(selectedConfigs) && selectedConfigs.length > 0) ||
+			(isDefined(selectedManufacturers) && selectedManufacturers.length > 0) ||
+			(isDefined(selectedModels) && selectedModels.length > 0) ||
+			(isDefined(selectedTypes) && selectedTypes.length > 0);
+
+		if (!isFiltered) filteredMicroscopes = [];
+
 		if (isDefined(props.microscopes)) {
 			Object.keys(props.microscopes).forEach((key) => {
 				let microscope = props.microscopes[key].microscope;
 				let stand = microscope.MicroscopeStand;
-				let standType = null;
+				let config = null;
 				if (stand.Schema_ID.includes("Upright")) {
-					standType = "Upright";
+					config = "Upright";
 				} else if (stand.Schema_ID.includes("Inverted")) {
-					standType = "Inverted";
+					config = "Inverted";
 				}
 				let manu = stand.Manufacturer;
 				let model = stand.Model;
@@ -63,8 +75,8 @@ export default class MicroscopesBar extends React.PureComponent {
 				// testSelection.push(obj.Model);
 				// testSelection.push(obj.Type);
 
-				if (!Object.keys(standTypes).includes(standType)) {
-					standTypes[standType] = 0;
+				if (!Object.keys(configs).includes(config)) {
+					configs[config] = 0;
 				}
 				if (!Object.keys(manufacturers).includes(manu)) {
 					manufacturers[manu] = 0;
@@ -75,33 +87,18 @@ export default class MicroscopesBar extends React.PureComponent {
 				if (!Object.keys(types).includes(type)) {
 					types[type] = 0;
 				}
-				if (filters.length !== 0) {
-					for (let filter of filters) {
-						if (
-							(!isDefined(filter[0]) || stand.Schema_ID.includes(filter[0])) &&
-							(!isDefined(filter[1]) ||
-								stand.Manufacturer.includes(filter[1])) &&
-							(!isDefined(filter[2]) || stand.Model.includes(filter[2])) &&
-							(!isDefined(filter[3]) || stand.Type.includes(filter[3]))
-						) {
-							filteredMicroscopes.push(microscope);
-							break;
-						}
-					}
-				} else {
-					filteredMicroscopes.push(microscope);
-				}
+				if (!isFiltered) filteredMicroscopes.push(microscope);
 			});
 		}
 
 		if (isDefined(filteredMicroscopes)) {
 			Object.keys(filteredMicroscopes).forEach((key) => {
 				let obj = filteredMicroscopes[key].MicroscopeStand;
-				let standType = null;
+				let config = null;
 				if (obj.Schema_ID.includes("Upright")) {
-					standType = "Upright";
+					config = "Upright";
 				} else if (obj.Schema_ID.includes("Inverted")) {
-					standType = "Inverted";
+					config = "Inverted";
 				}
 				let manu = obj.Manufacturer;
 				let model = obj.Model;
@@ -112,10 +109,12 @@ export default class MicroscopesBar extends React.PureComponent {
 				// testSelection.push(obj.Model);
 				// testSelection.push(obj.Type);
 
-				if (Object.keys(standTypes).includes(standType)) {
-					standTypes[standType] = standTypes[standType] + 1;
+				console.log();
+
+				if (Object.keys(configs).includes(config)) {
+					configs[config] = configs[config] + 1;
 				} else {
-					standTypes[standType] = 1;
+					configs[config] = 1;
 				}
 				if (Object.keys(manufacturers).includes(manu)) {
 					manufacturers[manu] = manufacturers[manu] + 1;
@@ -135,7 +134,7 @@ export default class MicroscopesBar extends React.PureComponent {
 			});
 		}
 		return {
-			standTypes: standTypes,
+			configs: configs,
 			manufacturers: manufacturers,
 			models: models,
 			types: types,
@@ -150,14 +149,19 @@ export default class MicroscopesBar extends React.PureComponent {
 	filterMicroscopes() {
 		let filteredMicroscopes = [];
 
-		let selectedStandTypes = this.state.selectedStandTypes;
+		let configs = this.state.configs;
+		let manufacturers = this.state.manufacturers;
+		let models = this.state.models;
+		let types = this.state.types;
+		let selectedConfigs = this.state.selectedConfigs;
 		let selectedManufacturers = this.state.selectedManufacturers;
 		let selectedModels = this.state.selectedModels;
 		let selectedTypes = this.state.selectedTypes;
 
+		console.log("filterMicroscopes");
 		if (this.props.isDebug) {
-			console.log("selectedStandTypes");
-			console.log(selectedStandTypes);
+			console.log("selectedConfigs");
+			console.log(selectedConfigs);
 			console.log("selectedManufacturers");
 			console.log(selectedManufacturers);
 			console.log("selectedModels");
@@ -166,50 +170,101 @@ export default class MicroscopesBar extends React.PureComponent {
 			console.log(selectedTypes);
 		}
 
-		let maxIndex = Object.keys(selectedStandTypes).length;
-		if (Object.keys(selectedManufacturers).length > maxIndex)
-			maxIndex = Object.keys(selectedManufacturers).length;
-		if (Object.keys(selectedModels).length > maxIndex)
-			maxIndex = Object.keys(selectedModels).length;
-		if (Object.keys(selectedTypes).length > maxIndex)
-			maxIndex = Object.keys(selectedTypes).length;
-		let filters = [];
-		for (let i = 0; i < maxIndex; i++) {
-			let filter = [];
-			if (isDefined(selectedStandTypes[i])) filter.push(selectedStandTypes[i]);
-			else filter.push(null);
-			if (isDefined(selectedManufacturers[i]))
-				filter.push(selectedManufacturers[i]);
-			else filter.push(null);
-			if (isDefined(selectedModels[i])) filter.push(selectedModels[i]);
-			else filter.push(null);
-			if (isDefined(selectedTypes[i])) filter.push(selectedTypes[i]);
-			else filter.push(null);
-			filters.push(filter);
-		}
-		if (this.props.isDebug) {
-			console.log("filters");
-			console.log(filters);
-		}
+		// let filters = {};
+		// if (isDefined(selectedConfigs) && selectedConfigs.length > 0) {
+		// 	filters["Config"] = [];
+		// 	for (let i = 0; i < selectedConfigs.length; i++) {
+		// 		//for (let sType in selectedStandTypes.values()) {
+		// 		let config = selectedConfigs[i];
+		// 		filters["Config"].push(config);
+		// 	}
+		// }
+		// if (isDefined(selectedManufacturers) && selectedManufacturers.length > 0) {
+		// 	filters["Manuf"] = [];
+		// 	for (let i = 0; i < selectedManufacturers.length; i++) {
+		// 		//for (let manuf in selectedManufacturers.values()) {
+		// 		let manuf = selectedManufacturers[i];
+		// 		filters["Manuf"].push(manuf);
+		// 	}
+		// }
+		// if (isDefined(selectedModels) && selectedModels.length > 0) {
+		// 	filters["Model"] = [];
+		// 	for (let i = 0; i < selectedModels.length; i++) {
+		// 		//for (let model in selectedModels.values()) {
+		// 		let model = selectedModels[i];
+		// 		filters["Model"].push(model);
+		// 	}
+		// }
+		// if (isDefined(selectedTypes) && selectedTypes.length > 0) {
+		// 	filters["Type"] = [];
+		// 	for (let i = 0; i < selectedTypes.length; i++) {
+		// 		//for (let type in selectedTypes.values()) {
+		// 		let type = selectedTypes[i];
+		// 		filters["Type"].push(type);
+		// 	}
+		// }
+		// //filters.push(filter);
+		// // }
+		// if (this.props.isDebug) {
+		// 	console.log("filters");
+		// 	console.log(filters);
+		// }
 
 		if (isDefined(this.props.microscopes)) {
 			Object.keys(this.props.microscopes).forEach((key) => {
 				let microscope = this.props.microscopes[key].microscope;
 				let stand = microscope.MicroscopeStand;
-				if (filters.length !== 0) {
-					for (let filter of filters) {
-						if (
-							(!isDefined(filter[0]) || stand.Schema_ID.includes(filter[0])) &&
-							(!isDefined(filter[1]) ||
-								stand.Manufacturer.includes(filter[1])) &&
-							(!isDefined(filter[2]) || stand.Model.includes(filter[2])) &&
-							(!isDefined(filter[3]) || stand.Type.includes(filter[3]))
-						) {
-							filteredMicroscopes.push(microscope);
+				let add = true;
+				if (
+					isDefined(selectedConfigs) &&
+					Object.keys(selectedConfigs).length > 0
+				) {
+					add = false;
+					for (let index in selectedConfigs) {
+						if (stand.Schema_ID.includes(selectedConfigs[index])) {
+							add = true;
 							break;
 						}
 					}
-				} else {
+				}
+
+				if (
+					isDefined(selectedManufacturers) &&
+					Object.keys(selectedManufacturers).length > 0
+				) {
+					add = false;
+					for (let index in selectedManufacturers) {
+						if (stand.Manufacturer.includes(selectedManufacturers[index])) {
+							add = true;
+							break;
+						}
+					}
+				}
+
+				if (
+					isDefined(selectedModels) &&
+					Object.keys(selectedModels).length > 0
+				) {
+					add = false;
+					for (let index in selectedModels) {
+						if (stand.Model.includes(selectedModels[index])) {
+							add = true;
+							break;
+						}
+					}
+				}
+
+				if (isDefined(selectedTypes) && Object.keys(selectedTypes).length > 0) {
+					add = false;
+					for (let index in selectedTypes) {
+						if (stand.Type.includes(selectedTypes[index])) {
+							console.log(stand.Schema_ID);
+							add = true;
+							break;
+						}
+					}
+				}
+				if (add) {
 					filteredMicroscopes.push(microscope);
 				}
 			});
@@ -220,7 +275,7 @@ export default class MicroscopesBar extends React.PureComponent {
 			console.log(filteredMicroscopes);
 		}
 
-		this.setState({ filters: filters });
+		this.setState({ filteredMicroscopes: filteredMicroscopes });
 
 		this.props.onFilterMicroscopes(filteredMicroscopes);
 	}
@@ -253,16 +308,6 @@ export default class MicroscopesBar extends React.PureComponent {
 				});
 				break;
 			case 3:
-				items = this.state.selectedStandTypes;
-				if (items.includes(item)) {
-					let index = items.indexOf(item);
-					items.splice(index, 1);
-				} else items.push(item);
-				this.setState({ selectedStandTypes: items }, () => {
-					this.filterMicroscopes();
-				});
-				break;
-			default:
 				items = this.state.selectedTypes;
 				if (items.includes(item)) {
 					let index = items.indexOf(item);
@@ -271,6 +316,17 @@ export default class MicroscopesBar extends React.PureComponent {
 				this.setState({ selectedTypes: items }, () => {
 					this.filterMicroscopes();
 				});
+				break;
+			default:
+				items = this.state.selectedConfigs;
+				if (items.includes(item)) {
+					let index = items.indexOf(item);
+					items.splice(index, 1);
+				} else items.push(item);
+				this.setState({ selectedConfigs: items }, () => {
+					this.filterMicroscopes();
+				});
+				break;
 		}
 	}
 
@@ -293,8 +349,8 @@ export default class MicroscopesBar extends React.PureComponent {
 				selectedItems = this.state.selectedTypes;
 				break;
 			default:
-				items = this.state.standTypes;
-				selectedItems = this.state.selectedStandTypes;
+				items = this.state.configs;
+				selectedItems = this.state.selectedConfigs;
 		}
 
 		let buttonStyle = {
@@ -320,7 +376,10 @@ export default class MicroscopesBar extends React.PureComponent {
 		let styleLabel = {
 			textAlign: "left",
 			textWrap: "wrap",
-			overflowWrap: "anywhere",
+			//overflowWrap: "anywhere",
+			overflowWrap: "break-word",
+			whiteSpace: "break-spaces",
+			wordBreak: "break-word",
 		};
 
 		for (let key of Object.keys(items)) {
@@ -495,7 +554,7 @@ export default class MicroscopesBar extends React.PureComponent {
 		toolbar.push(hardware_explorer);
 		if (this.props.isToolbarHidden) return toolbar;
 
-		categories.push(this.state.standTypes);
+		categories.push(this.state.configs);
 		categories.push(this.state.manufacturers);
 		categories.push(this.state.models);
 		categories.push(this.state.types);
@@ -511,10 +570,10 @@ export default class MicroscopesBar extends React.PureComponent {
 					simpleKey = "Model";
 					break;
 				case 3:
-					simpleKey = "Stand Type";
+					simpleKey = "Type";
 					break;
 				default:
-					simpleKey = "Type";
+					simpleKey = "Configuration";
 			}
 			toolbar.push(
 				<Collapsible
