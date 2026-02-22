@@ -8,7 +8,16 @@ import PopoverTooltip from "./popoverTooltip";
 
 const url = require("url");
 
-import { home_tooltip, open_mma_tooltip, string_home_img } from "../constants";
+import {
+	home_tooltip,
+	func_selector_tooltip,
+	compare_tooltip,
+	open_mma_tooltip,
+	string_home_img,
+	string_compare_img,
+	string_open_mma_img,
+	string_func_selector_img,
+} from "../constants";
 import { isDefined } from "../genericUtilities";
 
 export default class Footer extends React.PureComponent {
@@ -61,15 +70,38 @@ export default class Footer extends React.PureComponent {
 			homeImg +
 			(homeImg.indexOf("githubusercontent.com") > -1 ? "?sanitize=true" : "");
 
+		let funcSelImg = url.resolve(
+			this.props.imagesPath,
+			string_func_selector_img,
+		);
+		let funcSelPath =
+			funcSelImg +
+			(funcSelImg.indexOf("githubusercontent.com") > -1
+				? "?sanitize=true"
+				: "");
+
+		let compareImg = url.resolve(this.props.imagesPath, string_compare_img);
+		let compareImgPath =
+			compareImg +
+			(compareImg.indexOf("githubusercontent.com") > -1
+				? "?sanitize=true"
+				: "");
+
+		let openMMAImg = url.resolve(this.props.imagesPath, string_open_mma_img);
+		let openMMAImgPath =
+			openMMAImg +
+			(openMMAImg.indexOf("githubusercontent.com") > -1
+				? "?sanitize=true"
+				: "");
+
 		let index = 0;
 		if (isDefined(this.props.onClickParentHome)) {
-			let homeButtText = "Component Selector";
 			buttonsLeft[index] = (
 				<PopoverTooltip
 					key={"TooltipButtonLeft-" + index}
-					position={"top"}
-					title={home_tooltip.title}
-					content={home_tooltip.content}
+					position={func_selector_tooltip.position}
+					title={func_selector_tooltip.title}
+					content={func_selector_tooltip.content}
 					element={
 						<Button
 							key={"ButtonLeft-" + index}
@@ -87,11 +119,11 @@ export default class Footer extends React.PureComponent {
 								}}
 							>
 								<img
-									src={homeImgPath}
-									alt={homeImg}
+									src={funcSelPath}
+									alt={funcSelImg}
 									style={styleImageIconHome}
 								/>
-								{homeButtText}
+								{func_selector_tooltip.title}
 							</div>
 						</Button>
 					}
@@ -140,23 +172,37 @@ export default class Footer extends React.PureComponent {
 
 		index = 0;
 		if (isDefined(this.props.onClickCompare)) {
-			let homeButtText = "Compare";
+			let compareButtText = "Compare";
 			buttonsRight[index] = (
 				<PopoverTooltip
 					key={"TooltipButtonRight-" + index}
-					position={"top"}
-					title={home_tooltip.title}
-					content={home_tooltip.content}
+					position={compare_tooltip.tooltip}
+					title={compare_tooltip.title}
+					content={compare_tooltip.content}
 					element={
 						<Button
 							key={"ButtonRight-" + index}
 							onClick={() => this.props.onClickCompare()}
 							style={styleButton}
 							size="lg"
-							variant="outline-primary"
+							variant="dark"
 							disabled={!this.props.isCompareEnabled}
 						>
-							{homeButtText}
+							<div
+								style={{
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+									//gap: "10px",
+								}}
+							>
+								<img
+									src={compareImgPath}
+									alt={compareImg}
+									style={styleImageIconHome}
+								/>
+								{compareButtText}
+							</div>
 						</Button>
 					}
 				/>
@@ -164,11 +210,10 @@ export default class Footer extends React.PureComponent {
 		}
 		index++;
 		if (isDefined(this.props.onClickOpen)) {
-			let homeButtText = "Open in MMA";
 			buttonsRight[index] = (
 				<PopoverTooltip
 					key={"TooltipButtonRight-" + index}
-					position={"top"}
+					position={open_mma_tooltip.position}
 					title={open_mma_tooltip.title}
 					content={open_mma_tooltip.content}
 					element={
@@ -180,7 +225,21 @@ export default class Footer extends React.PureComponent {
 							variant="outline-primary"
 							disabled={!this.props.isOpenEnabled}
 						>
-							{homeButtText}
+							<div
+								style={{
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+									//gap: "10px",
+								}}
+							>
+								<img
+									src={openMMAImgPath}
+									alt={openMMAImg}
+									style={styleImageIconHome}
+								/>
+								{open_mma_tooltip.title}
+							</div>
 						</Button>
 					}
 				/>
