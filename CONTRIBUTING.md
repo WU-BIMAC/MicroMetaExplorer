@@ -1,4 +1,4 @@
-# Contributing to Micro-Meta App
+# Contributing to the Micro-Meta Project
 
 **This README file gives instructions for testing your code before opening a PR, please ensure you read these.**
 

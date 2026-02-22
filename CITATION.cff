@@ -2,7 +2,7 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: Micro-Meta App Viewer - React implementation
+title: Micro-Meta App Explorer - React implementation
 message: >-
   If you use this software please cite both the software using the metadata indicated below, and the papers as indicated in the scope of each reference
 type: software
@@ -12,46 +12,28 @@ authors:
     email: alessandro.rigano@umassmed.edu
     affiliation: >-
       Program in Molecular Medicine, UMass Chan
-      Medical School, Worcester MA 01605, USA
-  - given-names: Balashov
-    family-names: Alexander
-    affiliation: >-
-      Department of Biomedical Informatics, Harvard
-      Medical School, Boston, MA 02115, USA
-  - affiliation: >-
-      Department of Biomedical Informatics, Harvard
-      Medical School, Boston, MA 02115, USA
-    given-names: Shannon
+      Medical School, Worcester MA 01605, USA  
+  - given-names: Shannon
     family-names: Ehmsen
-  - given-names: Serkan Utku
-    family-names: Ozturk
-    orcid: "https://orcid.org/0000-0001-8835-787X"
-    affiliation: >-
-      Karya SMD + Department of Biomedical
-      Informatics, Harvard Medical School, Boston, MA
-      02115, USA
-  - given-names: Alver
-    family-names: Burak
-    orcid: >-
-      https://orcid.org/https://orcid.org/0000-0002-5019-7652
     affiliation: >-
       Department of Biomedical Informatics, Harvard
-      Medical School, Boston, MA 02115, USA
-  - affiliation: >-
+      Medical School, Boston, MA 02115, USA   
+  - given-names: Caterina
+    family-names: Strambio-De-Castillia
+    email: caterina.strambio@umassmed.edu
+    affiliation: >-
       Program in Molecular Medicine, UMass Chan
       Medical School, Worcester MA 01605, USA
     orcid: >-
-      https://orcid.org/https://orcid.org/0000-0002-1069-1816
-    family-names: Strambio-De-Castillia
-    given-names: Caterina
-    email: caterina.strambio@umassmed.edu
-repository-code: "https://github.com/WU-BIMAC/MicroMetaApp-React"
-url: "https://wu-bimac.github.io/MicroMetaApp.github.io/"
-doi: 10.5281/zenodo.5082713
+      https://orcid.org/https://orcid.org/0000-0002-1069-1816  
+repository-code: "https://github.com/WU-BIMAC/MicroMetaExplorer"
+url:
+doi:
 repository-artifact: >-
-  hhttps://github.com/WU-BIMAC/MicroMetaApp-React/releases/latest
 abstract: >-
-  Micro-Meta App is an intuitive Graphical User Interface (GUI)-based open-source software that helps scientists to interactively build graphical representations of microscope hardware by dragging-and-dropping individual components onto the workspace and entering the relevant attribute values based on the 4D Nucleome (4DN) - BioImaging North America (BINA) Microscopy Metadata guidelines that scale experimental complexity. From this, Micro-Meta App automatically generates structured Microscope files that can be saved locally, consumed by existing data portals, shared with other scientists, and used repeatedly whenever the same microscope is used to produce image data. Thus, when the image acquisition settings utilized to produce a given image dataset need to be recorded, the user selects the desired image data alongside the relevant Microscope file. Then, Micro-Meta App imports the relevant metadata from the header of image data files to be annotated and interactively guides the user through the collection of all missing attributes. Finally, the App generates a Settings-file, which coupled with the Microscope-file contains comprehensive descriptions of the conditions utilized to produce individual microscopy datasets.
+Micro-Meta Explorer is a component of the Micro-Meta project that is used to compare and explore different Micro-Meta App generated Microscope-Hardware JSON files and display results in a tabular format.
+Micro-Meta App (https://wu-bimac.github.io/MicroMetaApp.github.io/) is an intuitive Graphical User Interface (GUI)-based open-source software that helps scientists to interactively build graphical representations of microscope hardware by dragging-and-dropping individual components onto the workspace and entering the relevant attribute values based on the NBO-Q Microscopy Metadata specifications (https://github.com/WU-BIMAC/NBOMicroscopyMetadataSpecs) that scale with experimental complexity. 
+Micro-Meta App automatically generates structured Microscope-Hardware JSON files that can be saved locally, consumed by existing data portals, shared with other scientists, and used repeatedly whenever the same microscope is used to produce image data. From these, Micro-Meta App imports the relevant metadata, combines it with OME Image Metadata that is found in the header of image data files, and interactively guides the user through the steps required to generate a image Acquisition-Settings JSON file. The Microscope-Hardware and Acquisition-Settings, in combination contain comprehensive descriptions of the conditions utilized to produce individual microscopy datasets.
 keywords:
   - metadata
   - microscopy
@@ -63,8 +45,8 @@ keywords:
   - quality control
   - data provenance
 license: GPL-3.0-or-later
-version: 4DN Integration Release
-date-released: "2021-08-21"
+version: 
+date-released:
 references:
   - authors:
       - family-names: Rigano
@@ -304,95 +286,7 @@ references:
     scope: "Cite this paper every time you use this software."
     title: "Micro-Meta App: an interactive software tool to facilitate the collection of microscopy metadata based on community-driven specifications"
     type: article
-    year: 2021
-  - authors:
-      - family-names: Mathias
-        given-names: Hammer
-        affiliation: RNA Therapeutic Institute, University of Massachusetts Chan Medical School
-      - family-names: Maximiliaan
-        given-names: Huisman
-        affiliation: RNA Therapeutic Institute, University of Massachusetts Chan Medical School
-        orcid: https://orcid.org/0000-0003-3363-8791
-      - family-names: Rigano
-        given-names: Alessandro
-        affiliation: Program in Molecular Medicine, University of Massachusetts Chan Medical School
-      - family-names: Boehm
-        given-names: Ulrike
-        affiliation: Janelia Research Campus, Howard Hughes Medical Institute, Ashburn, VA 20147, USA
-        orcid: https://orcid.org/0000-0001-7471-2244
-      - family-names: Chambers
-        given-names: James
-        affiliation: Institute for Applied Life Sciences, University of Massachusetts, Amherst, MA 01003, USA
-        orcid: https://orcid.org/0000-0003-3883-8215
-      - family-names: Gaudreault
-        given-names: Nathalie
-        affiliation: Allen Institute for Cell Science, Seattle, WA 98109, USA
-      - family-names: North
-        given-names: Alison J.
-        affiliation: The Rockefeller University, New York, NY 10065, USA
-        orcid: https://orcid.org/0000-0002-0577-7949
-      - family-names: Pimentel
-        given-names: Arturo
-        affiliation: Instituto de Biotecnologıa, Universidad Nacional Autonoma de Mexico, Cuernavaca, Morelos, 62210, México
-        orcid: https://orcid.org/0000-0001-8569-0466
-      - family-names: Sudar
-        given-names: Damir
-        affiliation: Quantitative Imaging Systems LLC, Portland, OR 97209, USA
-        orcid: https://orcid.org/0000-0002-2510-7272
-      - family-names: Bajcsy
-        given-names: Peter
-        affiliation: National Institute of Standards and Technology, Gaithersburg, MD 20899, USA
-        orcid: https://orcid.org/0000-0002-6968-2615
-      - family-names: Brown
-        given-names: Claire M.
-        affiliation: Advanced BioImaging Facility (ABIF), McGill University, Montreal, Quebec, H3G 0B1, Canada
-        orcid: https://orcid.org/0000-0003-1622-663X
-      - family-names: Corbett
-        given-names: Alexander D.
-        affiliation: Department of Physics and Astronomy, University of Exeter, Exeter, EX4 4QL, UK
-        orcid: https://orcid.org/0000-0003-1645-5475
-      - family-names: Faklaris
-        given-names: Orestis
-        affiliation: Biocampus, CNRS UMS 3426, Montpellier 34293, France
-        orcid: https://orcid.org/0000-0001-5965-5405
-      - family-names: Lacoste
-        given-names: Judith
-        affiliation: MIA Cellavie Inc., Montreal, Quebec, H1K 4G6, Canada
-      - family-names: Laude
-        given-names: Alex
-        affiliation: Bioimaging Unit, Newcastle University, Newcastle upon Tyne, NE2 4HH, UK
-        orcid: https://orcid.org/0000-0002-3853-1187
-      - family-names: Nelson
-        given-names: Glyn
-        affiliation: Bioimaging Unit, Newcastle University, Newcastle upon Tyne, NE2 4HH, UK
-        orcid: http://orcid.org/0000-0002-1895-4772
-      - family-names: Nitschke
-        given-names: Roland
-        affiliation: Life Imaging Center and BIOSS Centre for Biological Signaling Studies, Albert-Ludwigs-University Freiburg, Freiburg, 79104, Germany
-        orcid: https://orcid.org/0000-0002-9397-8475
-      - family-names: Gopinathan
-        given-names: Renu
-        affiliation: RNA Therapeutics Institute, UMass Medical School, Worcester MA 01605, USA
-      - family-names: Farzam
-        given-names: Farzin
-        affiliation: RNA Therapeutics Institute, UMass Medical School, Worcester MA 01605, USA
-      - family-names: Carlas
-        given-names: Smith
-        affiliation: Dutch Optics Center, Technische Universiteit Delft, Delft, 2600 AA, The Netherlands
-      - family-names: David
-        given-names: Grunwald
-        affiliation: University of Massachusetts Medical School
-      - family-names: Strambio-De-Castillia
-        given-names: Caterina
-        affiliation: University of Massachusetts Medical School
-        email: caterina.strambio@umassmed.edu
-        orcid: https://orcid.org/0000-0002-1069-1816
-    doi: 10.1101/2021.04.25.441198
-    journal: "BioRxiv.org"
-    scope: "Cite this paper when you want to discuss the background context for this software."
-    title: "Towards community-driven metadata standards for light microscopy: tiered specifications extending the OME model"
-    type: article
-    year: 2021
+    year: 2021 
   - authors:
       - family-names: Maximiliaan
         given-names: Huisman
