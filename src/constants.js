@@ -21,9 +21,9 @@ export const string_maxNumberOf_identifier = "Max_Number_Of_";
 
 export const string_json_ext = ".json";
 
-export const string_logo_img_no_bk = "MicroMetaApp_noBkg_noOutline_3.png"; //"MicroMetaApp_noBkg_noOutline.png";
+export const string_logo_img_no_bk = "MicroMetaApp_noBkg_noOutline_4.png"; //"MicroMetaApp_noBkg_noOutline.png";
 export const string_logo_img_cell_bk = "MicroMetaApp_cellBkg.png";
-export const string_logo_img_micro_bk = "MicroMetaApp_TESMBkg_4.png"; //"MicroMetaApp_TESMBkg_2.png";
+export const string_logo_img_micro_bk = "MicroMetaApp_TESMBkg_5.png"; //"MicroMetaApp_TESMBkg_2.png";
 
 export const string_add_img = "add-button.svg";
 export const string_home_img = "home.svg";
@@ -38,6 +38,11 @@ export const string_manage_hardware_circle_img = "hardware-large-circle.svg";
 export const string_manage_settings_circle_img = "settings-large-circle.svg";
 export const string_help_img = "question-mark-small.svg";
 export const string_about_img = "about-solid.svg";
+export const string_compare_img = "compare.svg";
+export const string_search_img = "search.svg";
+export const string_search_clear_img = "search_clear.svg";
+export const string_open_mma_img = "mma_round.svg";
+export const string_func_selector_img = "functionality_selector.svg";
 
 export const string_copy_img = "copy-solid.svg";
 export const string_paste_img = "paste-solid.svg";
@@ -287,7 +292,7 @@ export const string_bandpass_warning =
 	"PLEASE NOTE: If the number of WavelengthRange modules or sub-components (e.g., LEDModule) is changed, all values entered but not yet confirmed will be lost.";
 
 export const open_mma_tooltip = {
-	title: "Opne in MMA",
+	title: "Open in MMA",
 	content: <p>Click here to open the selected Microscope in Micro-Meta App.</p>,
 	position: "top",
 };
@@ -372,7 +377,7 @@ export const help_tooltip = {
 	title: "Help",
 	content: (
 		<p>
-			Click here to access the Micro-Meta App documentations page and video
+			Click here to access the Micro-Meta Explorer documentation and video
 			tutorials.
 		</p>
 	),
@@ -381,7 +386,7 @@ export const help_tooltip = {
 
 export const about_tooltip = {
 	title: "About",
-	content: <p>Click here to view information about Micro-Meta App.</p>,
+	content: <p>Click here to view information about Micro-Meta Explorer.</p>,
 	position: "bottom",
 };
 
@@ -714,9 +719,32 @@ export const back_tooltip = {
 	position: "left",
 };
 
+export const func_selector_tooltip = {
+	title: "Functionality Selector",
+	content: (
+		<p>
+			Return to the window allowing to select between the Micro-Meta Explorer
+			and Micro-Meta App functionalities.
+		</p>
+	),
+	position: "top",
+};
+
 export const home_tooltip = {
-	title: "Home",
-	content: <p>Return to the initial window.</p>,
+	title: "Micro-Meta Explorer Home",
+	content: <p>Return to the initial window of Micro-Meta Explorer.</p>,
+	position: "top",
+};
+
+export const compare_tooltip = {
+	title: "Compare Selected Microscopes",
+	content: (
+		<p>
+			Compare the hardware components of the selected microscopes. Please note
+			the maximum number of microscopes that can be compared side by side is
+			three.
+		</p>
+	),
 	position: "top",
 };
 
