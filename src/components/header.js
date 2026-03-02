@@ -553,7 +553,7 @@ export default class Header extends React.PureComponent {
 										Model version: {this.props.modelVersion}
 										<br />
 										<br />
-										(c) Copyright 2018-2023 University of Massachusetts Chan
+										(c) Copyright 2018-2026 University of Massachusetts Chan
 										Medical School. All Rights Reserved.
 										<br />
 										The software is distributed under the terms of the{" "}
