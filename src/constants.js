@@ -41,7 +41,7 @@ export const string_about_img = "about-solid.svg";
 export const string_compare_img = "compare.svg";
 export const string_search_img = "search.svg";
 export const string_search_clear_img = "search_clear.svg";
-export const string_open_mma_img = "mma_round.svg";
+export const string_open_mma_img = "MMA_round.svg";
 export const string_func_selector_img = "functionality_selector.svg";
 
 export const string_copy_img = "copy-solid.svg";
