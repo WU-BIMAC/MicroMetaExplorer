@@ -234,7 +234,7 @@ const string_bandpass_warning = "PLEASE NOTE: If the number of WavelengthRange m
 exports.string_bandpass_warning = string_bandpass_warning;
 const open_mma_tooltip = {
   title: "Open in MMA",
-  content: /*#__PURE__*/_react.default.createElement("p", null, "Click here to open the selected Microscope in Micro-Meta App."),
+  content: /*#__PURE__*/_react.default.createElement("p", null, "Open the selected microscope in the Micro-Meta App hardware inspector."),
   position: "top"
 };
 exports.open_mma_tooltip = open_mma_tooltip;
