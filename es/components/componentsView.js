@@ -667,15 +667,7 @@ class ComponentsView extends _react.default.PureComponent {
       dataRows = data.rows;
       categoryIndexes = data.categoryIndexes;
     }
-    const defaultMaterialTheme = (0, _material.createTheme)({
-      overrides: {
-        MuiPaper: {
-          root: {
-            boxShadow: "none !important"
-          }
-        }
-      }
-    });
+    const defaultMaterialTheme = (0, _material.createTheme)();
     return /*#__PURE__*/_react.default.createElement("div", {
       style: style
     }, /*#__PURE__*/_react.default.createElement(_material.ThemeProvider, {
