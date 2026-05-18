@@ -121,7 +121,7 @@ export default class ComponentsBar extends React.PureComponent {
 			}
 		});
 		this.setState({ selectedItem: item2 }, () =>
-			this.props.onFilterComponents(objs)
+			this.props.onFilterComponents(objs),
 		);
 	}
 
@@ -151,9 +151,10 @@ export default class ComponentsBar extends React.PureComponent {
 		let styleLabel = {
 			textAlign: "left",
 			textWrap: "wrap",
-			overflowWrap: "anywhere",
 			whiteSpace: "break-spaces",
-			wordBreak: "break-word",
+			maxWidth: "26ch",
+			wordBreak: "break-all",
+			overflowWrap: "anywhere",
 		};
 
 		//for (let key of Object.keys(category)) {
@@ -184,7 +185,7 @@ export default class ComponentsBar extends React.PureComponent {
 					style={style}
 				>
 					{content}
-				</ToggleButton>
+				</ToggleButton>,
 				// <PopoverTooltip
 				// 	key={`Tooltip-${item}`}
 				// 	position={"bottom"}
@@ -264,7 +265,7 @@ export default class ComponentsBar extends React.PureComponent {
 					//transform: "rotateZ(270deg)",
 					marginLeft: "0px",
 					marginRight: "0px",
-				}
+				},
 			);
 			let hardwareExplorerHideButtonClose = (
 				<div style={styleTransitionCloseExplorer}>+</div>
@@ -292,7 +293,7 @@ export default class ComponentsBar extends React.PureComponent {
 				styleTransitionOpen,
 				{
 					//transform: "rotateZ(90deg)"
-				}
+				},
 			);
 			let hardwareExplorerHideButtonOpen = (
 				<div style={styleTransitionOpenExplorer}>-</div>
@@ -357,7 +358,7 @@ export default class ComponentsBar extends React.PureComponent {
 						<div style={{ margin: "10px" }}>
 							{this.createCategoryItems(category)}
 						</div>
-					</Collapsible>
+					</Collapsible>,
 				);
 				index++;
 			});
