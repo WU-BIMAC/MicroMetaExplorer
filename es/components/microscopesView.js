@@ -239,12 +239,10 @@ class MicroscopesView extends _react.default.PureComponent {
     };
     let styleTable = {
       height: "100%",
-      maxHeight: "100%",
-      border: "none"
+      maxHeight: "100%"
     };
     let styleDetail = {
-      width: "100%",
-      border: "none"
+      width: "100%"
     };
     let styleHeader = {
       display: "flex",
