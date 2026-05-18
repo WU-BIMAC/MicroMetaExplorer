@@ -307,3 +307,7 @@
   border-radius: 3px;
   border: 1px solid transparent;
 }
+
+#microscopy-app-container .css-1mbunh-MuiPaper-root {
+  box-shadow: none !important;
+}
