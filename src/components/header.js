@@ -29,6 +29,7 @@ import {
 } from "../constants";
 
 import { isDefined } from "../genericUtilities";
+import zIndex from "@material-ui/core/styles/zIndex";
 
 export default class Header extends React.PureComponent {
 	constructor(props) {
@@ -251,9 +252,15 @@ export default class Header extends React.PureComponent {
 			width: "40px",
 			minWidth: "40px",
 			height: "40px",
+			border: "none",
+			zIndex: 99,
 			//margin: "1px",
 			visibility:
-				isHovered && this.formRef.current.inputNode.value
+				(this.state.selections && this.state.selections.length > 0) ||
+				(this.formRef &&
+					this.formRef.current &&
+					this.formRef.current.inputNode &&
+					this.formRef.current.inputNode.value)
 					? "visible"
 					: "hidden",
 		};
@@ -537,14 +544,20 @@ export default class Header extends React.PureComponent {
 										Micro-Meta Explorer is an open-source, community-defined,
 										and easy-to-use software platform that provides an intuitive
 										visual guide for exploring and comparing the hardware
-										configuration of available microscopes based on the{" "}
-										<a href="https://github.com/WU-BIMAC/NBOMicroscopyMetadataSpecs/tree/master/Model/stable%20version/v02-01">
+										specifications and image acquisition settings associated
+										with given microscopes and image datasets in compliance with
+										the{" "}
+										<a href="https://quarep.org/working-groups/wg-7-metadata/limi-model/">
+											Light-Microscopy Model (LiMi-Model)
+										</a>
+										. The LiMi-Model was initially developed as the{" "}
+										<a href="https://doi.org/10.1038/s41592-021-01327-9">
 											4DN-BINA-QUAREP extension
 										</a>{" "}
 										of the{" "}
 										<a href="https://docs.openmicroscopy.org/ome-model/6.1.1/developers/model-overview.html">
 											OME data model
-										</a>{" "}
+										</a>
 										.
 										<br />
 										<br />
