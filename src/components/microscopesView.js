@@ -132,7 +132,7 @@ export default class MicroscopesView extends React.PureComponent {
 				window.alert(
 					"You can select a maximum of " +
 						number_max_compare +
-						" microscope for comparison"
+						" microscope for comparison",
 				);
 			} else {
 				selected.push(row.microscope);
@@ -308,19 +308,19 @@ export default class MicroscopesView extends React.PureComponent {
 										list.push(
 											<li key={"Item-LSources"}>
 												Light sources: {numberLightSources}
-											</li>
+											</li>,
 										);
 									if (numberObjectives > 0)
 										list.push(
-											<li key={"Item-Obj"}>Objectives: {numberObjectives}</li>
+											<li key={"Item-Obj"}>Objectives: {numberObjectives}</li>,
 										);
 									if (numberFilters > 0)
 										list.push(
-											<li key={"Item-Fil"}>Filters: {numberFilters}</li>
+											<li key={"Item-Fil"}>Filters: {numberFilters}</li>,
 										);
 									if (numberDichroics > 0)
 										list.push(
-											<li key={"Item-Dic"}>Dichroics: {numberDichroics}</li>
+											<li key={"Item-Dic"}>Dichroics: {numberDichroics}</li>,
 										);
 									if (numberLens > 0)
 										list.push(<li key={"Item-Len"}>Lenses: {numberLens}</li>);
@@ -328,17 +328,17 @@ export default class MicroscopesView extends React.PureComponent {
 										list.push(
 											<li key={"Item-MDev"}>
 												Mirroring Devices: {numberMirroringDevices}
-											</li>
+											</li>,
 										);
 									if (numberPointDetectors > 0)
 										list.push(
 											<li key={"Item-PDet"}>
 												Point Detectors: {numberPointDetectors}
-											</li>
+											</li>,
 										);
 									if (numberCameras > 0)
 										list.push(
-											<li key={"Item-Cam"}>Cameras: {numberCameras}</li>
+											<li key={"Item-Cam"}>Cameras: {numberCameras}</li>,
 										);
 									return (
 										<div style={styleDetail}>
@@ -370,6 +370,8 @@ export default class MicroscopesView extends React.PureComponent {
 							search: false,
 							selection: true,
 							showSelectAllCheckbox: false,
+							//paging: false,
+							//paginationPosition: "top",
 							pageSize: pageSize,
 							pageSizeOptions: [],
 							//selectionProps: this.handleSelectionProps,

@@ -128,7 +128,7 @@ export default class ComponentsView extends React.PureComponent {
 				partialSchema = ComponentsView.transformSchema(
 					currentChildrenComponents,
 					props.schema,
-					props.elementByType
+					props.elementByType,
 					//linkedFields
 					//inputDataIDs
 				);
@@ -165,7 +165,7 @@ export default class ComponentsView extends React.PureComponent {
 		schema,
 		elementByType,
 		counter,
-		subType
+		subType,
 		//linkedFields,
 		//inputDataIDs
 	) {
@@ -192,7 +192,7 @@ export default class ComponentsView extends React.PureComponent {
 								property,
 								elementByType,
 								-1,
-								string_object
+								string_object,
 								//linkedFields
 							);
 						partialSchema = Object.assign(partialSchema, localPartialSchema);
@@ -213,7 +213,7 @@ export default class ComponentsView extends React.PureComponent {
 								property.items,
 								elementByType,
 								i,
-								string_array
+								string_array,
 								//linkedFields
 							);
 						partialSchema = Object.assign(partialSchema, localPartialSchema);
@@ -317,7 +317,7 @@ export default class ComponentsView extends React.PureComponent {
 	static transformSchema(
 		currentChildrenComponents,
 		schema,
-		elementByType
+		elementByType,
 		//linkedFields,
 		//inputDataIDs
 	) {
@@ -326,7 +326,7 @@ export default class ComponentsView extends React.PureComponent {
 			schema,
 			elementByType,
 			-1,
-			string_default
+			string_default,
 			//linkedFields,
 			//inputDataIDs
 		);
@@ -710,7 +710,7 @@ export default class ComponentsView extends React.PureComponent {
 			headers.push(
 				<div key={"HeaderColumn-" + key} style={styleHeaderColumn}>
 					{headerElement}
-				</div>
+				</div>,
 			);
 		});
 
