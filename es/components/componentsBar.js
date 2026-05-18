@@ -137,9 +137,10 @@ class ComponentsBar extends _react.default.PureComponent {
     let styleLabel = {
       textAlign: "left",
       textWrap: "wrap",
-      overflowWrap: "anywhere",
       whiteSpace: "break-spaces",
-      wordBreak: "break-word"
+      maxWidth: "26ch",
+      wordBreak: "break-all",
+      overflowWrap: "anywhere"
     };
 
     //for (let key of Object.keys(category)) {

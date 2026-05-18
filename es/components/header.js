@@ -16,6 +16,7 @@ var _popoverTooltip = _interopRequireDefault(require("./popoverTooltip"));
 var _modalWindow = _interopRequireDefault(require("./modalWindow"));
 var _constants = require("../constants");
 var _genericUtilities = require("../genericUtilities");
+var _zIndex = _interopRequireDefault(require("@material-ui/core/styles/zIndex"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 const url = require("url");
 class Header extends _react.default.PureComponent {
@@ -230,8 +231,10 @@ class Header extends _react.default.PureComponent {
       width: "40px",
       minWidth: "40px",
       height: "40px",
+      border: "none",
+      zIndex: 99,
       //margin: "1px",
-      visibility: isHovered && this.formRef.current.inputNode.value ? "visible" : "hidden"
+      visibility: this.state.selections && this.state.selections.length > 0 || this.formRef && this.formRef.current && this.formRef.current.inputNode && this.formRef.current.inputNode.value ? "visible" : "hidden"
     };
     const styleValidation = {
       position: "absolute",
@@ -479,11 +482,13 @@ class Header extends _react.default.PureComponent {
         style: styleImage
       }))), /*#__PURE__*/_react.default.createElement("div", {
         style: container1
-      }, /*#__PURE__*/_react.default.createElement("p", null, "Micro-Meta Explorer is an open-source, community-defined, and easy-to-use software platform that provides an intuitive visual guide for exploring and comparing the hardware configuration of available microscopes based on the", " ", /*#__PURE__*/_react.default.createElement("a", {
-        href: "https://github.com/WU-BIMAC/NBOMicroscopyMetadataSpecs/tree/master/Model/stable%20version/v02-01"
+      }, /*#__PURE__*/_react.default.createElement("p", null, "Micro-Meta Explorer is an open-source, community-defined, and easy-to-use software platform that provides an intuitive visual guide for exploring and comparing the hardware specifications and image acquisition settings associated with given microscopes and image datasets in compliance with the", " ", /*#__PURE__*/_react.default.createElement("a", {
+        href: "https://quarep.org/working-groups/wg-7-metadata/limi-model/"
+      }, "Light-Microscopy Model (LiMi-Model)"), ". The LiMi-Model was initially developed as the", " ", /*#__PURE__*/_react.default.createElement("a", {
+        href: "https://doi.org/10.1038/s41592-021-01327-9"
       }, "4DN-BINA-QUAREP extension"), " ", "of the", " ", /*#__PURE__*/_react.default.createElement("a", {
         href: "https://docs.openmicroscopy.org/ome-model/6.1.1/developers/model-overview.html"
-      }, "OME data model"), " ", ".", /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), "App version: ", this.props.appVersion, /*#__PURE__*/_react.default.createElement("br", null), "Model version: ", this.props.modelVersion, /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), "(c) Copyright 2018-2026 University of Massachusetts Chan Medical School. All Rights Reserved.", /*#__PURE__*/_react.default.createElement("br", null), "The software is distributed under the terms of the", " ", /*#__PURE__*/_react.default.createElement("a", {
+      }, "OME data model"), ".", /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), "App version: ", this.props.appVersion, /*#__PURE__*/_react.default.createElement("br", null), "Model version: ", this.props.modelVersion, /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), "(c) Copyright 2018-2026 University of Massachusetts Chan Medical School. All Rights Reserved.", /*#__PURE__*/_react.default.createElement("br", null), "The software is distributed under the terms of the", " ", /*#__PURE__*/_react.default.createElement("a", {
         href: "https://www.gnu.org/licenses/gpl-3.0.html"
       }, "GNU General Public License v3.0."))), /*#__PURE__*/_react.default.createElement("div", {
         style: buttonsContainer

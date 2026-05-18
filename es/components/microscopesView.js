@@ -239,10 +239,12 @@ class MicroscopesView extends _react.default.PureComponent {
     };
     let styleTable = {
       height: "100%",
-      maxHeight: "100%"
+      maxHeight: "100%",
+      border: "none"
     };
     let styleDetail = {
-      width: "100%"
+      width: "100%",
+      border: "none"
     };
     let styleHeader = {
       display: "flex",
@@ -351,6 +353,8 @@ class MicroscopesView extends _react.default.PureComponent {
         search: false,
         selection: true,
         showSelectAllCheckbox: false,
+        //paging: false,
+        //paginationPosition: "top",
         pageSize: pageSize,
         pageSizeOptions: []
         //selectionProps: this.handleSelectionProps,
