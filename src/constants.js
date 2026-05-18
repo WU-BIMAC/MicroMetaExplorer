@@ -295,7 +295,11 @@ export const string_bandpass_warning =
 
 export const open_mma_tooltip = {
 	title: "Open in MMA",
-	content: <p>Click here to open the selected Microscope in Micro-Meta App.</p>,
+	content: (
+		<p>
+			Open the selected microscope in the Micro-Meta App hardware inspector.
+		</p>
+	),
 	position: "top",
 };
 
