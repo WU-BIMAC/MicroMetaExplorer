@@ -11,6 +11,7 @@ var _ButtonGroup = _interopRequireDefault(require("react-bootstrap/ButtonGroup")
 var _ToggleButton = _interopRequireDefault(require("react-bootstrap/ToggleButton"));
 var _materialTable = _interopRequireWildcard(require("material-table"));
 var _core = require("@material-ui/core");
+var _styles = require("@mui/styles");
 var _material = require("@mui/material");
 var _AddBox = _interopRequireDefault(require("@material-ui/icons/AddBox"));
 var _ArrowDownward = _interopRequireDefault(require("@material-ui/icons/ArrowDownward"));
@@ -34,6 +35,7 @@ var _genericUtilities = require("../genericUtilities");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r = new WeakMap(), n = new WeakMap(); return (_interopRequireWildcard = function (e, t) { if (!t && e && e.__esModule) return e; var o, i, f = { __proto__: null, default: e }; if (null === e || "object" != typeof e && "function" != typeof e) return f; if (o = t ? n : r) { if (o.has(e)) return o.get(e); o.set(e, f); } for (const t in e) "default" !== t && {}.hasOwnProperty.call(e, t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, t)) && (i.get || i.set) ? o(f, t, i) : f[t] = e[t]); return f; })(e, t); }
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); } //import { DragDropContainer } from "react-drag-drop-container";
+//import { ThemeProvider, createTheme } from "@mui/material";
 const tableIcons = {
   Add: /*#__PURE__*/(0, _react.forwardRef)((props, ref) => /*#__PURE__*/_react.default.createElement(_AddBox.default, _extends({}, props, {
     ref: ref
@@ -282,7 +284,7 @@ class MicroscopesView extends _react.default.PureComponent {
     let pageSize = 10;
     return /*#__PURE__*/_react.default.createElement("div", {
       style: style
-    }, /*#__PURE__*/_react.default.createElement(_material.ThemeProvider, {
+    }, /*#__PURE__*/_react.default.createElement(_styles.ThemeProvider, {
       theme: defaultMaterialTheme
     }, /*#__PURE__*/_react.default.createElement(_materialTable.default
     //onSearchChange={this.onSearch}
