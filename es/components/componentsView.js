@@ -103,8 +103,10 @@ class ComponentsView extends _react.default.PureComponent {
       currentChildrenComponents: {},
       elementDisplayPosition: {},
       expandedIndexes: [],
-      partialSchema: null
+      partialSchema: null,
+      searchTerms: null
     };
+    this.tableRef = /*#__PURE__*/_react.default.createRef();
     this.onParentChildData = this.onParentChildData.bind(this);
     this.onTreeExpandChange = this.onTreeExpandChange.bind(this);
     //this.onSearch = this.onSearch.bind(this);
@@ -113,11 +115,17 @@ class ComponentsView extends _react.default.PureComponent {
     this.onClickBackward = this.onClickBackward.bind(this);
     this.onClickForward = this.onClickForward.bind(this);
     this.onClickOpen = this.onClickOpen.bind(this);
+    this.findRowAndFocus = this.findRowAndFocus.bind(this);
   }
   static getDerivedStateFromProps(props, state) {
     //console.log("transformSchemaCategorizeField");
+    let terms = null;
+    let currentChildrenComponents = state.currentChildrenComponents;
+    let partialSchema = state.partialSchema;
+    let originalComponents = state.originalComponents;
+    let filteredComponents = state.originalComponents;
     if ((0, _genericUtilities.isDefined)(props.components) && JSON.stringify(props.components) !== JSON.stringify(state.originalComponents)) {
-      let currentChildrenComponents = [];
+      console.log("getDerivedStateFromProps-1");
       Object.keys(props.components).forEach(key => {
         props.components[key].forEach(comp => {
           Object.keys(comp).forEach(key => {
@@ -135,22 +143,74 @@ class ComponentsView extends _react.default.PureComponent {
       // console.log(props.elementByType);
       // console.log("transformSchemaCategorizeField-schema");
       // console.log(props.schema);
-      let partialSchema = null;
       if ((0, _genericUtilities.isDefined)(props.schema) && (0, _genericUtilities.isDefined)(props.elementByType)) {
         partialSchema = ComponentsView.transformSchema(currentChildrenComponents, props.schema, props.elementByType
         //linkedFields
         //inputDataIDs
         );
       }
-      return {
-        originalComponents: props.components,
-        filteredComponents: props.components,
-        currentChildrenComponents: currentChildrenComponents,
-        partialSchema: partialSchema,
-        elementDisplayPosition: {}
-      };
+      originalComponents = props.components;
+      filteredComponents = props.components;
     }
-    return null;
+    if ((0, _genericUtilities.isDefined)(props.searchedComponents)) {
+      console.log("getDerivedStateFromProps-2");
+      let key = Object.keys(props.searchedComponents)[0];
+      if ((0, _genericUtilities.isDefined)(key)) {
+        let termsTmp = props.searchedComponents[key]["term"];
+        if (termsTmp !== state.searchTerms) terms = termsTmp;
+      }
+    }
+    return {
+      originalComponents: originalComponents,
+      filteredComponents: filteredComponents,
+      currentChildrenComponents: currentChildrenComponents,
+      partialSchema: partialSchema,
+      elementDisplayPosition: {},
+      searchTerms: terms
+    };
+  }
+  componentDidUpdate(props, state) {
+    if (this.state.searchTerms && this.state.searchTerms !== state.searchTerms) {
+      this.findRowAndFocus(this.state.searchTerms);
+    }
+  }
+  findRowAndFocus(searchTerms) {
+    if (this.props.isDebug) {
+      console.log("findRowAndFocus-searchTerms");
+      console.log(searchTerms);
+    }
+    const table = this.tableRef.current;
+    if (!table) return;
+    if (this.props.isDebug) {
+      console.log("findRowAndFocus-table");
+      console.log(table);
+    }
+    let childRow = null;
+    if (searchTerms.includes(":")) {
+      let tokens = searchTerms.split(":");
+      let key = tokens[0].replaceAll('"', "");
+      let value = tokens[1].replaceAll('"', "");
+      childRow = table.state.originalData.find(row => row.key.toLowerCase().includes(key) && Object.values(row).some(val => (0, _genericUtilities.isDefined)(val) && String(val).toLowerCase().includes(value)));
+    } else {
+      let value = searchTerms;
+      childRow = table.state.originalData.find(row => row.key.toLowerCase().includes(value) || Object.values(row).some(val => (0, _genericUtilities.isDefined)(val) && String(val).toLowerCase().includes(value)));
+    }
+    if (this.props.isDebug) {
+      console.log("findRowAndFocus-row");
+      console.log(childRow);
+    }
+    if ((0, _genericUtilities.isDefined)(childRow)) {
+      let parentRow = table.state.data.find(row => row.id === childRow.parentId);
+      if (parentRow && parentRow.tableData && !parentRow.tableData.isTreeExpanded) {
+        parentRow.tableData.isTreeExpanded = true;
+        const rowPath = parentRow.tableData.path;
+        if (typeof table.onTreeExpandChanged === "function") {
+          table.onTreeExpandChanged(rowPath, parentRow);
+        }
+      }
+    }
+
+    //this.setState({ searchTerms: searchTerms });
   }
 
   // onSearch(term) {
@@ -486,6 +546,10 @@ class ComponentsView extends _react.default.PureComponent {
       color: "black"
     };
     let filteredComponents = this.state.filteredComponents;
+    if (this.props.isDebug) {
+      console.log("filteredComponents");
+      console.log(filteredComponents);
+    }
     let elementDisplayPosition = this.state.elementDisplayPosition;
     let dimensions = this.props.dimensions;
     let width = dimensions.width;
@@ -650,16 +714,6 @@ class ComponentsView extends _react.default.PureComponent {
         style: styleHeaderColumn
       }, headerElement));
     });
-    let customHeader = /*#__PURE__*/_react.default.createElement("div", {
-      key: "TableGroupHeader",
-      style: styleHeader
-    }, /*#__PURE__*/_react.default.createElement("div", {
-      key: "TableGroupHeader-FirstColumn",
-      style: {
-        paddingLeft: spacer + "px",
-        width: firstColumnSize + "%"
-      }
-    }, "Microscope"), headers);
     let dataRows = [];
     let categoryIndexes = [];
     if ((0, _genericUtilities.isDefined)(filteredComponents) && Object.keys(filteredComponents).length > 0) {
@@ -667,6 +721,22 @@ class ComponentsView extends _react.default.PureComponent {
       dataRows = data.rows;
       categoryIndexes = data.categoryIndexes;
     }
+    let warningHeader = "";
+    if (!dataRows.length) warningHeader = "To compare a hardware component across the selected microscopes, click the '+' next to its category in the Component Explorer (left sidebar).\n";
+    let customHeader = /*#__PURE__*/_react.default.createElement("div", {
+      key: "TableGroupHeader",
+      style: styleHeader
+    }, /*#__PURE__*/_react.default.createElement("div", {
+      style: {
+        paddingLeft: spacer + "px"
+      }
+    }, warningHeader), /*#__PURE__*/_react.default.createElement("div", {
+      key: "TableGroupHeader-FirstColumn",
+      style: {
+        paddingLeft: spacer + "px",
+        width: firstColumnSize + "%"
+      }
+    }, "Microscope"), headers);
     const defaultMaterialTheme = (0, _material.createTheme)();
     return /*#__PURE__*/_react.default.createElement("div", {
       style: style
@@ -675,6 +745,7 @@ class ComponentsView extends _react.default.PureComponent {
     }, /*#__PURE__*/_react.default.createElement(_materialTable.default
     //onSearchChange={this.onSearch}
     , {
+      tableRef: this.tableRef,
       icons: tableIcons,
       columns: columns,
       data: dataRows,

@@ -147,6 +147,7 @@ class Header extends _react.default.PureComponent {
       }
     }
     if (this.props.isDebug) {
+      console.log("onClickSearch");
       console.log("fuzzySearchTerms");
       console.log(fuzzySearchTerms);
       console.log("exactSearchTerms");
@@ -157,7 +158,7 @@ class Header extends _react.default.PureComponent {
   onClearSearch() {
     console.log(this.formRef);
     //this.formRef.current.value = "";
-    this.formRef.current.inputNode.value = "";
+    if (this.formRef && this.formRef.current) this.formRef.current.clear();
     this.setState({
       isLoading: false,
       suggestions: [],
@@ -286,11 +287,17 @@ class Header extends _react.default.PureComponent {
     // 	search = formControl;
     // }
     let selected = this.state.selections;
+    let search_field_tooltip = _constants.search_field_microscope_tooltip;
+    let search_button_tooltip = _constants.search_button_microscope_tooltip;
+    if (!this.props.isMicroscopeView) {
+      search_field_tooltip = _constants.search_field_component_tooltip;
+      search_button_tooltip = _constants.search_button_component_tooltip;
+    }
     buttons[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
       key: "TooltipButton-" + index,
-      position: _constants.search_field_tooltip.position,
-      title: _constants.search_field_tooltip.title,
-      content: _constants.search_field_tooltip.content,
+      position: search_field_tooltip.position,
+      title: search_field_tooltip.title,
+      content: search_field_tooltip.content,
       element: /*#__PURE__*/_react.default.createElement("div", {
         style: styleSearchWrapper,
         onMouseEnter: () => this.setState({
@@ -328,9 +335,9 @@ class Header extends _react.default.PureComponent {
     index++;
     buttons[index] = /*#__PURE__*/_react.default.createElement(_popoverTooltip.default, {
       key: "TooltipButton-" + index,
-      position: _constants.search_button_tooltip.position,
-      title: _constants.search_button_tooltip.title,
-      content: _constants.search_button_tooltip.content,
+      position: search_button_tooltip.position,
+      title: search_button_tooltip.title,
+      content: search_button_tooltip.content,
       element: /*#__PURE__*/_react.default.createElement(_Button.default, {
         key: "Button-" + index,
         onClick: this.onClickSearch,

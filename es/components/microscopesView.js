@@ -272,7 +272,7 @@ class MicroscopesView extends _react.default.PureComponent {
     let dataRows = this.createRows();
     const defaultMaterialTheme = (0, _material.createTheme)();
     let header = "";
-    if (selected.length > _constants.number_max_compare) header = "Warning: only the first " + _constants.number_max_compare + " selection are going to be compared";
+    if (selected.length > _constants.number_max_compare) header = "Warning: only the first " + _constants.number_max_compare + " selection are going to be compared.";
     let customHeader = /*#__PURE__*/_react.default.createElement("div", {
       key: "TableGroupHeader",
       style: styleHeader
@@ -354,7 +354,7 @@ class MicroscopesView extends _react.default.PureComponent {
         selection: true,
         showSelectAllCheckbox: false,
         //paging: false,
-        //paginationPosition: "top",
+        paginationPosition: "top",
         pageSize: pageSize,
         pageSizeOptions: []
         //selectionProps: this.handleSelectionProps,

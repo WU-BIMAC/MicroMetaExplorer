@@ -23,6 +23,7 @@ class ComponentsBar extends _react.default.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      selectedCategory: null,
       selectedItem: null,
       categorizedComponents: {},
       orderedCategoryNames: []
@@ -40,6 +41,8 @@ class ComponentsBar extends _react.default.PureComponent {
   }
   static getDerivedStateFromProps(props, state) {
     let categorizedComponents = {};
+    let selectedCategory = null;
+    let selectedItem = null;
     if ((0, _genericUtilities.isDefined)(props.microscopes)) {
       props.microscopes.forEach(microscope => {
         microscope.components.forEach(comp => {
@@ -90,8 +93,27 @@ class ComponentsBar extends _react.default.PureComponent {
         });
       });
     }
+    if ((0, _genericUtilities.isDefined)(props.searchedComponents)) {
+      let key = Object.keys(props.searchedComponents)[0];
+      if ((0, _genericUtilities.isDefined)(key)) {
+        let component = props.searchedComponents[key]["comp"];
+        let selectedCategoryTmp = component.Category;
+        if (selectedCategoryTmp.includes(".")) selectedCategoryTmp = selectedCategoryTmp.slice(selectedCategoryTmp.indexOf(".") + 1);
+        let selectedItemTmp = component.Schema_ID.replace(".json", "");
+        if (props.isDebug) {
+          console.log("selectedCategory");
+          console.log(selectedCategoryTmp);
+          console.log("selectedItem");
+          console.log(selectedItem);
+        }
+        if (selectedCategoryTmp !== state.selectedCategory || selectedItemTmp !== state.selectedItem) selectedCategory = selectedCategoryTmp;
+        selectedItem = selectedItemTmp;
+      }
+    }
     return {
-      categorizedComponents: categorizedComponents
+      categorizedComponents: categorizedComponents,
+      selectedCategory: selectedCategory,
+      selectedItem: selectedItem
     };
   }
   onHideToolbar() {
@@ -100,6 +122,10 @@ class ComponentsBar extends _react.default.PureComponent {
   }
   onSelectFilterItem(item1, item2) {
     let categorizedComponents = this.state.categorizedComponents;
+    if (this.props.isDebug) {
+      console.log("categorizedComponents");
+      console.log(categorizedComponents);
+    }
     let category = categorizedComponents[item1];
     let subCategory = category[item2];
     let objs = {};
@@ -109,6 +135,10 @@ class ComponentsBar extends _react.default.PureComponent {
         objs[simpleKey] = subCategory[key];
       }
     });
+    if (this.props.isDebug) {
+      console.log("filteredObjs");
+      console.log(objs);
+    }
     this.setState({
       selectedItem: item2
     }, () => this.props.onFilterComponents(objs));
@@ -136,11 +166,9 @@ class ComponentsBar extends _react.default.PureComponent {
     };
     let styleLabel = {
       textAlign: "left",
-      textWrap: "wrap",
-      whiteSpace: "break-spaces",
-      maxWidth: "26ch",
-      wordBreak: "break-all",
-      overflowWrap: "anywhere"
+      whiteSpace: "pre-wrap",
+      maxInlineSize: "25ch",
+      wordBreak: "break-word"
     };
 
     //for (let key of Object.keys(category)) {
@@ -299,7 +327,9 @@ class ComponentsBar extends _react.default.PureComponent {
         if (key !== name) return;
         let category = categorizedComponents[key];
         //let value = categorizedComponents[key].value;
+        let isOpen = key === this.state.selectedCategory;
         toolbar.push(/*#__PURE__*/_react.default.createElement(_reactCollapsible.default, {
+          open: isOpen,
           key: "Collapsible-".concat(index),
           trigger: /*#__PURE__*/_react.default.createElement(_Button.default, {
             key: "Trigger".concat(index),
