@@ -21,8 +21,10 @@ import {
 	string_about_img,
 	help_tooltip,
 	about_tooltip,
-	search_field_tooltip,
-	search_button_tooltip,
+	search_field_microscope_tooltip,
+	search_field_component_tooltip,
+	search_button_microscope_tooltip,
+	search_button_component_tooltip,
 	search_clear_tooltip,
 	string_search_img,
 	string_search_clear_img,
@@ -169,6 +171,7 @@ export default class Header extends React.PureComponent {
 		}
 
 		if (this.props.isDebug) {
+			console.log("onClickSearch");
 			console.log("fuzzySearchTerms");
 			console.log(fuzzySearchTerms);
 			console.log("exactSearchTerms");
@@ -181,7 +184,7 @@ export default class Header extends React.PureComponent {
 	onClearSearch() {
 		console.log(this.formRef);
 		//this.formRef.current.value = "";
-		this.formRef.current.inputNode.value = "";
+		if (this.formRef && this.formRef.current) this.formRef.current.clear();
 		this.setState({ isLoading: false, suggestions: [], selections: [] });
 		this.props.onClearSearch();
 	}
@@ -340,6 +343,12 @@ export default class Header extends React.PureComponent {
 		// 	search = formControl;
 		// }
 		let selected = this.state.selections;
+		let search_field_tooltip = search_field_microscope_tooltip;
+		let search_button_tooltip = search_button_microscope_tooltip;
+		if (!this.props.isMicroscopeView) {
+			search_field_tooltip = search_field_component_tooltip;
+			search_button_tooltip = search_button_component_tooltip;
+		}
 		buttons[index] = (
 			<PopoverTooltip
 				key={"TooltipButton-" + index}
