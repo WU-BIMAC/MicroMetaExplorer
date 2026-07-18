@@ -375,11 +375,9 @@ export default class MicroscopesBar extends React.PureComponent {
 
 		let styleLabel = {
 			textAlign: "left",
-			textWrap: "wrap",
-			whiteSpace: "break-spaces",
-			maxWidth: "26ch",
-			wordBreak: "break-all",
-			overflowWrap: "anywhere",
+			whiteSpace: "pre-wrap",
+			maxInlineSize: "25ch",
+			wordBreak: "break-word",
 		};
 
 		for (let key of Object.keys(items)) {
