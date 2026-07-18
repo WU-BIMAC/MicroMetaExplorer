@@ -82,7 +82,10 @@ export default class ComponentsView extends React.PureComponent {
 			elementDisplayPosition: {},
 			expandedIndexes: [],
 			partialSchema: null,
+			searchTerms: null,
 		};
+
+		this.tableRef = React.createRef();
 
 		this.onParentChildData = this.onParentChildData.bind(this);
 		this.onTreeExpandChange = this.onTreeExpandChange.bind(this);
@@ -94,16 +97,23 @@ export default class ComponentsView extends React.PureComponent {
 		this.onClickForward = this.onClickForward.bind(this);
 
 		this.onClickOpen = this.onClickOpen.bind(this);
+
+		this.findRowAndFocus = this.findRowAndFocus.bind(this);
 	}
 
 	static getDerivedStateFromProps(props, state) {
 		//console.log("transformSchemaCategorizeField");
+		let terms = null;
+		let currentChildrenComponents = state.currentChildrenComponents;
+		let partialSchema = state.partialSchema;
+		let originalComponents = state.originalComponents;
+		let filteredComponents = state.originalComponents;
 		if (
 			isDefined(props.components) &&
 			JSON.stringify(props.components) !==
 				JSON.stringify(state.originalComponents)
 		) {
-			let currentChildrenComponents = [];
+			console.log("getDerivedStateFromProps-1");
 			Object.keys(props.components).forEach((key) => {
 				props.components[key].forEach((comp) => {
 					Object.keys(comp).forEach((key) => {
@@ -123,7 +133,6 @@ export default class ComponentsView extends React.PureComponent {
 			// console.log(props.elementByType);
 			// console.log("transformSchemaCategorizeField-schema");
 			// console.log(props.schema);
-			let partialSchema = null;
 			if (isDefined(props.schema) && isDefined(props.elementByType)) {
 				partialSchema = ComponentsView.transformSchema(
 					currentChildrenComponents,
@@ -133,15 +142,95 @@ export default class ComponentsView extends React.PureComponent {
 					//inputDataIDs
 				);
 			}
-			return {
-				originalComponents: props.components,
-				filteredComponents: props.components,
-				currentChildrenComponents: currentChildrenComponents,
-				partialSchema: partialSchema,
-				elementDisplayPosition: {},
-			};
+			originalComponents = props.components;
+			filteredComponents = props.components;
 		}
-		return null;
+		if (isDefined(props.searchedComponents)) {
+			console.log("getDerivedStateFromProps-2");
+			let key = Object.keys(props.searchedComponents)[0];
+			if (isDefined(key)) {
+				let termsTmp = props.searchedComponents[key]["term"];
+				if (termsTmp !== state.searchTerms) terms = termsTmp;
+			}
+		}
+		return {
+			originalComponents: originalComponents,
+			filteredComponents: filteredComponents,
+			currentChildrenComponents: currentChildrenComponents,
+			partialSchema: partialSchema,
+			elementDisplayPosition: {},
+			searchTerms: terms,
+		};
+	}
+
+	componentDidUpdate(props, state) {
+		if (
+			this.state.searchTerms &&
+			this.state.searchTerms !== state.searchTerms
+		) {
+			this.findRowAndFocus(this.state.searchTerms);
+		}
+	}
+
+	findRowAndFocus(searchTerms) {
+		if (this.props.isDebug) {
+			console.log("findRowAndFocus-searchTerms");
+			console.log(searchTerms);
+		}
+		const table = this.tableRef.current;
+		if (!table) return;
+		if (this.props.isDebug) {
+			console.log("findRowAndFocus-table");
+			console.log(table);
+		}
+		let childRow = null;
+		if (searchTerms.includes(":")) {
+			let tokens = searchTerms.split(":");
+			let key = tokens[0].replaceAll('"', "");
+			let value = tokens[1].replaceAll('"', "");
+			childRow = table.state.originalData.find(
+				(row) =>
+					row.key.toLowerCase().includes(key) &&
+					Object.values(row).some(
+						(val) =>
+							isDefined(val) && String(val).toLowerCase().includes(value),
+					),
+			);
+		} else {
+			let value = searchTerms;
+			childRow = table.state.originalData.find(
+				(row) =>
+					row.key.toLowerCase().includes(value) ||
+					Object.values(row).some(
+						(val) =>
+							isDefined(val) && String(val).toLowerCase().includes(value),
+					),
+			);
+		}
+		if (this.props.isDebug) {
+			console.log("findRowAndFocus-row");
+			console.log(childRow);
+		}
+
+		if (isDefined(childRow)) {
+			let parentRow = table.state.data.find(
+				(row) => row.id === childRow.parentId,
+			);
+			if (
+				parentRow &&
+				parentRow.tableData &&
+				!parentRow.tableData.isTreeExpanded
+			) {
+				parentRow.tableData.isTreeExpanded = true;
+				const rowPath = parentRow.tableData.path;
+
+				if (typeof table.onTreeExpandChanged === "function") {
+					table.onTreeExpandChanged(rowPath, parentRow);
+				}
+			}
+		}
+
+		//this.setState({ searchTerms: searchTerms });
 	}
 
 	// onSearch(term) {
@@ -518,6 +607,10 @@ export default class ComponentsView extends React.PureComponent {
 			color: "black",
 		};
 		let filteredComponents = this.state.filteredComponents;
+		if (this.props.isDebug) {
+			console.log("filteredComponents");
+			console.log(filteredComponents);
+		}
 		let elementDisplayPosition = this.state.elementDisplayPosition;
 
 		let dimensions = this.props.dimensions;
@@ -714,18 +807,6 @@ export default class ComponentsView extends React.PureComponent {
 			);
 		});
 
-		let customHeader = (
-			<div key={"TableGroupHeader"} style={styleHeader}>
-				<div
-					key={"TableGroupHeader-FirstColumn"}
-					style={{ paddingLeft: spacer + "px", width: firstColumnSize + "%" }}
-				>
-					Microscope
-				</div>
-				{headers}
-			</div>
-		);
-
 		let dataRows = [];
 		let categoryIndexes = [];
 		if (
@@ -736,12 +817,30 @@ export default class ComponentsView extends React.PureComponent {
 			dataRows = data.rows;
 			categoryIndexes = data.categoryIndexes;
 		}
+
+		let warningHeader = "";
+		if (!dataRows.length)
+			warningHeader =
+				"To compare a hardware component across the selected microscopes, click the '+' next to its category in the Component Explorer (left sidebar).\n";
+		let customHeader = (
+			<div key={"TableGroupHeader"} style={styleHeader}>
+				<div style={{ paddingLeft: spacer + "px" }}>{warningHeader}</div>
+				<div
+					key={"TableGroupHeader-FirstColumn"}
+					style={{ paddingLeft: spacer + "px", width: firstColumnSize + "%" }}
+				>
+					Microscope
+				</div>
+				{headers}
+			</div>
+		);
 		const defaultMaterialTheme = createTheme();
 		return (
 			<div style={style}>
 				<ThemeProvider theme={defaultMaterialTheme}>
 					<MaterialTable
 						//onSearchChange={this.onSearch}
+						tableRef={this.tableRef}
 						icons={tableIcons}
 						columns={columns}
 						data={dataRows}
