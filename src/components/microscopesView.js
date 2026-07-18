@@ -247,7 +247,7 @@ export default class MicroscopesView extends React.PureComponent {
 			header =
 				"Warning: only the first " +
 				number_max_compare +
-				" selection are going to be compared";
+				" selection are going to be compared.";
 		let customHeader = (
 			<div key={"TableGroupHeader"} style={styleHeader}>
 				<div key={"TableGroupHeader-FirstColumn"}>{header}</div>
@@ -373,7 +373,7 @@ export default class MicroscopesView extends React.PureComponent {
 							selection: true,
 							showSelectAllCheckbox: false,
 							//paging: false,
-							//paginationPosition: "top",
+							paginationPosition: "top",
 							pageSize: pageSize,
 							pageSizeOptions: [],
 							//selectionProps: this.handleSelectionProps,
