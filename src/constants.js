@@ -303,19 +303,47 @@ export const open_mma_tooltip = {
 	position: "top",
 };
 
-export const search_field_tooltip = {
+export const search_field_microscope_tooltip = {
 	title: "Search",
 	content: (
 		<p>
-			Insert the terms you want to search for. It is possible to use auto
-			suggested terms and/or the one free form ones in any combination.
+			Search for microscopes matching specific characteristics by entering one
+			or more terms — auto-suggested, free-form, or a mix. Multiple terms are
+			combined with AND. Click "Search" (right of the bar) to run the query.
 		</p>
 	),
 	position: "bottom",
 };
-export const search_button_tooltip = {
+export const search_button_microscope_tooltip = {
 	title: "Search",
-	content: <p>Click here to launch a search for microscope components.</p>,
+	content: (
+		<p>
+			Click to search microscope containing components matching the terms you
+			entered in the search bar.
+		</p>
+	),
+	position: "bottom",
+};
+export const search_field_component_tooltip = {
+	title: "Search",
+	content: (
+		<p>
+			Find specific components within the microscopes selected for comparison.
+			Enter one or more terms — auto-suggested, free-form, or a mix, combined
+			with AND. Click "Search" (right of the bar) to open the Component Explorer
+			at the matching category, tab, and feature.
+		</p>
+	),
+	position: "bottom",
+};
+export const search_button_component_tooltip = {
+	title: "Search",
+	content: (
+		<p>
+			Click to find a specific component within the selected microscopes using
+			the terms entered in the search bar.
+		</p>
+	),
 	position: "bottom",
 };
 
