@@ -101,10 +101,12 @@ class ComponentsView extends _react.default.PureComponent {
       originalComponents: [],
       filteredComponents: [],
       currentChildrenComponents: {},
+      searchedComponents: {},
       elementDisplayPosition: {},
       expandedIndexes: [],
       partialSchema: null,
-      searchTerms: null
+      searchTerms: null,
+      updated: 0
     };
     this.tableRef = /*#__PURE__*/_react.default.createRef();
     this.onParentChildData = this.onParentChildData.bind(this);
@@ -119,13 +121,17 @@ class ComponentsView extends _react.default.PureComponent {
   }
   static getDerivedStateFromProps(props, state) {
     //console.log("transformSchemaCategorizeField");
-    let terms = null;
+    let terms = state.searchTerms || null;
+    let elementDisplayPosition = state.elementDisplayPosition || {};
+    let updated = state.updated;
     let currentChildrenComponents = state.currentChildrenComponents;
     let partialSchema = state.partialSchema;
     let originalComponents = state.originalComponents;
     let filteredComponents = state.originalComponents;
     if ((0, _genericUtilities.isDefined)(props.components) && JSON.stringify(props.components) !== JSON.stringify(state.originalComponents)) {
-      console.log("getDerivedStateFromProps-1");
+      if (props.isDebug) {
+        console.log("getDerivedStateFromProps-1");
+      }
       Object.keys(props.components).forEach(key => {
         props.components[key].forEach(comp => {
           Object.keys(comp).forEach(key => {
@@ -152,26 +158,47 @@ class ComponentsView extends _react.default.PureComponent {
       originalComponents = props.components;
       filteredComponents = props.components;
     }
-    if ((0, _genericUtilities.isDefined)(props.searchedComponents)) {
-      console.log("getDerivedStateFromProps-2");
+    if ((0, _genericUtilities.isDefined)(props.searchedComponents) && state.searchedComponents !== props.searchedComponents) {
+      if (props.isDebug) {
+        console.log("getDerivedStateFromProps-2-searchedComponents");
+        console.log(props.searchedComponents);
+      }
+      terms = null;
       let key = Object.keys(props.searchedComponents)[0];
       if ((0, _genericUtilities.isDefined)(key)) {
         let termsTmp = props.searchedComponents[key]["term"];
         if (termsTmp !== state.searchTerms) terms = termsTmp;
       }
+      updated = 0;
     }
     return {
       originalComponents: originalComponents,
       filteredComponents: filteredComponents,
       currentChildrenComponents: currentChildrenComponents,
+      searchedComponents: props.searchedComponents,
       partialSchema: partialSchema,
-      elementDisplayPosition: {},
-      searchTerms: terms
+      elementDisplayPosition: elementDisplayPosition,
+      searchTerms: terms,
+      updated: updated
     };
   }
-  componentDidUpdate(props, state) {
-    if (this.state.searchTerms && this.state.searchTerms !== state.searchTerms) {
-      this.findRowAndFocus(this.state.searchTerms);
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.isDebug) {
+      console.log("componentDidUpdate-1");
+      console.log("elementDisplayPosition");
+      console.log(this.state.elementDisplayPosition);
+    }
+    let updated = this.state.updated;
+    let searchTerms = this.state.searchTerms;
+    if (updated < 2) {
+      if (this.props.isDebug) {
+        console.log("componentDidUpdate-2");
+      }
+      if ((0, _genericUtilities.isDefined)(searchTerms)) this.findRowAndFocus(searchTerms);
+      updated++;
+      this.setState({
+        updated: updated
+      });
     }
   }
   findRowAndFocus(searchTerms) {
@@ -547,7 +574,7 @@ class ComponentsView extends _react.default.PureComponent {
     };
     let filteredComponents = this.state.filteredComponents;
     if (this.props.isDebug) {
-      console.log("filteredComponents");
+      console.log("ComponentsView-render-filteredComponents");
       console.log(filteredComponents);
     }
     let elementDisplayPosition = this.state.elementDisplayPosition;

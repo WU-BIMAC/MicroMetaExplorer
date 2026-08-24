@@ -370,7 +370,8 @@ class ComponentsBar extends _react.default.PureComponent {
       width: "".concat(width, "px"),
       height: "".concat(height, "px"),
       overflowY: "auto",
-      overflowX: "hidden"
+      overflowX: "hidden",
+      minInlineSize: "35ch"
     };
     if (!this.props.isToolbarHidden) {
       style = Object.assign({}, style, {

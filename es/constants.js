@@ -240,7 +240,7 @@ const open_mma_tooltip = {
 exports.open_mma_tooltip = open_mma_tooltip;
 const search_field_microscope_tooltip = {
   title: "Search",
-  content: /*#__PURE__*/_react.default.createElement("p", null, "Search for microscopes matching specific characteristics by entering one or more terms \u2014 auto-suggested, free-form, or a mix. Multiple terms are combined with AND. Click \"Search\" (right of the bar) to run the query."),
+  content: /*#__PURE__*/_react.default.createElement("p", null, "Search for microscopes matching specific characteristics by entering one or more terms - auto-suggested, free-form, or a mix. Multiple terms are combined with AND. Click \"Search\" (right of the bar) to run the query."),
   position: "bottom"
 };
 exports.search_field_microscope_tooltip = search_field_microscope_tooltip;
@@ -252,13 +252,13 @@ const search_button_microscope_tooltip = {
 exports.search_button_microscope_tooltip = search_button_microscope_tooltip;
 const search_field_component_tooltip = {
   title: "Search",
-  content: /*#__PURE__*/_react.default.createElement("p", null, "Find specific components within the microscopes selected for comparison. Enter one or more terms \u2014 auto-suggested, free-form, or a mix, combined with AND. Click \"Search\" (right of the bar) to open the Component Explorer at the matching category, tab, and feature."),
+  content: /*#__PURE__*/_react.default.createElement("p", null, "Enter here one or more search terms to find specific components for comparison within the selected microscopes. When more than one terms are entered, they are combined with AND. Click \"Search\" (right of the bar) to run the query and open the Component Explorer at the matching category, tab, and feature."),
   position: "bottom"
 };
 exports.search_field_component_tooltip = search_field_component_tooltip;
 const search_button_component_tooltip = {
   title: "Search",
-  content: /*#__PURE__*/_react.default.createElement("p", null, "Click to find a specific component within the selected microscopes using the terms entered in the search bar."),
+  content: /*#__PURE__*/_react.default.createElement("p", null, "Click to search microscope containing components matching the terms you entered in the search bar. Please note that when more than one terms are entered, they are combined with AND."),
   position: "bottom"
 };
 exports.search_button_component_tooltip = search_button_component_tooltip;

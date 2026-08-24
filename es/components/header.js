@@ -29,10 +29,12 @@ class Header extends _react.default.PureComponent {
       suggestions: [],
       //showSuggestions: false,
       isLoading: false,
-      selections: []
+      selections: [],
+      isMicroscopeView: props.isMicroscopeView || false
     };
     this.isHovered = false;
     this.formRef = /*#__PURE__*/_react.default.createRef();
+    if (this.formRef && this.formRef.current) this.formRef.current.clear();
     this.onClickHelp = this.onClickHelp.bind(this);
     this.onClickAbout = this.onClickAbout.bind(this);
     this.onCloseAbout = this.onCloseAbout.bind(this);
@@ -42,6 +44,17 @@ class Header extends _react.default.PureComponent {
     this.onClearSearch = this.onClearSearch.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onCompleteSuggest = this.onCompleteSuggest.bind(this);
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.isMicroscopeView !== prevState.isMicroscopeView || this.props.isMicroscopeView !== prevProps.isMicroscopeView) {
+      if (this.formRef && this.formRef.current) this.formRef.current.clear();
+      this.setState({
+        isLoading: false,
+        suggestions: [],
+        selections: []
+      });
+      //this.onClearSearch();
+    }
   }
   onClickHelp() {
     window.open("https://micrometaapp-docs.readthedocs.io/en/latest/docs/tutorials/index.html#step-by-step-instructions", "_blank");
@@ -64,11 +77,16 @@ class Header extends _react.default.PureComponent {
     });
   }
   onSearchChange(event) {
-    console.log("onSearchChange");
-    console.log(event);
+    if (this.props.isDebug) {
+      console.log("onSearchChange");
+      console.log("event: " + event);
+    }
     this.setState({
       selections: event
     });
+    if (event === "" || event.length === 0) {
+      this.onClearSearch();
+    }
   }
   onSearchInput(event) {
     console.log("onSearchInput");
@@ -156,7 +174,10 @@ class Header extends _react.default.PureComponent {
     this.props.onSearch(exactSearchTerms, fuzzySearchTerms);
   }
   onClearSearch() {
-    console.log(this.formRef);
+    if (this.props.isDebug) {
+      console.log("onClearSearch");
+      console.log("FormRef: " + this.formRef);
+    }
     //this.formRef.current.value = "";
     if (this.formRef && this.formRef.current) this.formRef.current.clear();
     this.setState({
@@ -170,7 +191,9 @@ class Header extends _react.default.PureComponent {
     let width = this.props.dimensions.width;
     let height = this.props.dimensions.height;
     let isHovered = this.state.isHovered;
-    console.log("isHovered: " + isHovered);
+    if (this.props.isDebug) {
+      console.log("isHovered: " + isHovered);
+    }
     const style = {
       backgroundColor: "LightGray",
       width: width,
