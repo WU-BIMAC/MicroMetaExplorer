@@ -44,9 +44,11 @@ export default class Header extends React.PureComponent {
 			//showSuggestions: false,
 			isLoading: false,
 			selections: [],
+			isMicroscopeView: props.isMicroscopeView || false,
 		};
 		this.isHovered = false;
 		this.formRef = React.createRef();
+		if (this.formRef && this.formRef.current) this.formRef.current.clear();
 
 		this.onClickHelp = this.onClickHelp.bind(this);
 		this.onClickAbout = this.onClickAbout.bind(this);
@@ -59,6 +61,17 @@ export default class Header extends React.PureComponent {
 		this.onSearchChange = this.onSearchChange.bind(this);
 
 		this.onCompleteSuggest = this.onCompleteSuggest.bind(this);
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (
+			this.state.isMicroscopeView !== prevState.isMicroscopeView ||
+			this.props.isMicroscopeView !== prevProps.isMicroscopeView
+		) {
+			if (this.formRef && this.formRef.current) this.formRef.current.clear();
+			this.setState({ isLoading: false, suggestions: [], selections: [] });
+			//this.onClearSearch();
+		}
 	}
 
 	onClickHelp() {
@@ -82,9 +95,14 @@ export default class Header extends React.PureComponent {
 	}
 
 	onSearchChange(event) {
-		console.log("onSearchChange");
-		console.log(event);
+		if (this.props.isDebug) {
+			console.log("onSearchChange");
+			console.log("event: " + event);
+		}
 		this.setState({ selections: event });
+		if (event === "" || event.length === 0) {
+			this.onClearSearch();
+		}
 	}
 
 	onSearchInput(event) {
@@ -182,7 +200,10 @@ export default class Header extends React.PureComponent {
 	}
 
 	onClearSearch() {
-		console.log(this.formRef);
+		if (this.props.isDebug) {
+			console.log("onClearSearch");
+			console.log("FormRef: " + this.formRef);
+		}
 		//this.formRef.current.value = "";
 		if (this.formRef && this.formRef.current) this.formRef.current.clear();
 		this.setState({ isLoading: false, suggestions: [], selections: [] });
@@ -193,7 +214,9 @@ export default class Header extends React.PureComponent {
 		let width = this.props.dimensions.width;
 		let height = this.props.dimensions.height;
 		let isHovered = this.state.isHovered;
-		console.log("isHovered: " + isHovered);
+		if (this.props.isDebug) {
+			console.log("isHovered: " + isHovered);
+		}
 
 		const style = {
 			backgroundColor: "LightGray",
