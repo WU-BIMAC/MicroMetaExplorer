@@ -614,6 +614,7 @@ export default class MicroscopesBar extends React.PureComponent {
 			height: `${height}px`,
 			overflowY: "auto",
 			overflowX: "hidden",
+			minInlineSize: "35ch",
 		};
 		if (!this.props.isToolbarHidden) {
 			style = Object.assign({}, style, {
