@@ -308,7 +308,7 @@ export const search_field_microscope_tooltip = {
 	content: (
 		<p>
 			Search for microscopes matching specific characteristics by entering one
-			or more terms — auto-suggested, free-form, or a mix. Multiple terms are
+			or more terms - auto-suggested, free-form, or a mix. Multiple terms are
 			combined with AND. Click "Search" (right of the bar) to run the query.
 		</p>
 	),
@@ -328,10 +328,11 @@ export const search_field_component_tooltip = {
 	title: "Search",
 	content: (
 		<p>
-			Find specific components within the microscopes selected for comparison.
-			Enter one or more terms — auto-suggested, free-form, or a mix, combined
-			with AND. Click "Search" (right of the bar) to open the Component Explorer
-			at the matching category, tab, and feature.
+			Enter here one or more search terms to find specific components for
+			comparison within the selected microscopes. When more than one terms are
+			entered, they are combined with AND. Click "Search" (right of the bar) to
+			run the query and open the Component Explorer at the matching category,
+			tab, and feature.
 		</p>
 	),
 	position: "bottom",
@@ -340,8 +341,9 @@ export const search_button_component_tooltip = {
 	title: "Search",
 	content: (
 		<p>
-			Click to find a specific component within the selected microscopes using
-			the terms entered in the search bar.
+			Click to search microscope containing components matching the terms you
+			entered in the search bar. Please note that when more than one terms are
+			entered, they are combined with AND.
 		</p>
 	),
 	position: "bottom",
